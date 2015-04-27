@@ -22,7 +22,7 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
 
-    <!--默认servlet处理静态资源的请求-->
+
     <mvc:default-servlet-handler/>
 
 </beans>
