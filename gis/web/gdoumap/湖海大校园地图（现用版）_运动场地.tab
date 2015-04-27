@@ -1,0 +1,16 @@
+!table
+!version 300
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 4
+    autocad_elevation Decimal (20, 0) ;
+    ÃèÊö Char (200) ;
+    Ãû×Ö Char (20) ;
+    ±àºÅ Integer ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "ba2140c2-796e-4fba-ac0c-e4ed759eb5dc"
+end_metadata

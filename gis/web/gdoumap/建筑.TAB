@@ -1,0 +1,15 @@
+!table
+!version 300
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 3
+    ±àºÅ Integer ;
+    Ãû×Ö Char (20) ;
+    ÃèÊö Char (200) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "43ae2190-5bb3-4c45-aa76-52a13b56ad7c"
+end_metadata
