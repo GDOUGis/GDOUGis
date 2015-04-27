@@ -14,4 +14,6 @@ public class MapHandler extends BaseHandler {
     public String test() {
         return SUCCESS;
     }
+
+
 }
