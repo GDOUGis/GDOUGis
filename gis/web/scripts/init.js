@@ -17,3 +17,5 @@ window.name="mapwindow";
 document.all.imgmap.src=mapserviceurl+"?rqutype=initmap";
 document.all.center.src=mapserviceurl+"?rqutype=centerpoint";
 document.all.zoom.src=mapserviceurl+"?rqutype=zoom";
+
+

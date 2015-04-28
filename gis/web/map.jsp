@@ -44,9 +44,9 @@
 </style>
 
 <script type="text/javascript" src=""></script>
-<script type="text/javascript" src="WEB-INF/scripts/mapevent.js"></script>
-<script type="text/javascript" src="WEB-INF/scripts/mapmove.js"></script>
-<script type="text/javascript" src="WEB-INF/scripts/maprquest.js"></script>
+<script type="text/javascript" src="/scripts/mapevent.js"></script>
+<script type="text/javascript" src="/scripts/mapmove.js"></script>
+<script type="text/javascript" src="/scripts/maprquest.js"></script>
 
 <script type="text/javascript">
 	//重置按钮图片，显示被选中.
@@ -96,7 +96,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="queryid" value="查找" onClick="Find()"/>
 	
-	<img src="WEB-INF/images/map_03.jpg" width="857"
+	<img src="/images/map_03.jpg" width="857"
 			border="0"
 			style="position: absolute; left: 9px; top: 49px; width: 852px">
 			
@@ -140,39 +140,39 @@
 			
 			<tr valign="middle" align="left">
 				<td>
-					<img name="bigimg" src="WEB-INF/images/index-map_03.jpg" width="159"
+					<img name="bigimg" src="/images/index-map_03.jpg" width="159"
 						height="28" onClick="mapbig()" style="cursor: hand"
 						alt="区域放大地图">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img name="smallimg" src="WEB-INF/images/index-map_05.jpg" width="159"
+					<img name="smallimg" src="/images/index-map_05.jpg" width="159"
 						onclick="mapsmall()" style="cursor: hand" alt="点击缩小地图">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img name="panimg" src="WEB-INF/images/index-map_06.jpg" width="159"
+					<img name="panimg" src="/images/index-map_06.jpg" width="159"
 						height="28" onClick="mappan()" style="cursor: hand" alt="浏览地图">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img name="resetimg" src="WEB-INF/images/index-map_07.jpg" width="159"
+					<img name="resetimg" src="/images/index-map_07.jpg" width="159"
 						height="29" onClick="mapreset()" style="cursor: hand"
 						alt="恢复地图初始状态">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img name="bound" src="WEB-INF/images/index-map_08.jpg" width="159" height="29"
+					<img name="bound" src="/images/index-map_08.jpg" width="159" height="29"
 						onclick="mapbound()" style="cursor: hand" alt="缩略图">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<img name="player" src="WEB-INF/images/index-map_09.jpg" width="159" height="29"
+					<img name="player" src="/images/index-map_09.jpg" width="159" height="29"
 						onclick="maplayer()" style="cursor: hand" alt="图层控制">
 				</td>
 			</tr>
@@ -213,7 +213,7 @@
 		</table>
 	</div>
 </body>
-<script language="JavaScript" src="WEB-INF/scripts/init.js"></script>
+<script language="JavaScript" src="/scripts/init.js"></script>
 <script language="JavaScript">
 	function maplayer(){
 		var layer;//打开图层控制页面

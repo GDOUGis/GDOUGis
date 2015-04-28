@@ -15,5 +15,4 @@ public class MapHandler extends BaseHandler {
         return SUCCESS;
     }
 
-
 }
