@@ -84,7 +84,7 @@
         <init-param>
             <!-- 地图服务器的引用路径配置 -->
             <param-name>mapxtremeURL</param-name>
-            <param-value>http://localhost:8080/mapxtreme</param-value>
+            <param-value>http://localhost:8080/GisMap/mapxtreme</param-value>
         </init-param>
 
     </servlet>
