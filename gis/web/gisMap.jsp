@@ -35,6 +35,8 @@
 <head>
     <title>地图显示</title>
 
+    <link href="/css/gisMap.css" rel="stylesheet" type="text/css">
+
     <script type="text/javascript" src="/scripts/mapevent.js"></script>
     <script type="text/javascript" src="/scripts/mapmove.js"></script>
     <script type="text/javascript" src="/scripts/maprquest.js"></script>
@@ -70,8 +72,8 @@
 <input type="button" id="queryid" value="查找" onClick="Find()"/>
 
 <!--div为地图边框，img为地图-->
-<div id="mapframe" style="position: absolute; left: 9px; top: 64px; height: 602px; width:852px; overflow: hidden; background-color: #99FFFF; layer-background-color: #99FFFF; border: 1px #339933 solid">
-    <img height="600" id="imgmap" style="position: relative; left: 0px; top: 0px; height: 600px; width: 850px; cursor: default" galleryimg="false">
+<div id="mapframe" >
+    <img height="600" id="imgmap" galleryimg="false">
 </div>
 
 <!--div缩略图边框，img为缩略图,初始化为隐藏的-->

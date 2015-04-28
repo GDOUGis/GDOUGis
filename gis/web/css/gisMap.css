@@ -1,0 +1,20 @@
+#mapframe{
+    position: absolute;
+    left: 9px;
+    top: 64px;
+    height: 602px;
+    width:852px;
+    overflow: hidden;
+    background-color: #99FFFF;
+    layer-background-color: #99FFFF;
+    border: 1px #339933 solid
+}
+
+#imgmap{
+    position: relative;
+    left: 0px;
+    top: 0px;
+    height: 600px;
+    width: 850px;
+    cursor: default
+}
