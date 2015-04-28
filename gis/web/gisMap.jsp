@@ -113,8 +113,8 @@
 <input type="button" id="queryid" value="查找" onClick="Find()"/>
 
 <!--div为地图边框，img为地图-->
-<div id="mapframe" >
-    <img height="600" id="imgmap" galleryimg="false" onmousemove="show_coords(event)" >
+<div id="mapframe" style="  position: absolute;top: 60px;left: 0;" >
+    <img height="200" id="imgmap" galleryimg="false" >
 </div>
 
 
@@ -135,7 +135,33 @@
 
 </body>
 <script language="JavaScript" src="/scripts/init.js"></script>
+<script language="JavaScript" src="/scripts/jquery.min.js"></script>
+<script language="JavaScript" src="/scripts/jquery.mousewheel.min.js"></script>
 <script language="JavaScript">
+
+    //监听滚轮.
+    $('#imgmap').mousewheel(function(event, delta) {
+        //鼠标xy
+        var x = event.clientX;
+        var y = event.clientY;
+        //图片所在div距离屏幕边界的xy
+        var imgx = document.all.mapframe.style.left;
+        var imgy = document.all.mapframe.style.top;
+        //计算得出相对于图片的xy
+        x = parseInt(x) - parseInt(imgx);
+        y = parseInt(y) - parseInt(imgy);
+        //alert(x+","+y);
+        //向上滚,放大
+        if(delta==1){
+            map2bigger(x,y);
+        }else{//向下滚，缩小
+            map2smaller(x,y);
+        }
+
+
+
+    });
+
     function maplayer(){
         var layer;//打开图层控制页面
         resetimg();

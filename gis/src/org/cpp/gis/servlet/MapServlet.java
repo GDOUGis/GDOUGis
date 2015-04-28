@@ -451,7 +451,8 @@ public class MapServlet extends HttpServlet {
 			mymap = initmap(request);
 			responseimg(mymap, response);
 		} else if ((rqutype != null) && (rqutype.equals("chgmapview"))) {
-			mymap = initmap(request);
+            System.out.println("================ajax=======================");
+            mymap = initmap(request);
 			chgmapview(mymap, request);
 			responseimg(mymap, response);
 		} else if ((rqutype != null) && (rqutype.equals("panmap"))) {

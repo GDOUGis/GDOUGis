@@ -163,3 +163,34 @@ function Find()
 	}
 
 }
+
+
+/****************************************ourselves重写的方法*********************************************/
+/**
+ * 放大地图.
+ * @param x
+ * @param y
+ */
+function map2bigger(x,y){
+
+   /* var url = mapserviceurl;
+    var args = {
+        "noCache":new Date(),
+        "rqutype":"chgmapview",
+        "centerx":x,
+        "centery":y,
+        "newzoom":0.5
+    };
+    $.get(url,args,function(data){
+        alert("返回了");
+        //$.("#imgmap").src(data);
+    })*/
+    var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom=0.5";
+    $("#imgmap").attr("src",url);
+
+
+}
+
+function map2smaller(x,y){
+
+}

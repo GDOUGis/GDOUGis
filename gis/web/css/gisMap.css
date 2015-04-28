@@ -1,9 +1,6 @@
 #mapframe{
-    position: absolute;
-    margin-top:20px;
-    left: 0;
-    height: 1320px;
-    width:1980px;
+  /*  height: 600px;
+    width:1980px;*/
     overflow: hidden;
     background-color: #FFFFFF;
     layer-background-color: #ffffff;
@@ -14,10 +11,10 @@
     position: relative;
     left: 0px;
     top: 0px;
-    /*height: 600px;*/
-    /*width: 850px;*/
-    height:1320px;
-    width:1980px;
+    height: 500px;
+    width: 850px;
+    /*height:1320px;
+    width:1980px;*/
     cursor: default;
 }
 

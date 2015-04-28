@@ -177,3 +177,4 @@ function bounddownloadstate(){
 		document.all.boundmap.style.visibility="visible";
 	}
 }
+
