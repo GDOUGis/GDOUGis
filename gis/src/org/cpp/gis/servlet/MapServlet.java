@@ -49,9 +49,12 @@ public class MapServlet extends HttpServlet {
 
 	private String imgtype = "jpeg";
 
-	private int imgsizex = 600;
+//	private int imgsizex = 600;
+//
+//	private int imgsizey = 400;
+	private int imgsizex = 1200;
 
-	private int imgsizey = 400;
+	private int imgsizey = 800;
 
 	private int smallimgsizex = 300;
 
@@ -124,7 +127,9 @@ public class MapServlet extends HttpServlet {
 				// 加载地图
 				if ((request.getParameter("oldx") != null)
 						&& (request.getParameter("oldy") != null)) {
-					Double oldx = new Double(request.getParameter("oldx"));
+                    System.out.println("initmap-->oldx:" + request.getParameter("oldx") + ", oldy:" + request.getParameter("oldy") +
+                        ", oldzoom:" + request.getParameter("oldzoom"));
+                    Double oldx = new Double(request.getParameter("oldx"));
 					Double oldy = new Double(request.getParameter("oldy"));
 					DoublePoint mappoint = new DoublePoint(oldx.doubleValue(),
 							oldy.doubleValue());
@@ -132,6 +137,8 @@ public class MapServlet extends HttpServlet {
 					mymap.setCenter(mappoint);
 					mymap.setZoom(oldzoom.doubleValue());
 				}
+                mymap.setZoom(2140.0);
+                mymap.setCenter(new DoublePoint(0.240811010150033, 0.361497328528728));
 				request.getSession().setAttribute("mapj", mymap);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -223,7 +230,7 @@ public class MapServlet extends HttpServlet {
 		try {
 			System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
 //			mymap.setZoom(resetzoom);
-            mymap.setZoom(214.0);
+            mymap.setZoom(2140.0);
 			// 设定地图范围为最初的范围
             resetpoint = new DoublePoint(0.24, 0.36);
 			mymap.setCenter(resetpoint);

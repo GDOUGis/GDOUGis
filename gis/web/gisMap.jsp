@@ -37,6 +37,33 @@
 
     <link href="/css/gisMap.css" rel="stylesheet" type="text/css">
 
+
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jqueryui/style.css">
+    <script>
+
+        function show_coords(event){
+            var x = event.clientX;
+            var y = event.clientY;
+        }
+
+        $(function() {
+            $( "#slider-vertical" ).slider({
+                orientation: "vertical",
+                range: "min",
+                min: 0,
+                max: 100,
+                value: 50,
+                slide: function( event, ui ) {
+                    $( "#amount" ).val( ui.value );
+                }
+            });
+            $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
+        });
+    </script>
+
     <script type="text/javascript" src="/scripts/mapevent.js"></script>
     <script type="text/javascript" src="/scripts/mapmove.js"></script>
     <script type="text/javascript" src="/scripts/maprquest.js"></script>
@@ -44,6 +71,20 @@
 </head>
 
 <body bgcolor="#DFFFDF" link="#000000" vlink="#000000" alink="#000000">
+<p id="cScale">
+    <label for="amount">缩放：</label>
+    <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
+</p>
+<!-- 垂直滑动条 -->
+<div id="slider-vertical" style="height:200px;"></div>
+
+<!-- 鹰眼. -->
+<div>
+    <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
+    <div id="mapboundframe">
+        <img id="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()">
+    </div>
+</div>
 
 查询测试： 选择图层：<font color="red">*</font>
 
@@ -73,19 +114,10 @@
 
 <!--div为地图边框，img为地图-->
 <div id="mapframe" >
-    <img height="600" id="imgmap" galleryimg="false">
+    <img height="600" id="imgmap" galleryimg="false" onmousemove="show_coords(event)" >
 </div>
 
-<!--div缩略图边框，img为缩略图,初始化为隐藏的-->
-<div id="mapboundframe"
-     style="position: absolute; left: 881px; top: 283px; height: 182px; width: 242px; overflow: hidden; background-color: #99FFFF; layer-background-color: #99FFFF; border: 1px #339933 solid; display: none">
-    <!-- <img id="boundmap" GALLERYIMG="false"
-        style="position: relative; left: 0px; top: 0px; visibility: hidden; height: 180px; width: 240px;"
-        onclick="mapsmallpaner()"> -->
-    <img id="boundmap" GALLERYIMG="false"
-         style="position: relative; left: 0px; top: 0px;  height: 180px; width: 240px;"
-         onclick="mapsmallpaner()">
-</div>
+
 
 <!-- 不知道用来干什么==. -->
 <IFRAME id="center" style="display: none"></IFRAME>
@@ -93,7 +125,7 @@
 
 <!-- 点击选中的时候显示小红框 -->
 <table id="seltable"
-       style="position: absolute; border: 1px solid Red; width: 0px; height: 0px; display: none;">
+       style="position: absolute; border: 1px solid Red; width: 0px; height: 0px; display: block;">
     <tr>
         <td></td>
     </tr>
@@ -101,40 +133,6 @@
 <img name="selimg"
      style="position: absolute; border: 1px solid Red; width: 1px; height: 1px; display: none;">
 
-<div id="layer1"
-     style="position: absolute; left: 17px; top: 634px; width: 87px; height: 18px; z-index: 2; font-size: 12px; color: Red;">
-    当前状态：
-</div>
-
-<div id="center&zoom"
-     style="position: absolute; left: 10px; top: 680px; width: 577px; height: 33px; z-index: 3">
-    <!--显示中心点和zoom值-->
-    <table width="526" border="0">
-        <tr>
-            <td width="250">
-                <font size="2">中心点(米)Ｘ:</font>
-                <input type="Text"
-                       style="border: none; background: #DFFFDF; text-align: left;"
-                       name="oldx">
-            </td>
-            <td width="266">
-                <font size="2">Ｙ:</font>
-                <input type="Text"
-                       style="border: none; background: #DFFFDF; text-align: left;"
-                       name="oldy">
-            </td>
-        </tr>
-        <tr>
-            <td width="250">
-                <font size="2">&nbsp;&nbsp;&nbsp;&nbsp;视野(米):</font>
-                <input type="Text"
-                       style="border: none; background: #DFFFDF; text-align: left;"
-                       name="oldzoom">
-            </td>
-            <td width="266">&nbsp;</td>
-        </tr>
-    </table>
-</div>
 </body>
 <script language="JavaScript" src="/scripts/init.js"></script>
 <script language="JavaScript">

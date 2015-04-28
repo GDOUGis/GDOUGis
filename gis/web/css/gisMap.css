@@ -1,20 +1,63 @@
 #mapframe{
     position: absolute;
-    left: 9px;
-    top: 64px;
-    height: 602px;
-    width:852px;
+    margin-top:20px;
+    left: 0;
+    height: 1320px;
+    width:1980px;
     overflow: hidden;
-    background-color: #99FFFF;
-    layer-background-color: #99FFFF;
-    border: 1px #339933 solid
+    background-color: #FFFFFF;
+    layer-background-color: #ffffff;
+    border: 1px #4276FF solid
 }
 
 #imgmap{
     position: relative;
     left: 0px;
     top: 0px;
-    height: 600px;
-    width: 850px;
-    cursor: default
+    /*height: 600px;*/
+    /*width: 850px;*/
+    height:1320px;
+    width:1980px;
+    cursor: default;
+}
+
+#cScale{
+    position:absolute;
+    left:10px;
+    top:250px;
+    float:left;
+    z-index: 9999;
+}
+
+#slider-vertical{
+    position: absolute;
+    left: 10px;
+    top: 300px;
+    float: left;
+    background-color:#4276FF;
+}
+
+#mapboundframe{
+    position: absolute;
+    left: 10px;
+    top: 60px;
+    height: 182px;
+    width: 242px;
+    background-color: #18FF6F;
+    layer-background-color: #99FFFF;
+    border: 1px #339933 solid;
+    float:left;
+    display: block;
+    z-index: 9999;
+    border-radius: 5px;
+}
+
+#boundmap{
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    height: 180px;
+    width: 240px;
+    visibility: visible;
+    float:left;
 }
