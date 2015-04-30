@@ -74,12 +74,12 @@
         <init-param>
             <!--地图存放路径配置-->
             <param-name>mapPath</param-name>
-            <param-value>gdoumap</param-value>
+            <param-value>map</param-value>
         </init-param>
         <init-param>
             <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
             <param-name>fileToLoad</param-name>
-            <param-value>gdoumap/gdoumap.gst</param-value>
+            <param-value>map/map.gst</param-value>
         </init-param>
         <init-param>
             <!-- 地图服务器的引用路径配置 -->
@@ -92,6 +92,31 @@
     <servlet-mapping>
         <servlet-name>MapServlet</servlet-name>
         <url-pattern>/servlet/MapServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>initServlet</servlet-name>
+        <servlet-class>org.cpp.gis.servlet.InitServlet</servlet-class>
+
+        <init-param>
+            <!--地图存放路径配置-->
+            <param-name>mapPath</param-name>
+            <param-value>map</param-value>
+        </init-param>
+        <init-param>
+            <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
+            <param-name>fileToLoad</param-name>
+            <param-value>map/map.gst</param-value>
+        </init-param>
+        <init-param>
+            <!-- 地图服务器的引用路径配置 -->
+            <param-name>mapxtremeURL</param-name>
+            <param-value>http://localhost:8080/mapxtreme</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>initServlet</servlet-name>
+        <url-pattern>/servlet/InitServlet</url-pattern>
     </servlet-mapping>
 
     <!-- 编码过滤器 -->
@@ -107,5 +132,9 @@
         <filter-name>SetCharacterEncodig</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

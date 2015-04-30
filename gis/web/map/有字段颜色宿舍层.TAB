@@ -1,0 +1,17 @@
+!table
+!version 650
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 4
+    Àﬁ…·≤„√˚◊÷ Char (20) ;
+    Àﬁ…·≤„√Ë ˆ Char (200) ;
+    x Decimal (20, 8) ;
+    y Decimal (20, 8) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "98ab93bb-aa37-4f44-97ce-89bacab20d32"
+"\MapInfo\ParentTableID" = "3004d77e-6396-4b47-9013-5f1875388bc7"
+end_metadata

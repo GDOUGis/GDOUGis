@@ -1,21 +1,28 @@
+body{
+    margin: 0;
+    padding: 0;
+}
 #mapframe{
   /*  height: 600px;
     width:1980px;*/
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     background-color: #FFFFFF;
     layer-background-color: #ffffff;
-    border: 1px #4276FF solid
+   /* border: 1px #4276FF solid*/
 }
 
 #imgmap{
     position: relative;
     left: 0px;
     top: 0px;
-    height: 500px;
-    width: 850px;
+   /* height: 500px;
+    width: 850px;*/
     /*height:1320px;
     width:1980px;*/
-    cursor: default;
+    cursor: hand;
+
 }
 
 #cScale{

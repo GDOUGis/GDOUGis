@@ -1,0 +1,27 @@
+!table
+!version 300
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 2
+    道路名 Char (20) ;
+    道路描述 Char (200) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "27e42eac-9ff5-4d18-8a98-8054d89dd3a4"
+"\MapInfo\ParentTableID" = "dc279890-c8a3-4177-b6fd-91563c451346"
+"\SNAPTHIN" = ""
+"\SNAPTHIN\EnableSnap" = "FALSE"
+"\SNAPTHIN\Node" = "0"
+"\SNAPTHIN\Vec" = "0"
+"\SNAPTHIN\TolUnit" = "1"
+"\SNAPTHIN\EnableThin" = "FALSE"
+"\SNAPTHIN\Bend" = "0"
+"\SNAPTHIN\Dist" = "0"
+"\SNAPTHIN\ThinUnit" = "1"
+"\SNAPTHIN\EnableArea" = "FALSE"
+"\SNAPTHIN\Area" = "0"
+"\SNAPTHIN\AreaUnit" = "15"
+end_metadata

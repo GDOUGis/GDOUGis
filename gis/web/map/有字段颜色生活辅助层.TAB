@@ -1,0 +1,15 @@
+!table
+!version 650
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 2
+    生活辅助层名字 Char (20) ;
+    生活辅助层描述 Char (200) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "eaba3cb6-6ba5-45ec-a7e0-742e8df8ab56"
+"\MapInfo\ParentTableID" = "9d07572d-419c-482e-8ec7-7a9261b222fb"
+end_metadata

@@ -33,7 +33,17 @@ import java.util.Vector;
 
 public class MapServlet extends HttpServlet {
 
-	// 包含地图文件的路径
+    /**解决异常.
+     * Error: Could not load mediaLib accelerator wrapper classes. Continuing in pure Java mode.
+     * Occurs in: com.sun.media.jai.mlib.MediaLibAccessor
+     * com.sun.media.jai.mlib.MediaLibLoadException
+     */
+    static {
+        System.setProperty("com.sun.media.jai.disableMediaLib", "true");
+    }
+
+
+    // 包含地图文件的路径
 	private String m_mapPath = "";
 
 	// 地图定义文件的完整路径
@@ -49,9 +59,9 @@ public class MapServlet extends HttpServlet {
 
 	private String imgtype = "jpeg";
 
-	private int imgsizex = 600;
+	private int imgsizex = 900;
 
-	private int imgsizey = 400;
+	private int imgsizey = 600;
 
 	private int smallimgsizex = 300;
 
@@ -64,7 +74,9 @@ public class MapServlet extends HttpServlet {
 	static double resetzoom = 0.0D;
 
 	public void init(ServletConfig config) throws ServletException {
+
 		super.init(config);
+
 		String strParam = "";
 		URL url = this.getClass().getResource("/../..");
 		strParam = getInitParameter("mapPath");
@@ -129,10 +141,17 @@ public class MapServlet extends HttpServlet {
 					DoublePoint mappoint = new DoublePoint(oldx.doubleValue(),
 							oldy.doubleValue());
 					Double oldzoom = new Double(request.getParameter("oldzoom"));
-					mymap.setCenter(mappoint);
+                    mymap.setCenter(mappoint);
 					mymap.setZoom(oldzoom.doubleValue());
 				}
+                //将地图放到session里面
 				request.getSession().setAttribute("mapj", mymap);
+                //将图层名称放到session里面
+                List<String> layerNames = new ArrayList<String>();
+                for(int i=0;i<mymap.getLayers().size();i++){
+                    layerNames.add(mymap.getLayers().get(i).getName());
+                }
+                request.getSession().setAttribute("layerNames",layerNames);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -259,6 +278,7 @@ public class MapServlet extends HttpServlet {
 		}
 		try {
 			if (sout != null)
+                sout.flush();
 				sout.close();
 		} catch (Exception localException1) {
 		}

@@ -77,9 +77,13 @@ function mappaner(){
 }
 
 /**
- * 根据鹰眼调整地图的中心点.
+ * 调整鹰眼地图.
  */
 function mapsmallpaner(){
+
+    //处理火狐兼容性问题！
+    var evt = window.event || arguments.callee.caller.arguments[0]; // 获取event对象
+
 	var centerx;
 	var centery;
 	var frametop;
@@ -88,8 +92,11 @@ function mapsmallpaner(){
 	var maphigh;
 	frametop=parseInt(document.all.mapboundframe.style.top);
 	frameleft=parseInt(document.all.mapboundframe.style.left);
-	centerx=window.event.clientX-(frameleft+1);
-	centery=window.event.clientY-(frametop+1);
+    //alert(window.event);
+	centerx=evt.clientX-(frameleft+1);
+
+	centery=evt.clientY-(frametop+1);
+   // alert(centerx + "," + centery);
 	chgmapsrc("rqutype=smallpanmap&centerx="+centerx+"&centery="+centery);
 }
 
@@ -107,7 +114,8 @@ function mapreset(){
  * 显示略缩图.
  */
 function mapbound(){
-	if(document.all.mapboundframe.style.display=="none"){
+    mapbounder();
+	/*if(document.all.mapboundframe.style.display=="none"){
 		//获得略缩图，加载略缩图.
 		mapbounder();
 		//显示
@@ -115,7 +123,7 @@ function mapbound(){
 	}
 	else{
 		document.all.mapboundframe.style.display="none";
-	}
+	}*/
 	resetimg();
 	state="bound";
 	document.all.bound.src="images/index-map-a_08.jpg";
@@ -173,24 +181,19 @@ function Find()
  */
 function map2bigger(x,y){
 
-   /* var url = mapserviceurl;
-    var args = {
-        "noCache":new Date(),
-        "rqutype":"chgmapview",
-        "centerx":x,
-        "centery":y,
-        "newzoom":0.5
-    };
-    $.get(url,args,function(data){
-        alert("返回了");
-        //$.("#imgmap").src(data);
-    })*/
     var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom=0.5";
     $("#imgmap").attr("src",url);
 
-
 }
 
+/**
+ * 缩小地图.
+ * @param x
+ * @param y
+ */
 function map2smaller(x,y){
+
+    var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom=2";
+    $("#imgmap").attr("src",url);
 
 }
