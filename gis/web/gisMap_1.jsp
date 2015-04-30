@@ -1,5 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="com.mapinfo.mapj.*"%>
 <%
     String flag = request.getParameter("flag");
@@ -44,14 +43,8 @@
     <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="jqueryui/style.css">
     <script>
-/*        $(function(){
-            $("body").mousemove(function(){
-                console.log([document.documentElement.clientWidth+"---"+window.screen.width])
-                //alert(document.documentElement.clientHeight);
-            })
-        })*/
 
-       /* function show_coords(event){
+        function show_coords(event){
             var x = event.clientX;
             var y = event.clientY;
         }
@@ -68,7 +61,7 @@
                 }
             });
             $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
-        });*/
+        });
     </script>
 
     <script type="text/javascript" src="/scripts/mapevent.js"></script>
@@ -77,42 +70,73 @@
 
 </head>
 
-<body  link="#000000" vlink="#000000" alink="#000000">
+<body bgcolor="#DFFFDF" link="#000000" vlink="#000000" alink="#000000">
+<p id="cScale">
+    <label for="amount">缩放：</label>
+    <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
+</p>
+<!-- 垂直滑动条 -->
+<div id="slider-vertical" style="height:200px;"></div>
 
-
-<div id="header" style="position: absolute;left: 0px;top: 0px ">
-    选择图层：
-    <select id="layerid" name="layername">
-        <c:forEach items="${layerNames}" var="name">
-            <option value="${name}">${name}</option>
-        </c:forEach>
-    </select>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    查询名称：
-    <input id="selectid" name="selectname" type="text"/>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="button" id="queryid" value="查找" onClick="Find()"/>
-</div>
-
+<!-- 鹰眼. -->
 <div>
     <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
-    <div id="mapboundframe" style=" position: absolute;left: 10px;top: 60px;height: 182px;width: 242px;background-color: #18FF6F;layer-background-color: #99FFFF;border: 1px #339933 solid;float:left;display: block;z-index: 9999;border-radius: 5px;">
-        <img id="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
-                style=" position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;">
+    <div id="mapboundframe">
+        <img id="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()">
     </div>
 </div>
 
+查询测试： 选择图层：<font color="red">*</font>
 
+<!-- 存在问题，一开始在session没有mapj对象 -->
+<select id="layerid" name="layername">
+    <%
+        MapJ mymap = (MapJ) session.getAttribute("mapj");
+        Layer tlayer = null;
+        if (mymap != null) {
+            for (int i = 0; i < mymap.getLayers().size(); i++) {
+                tlayer = mymap.getLayers().elementAt(i);
+    %>
+    <!-- 获取到图层的名字 -->
+    <option value="<%=tlayer.getName()%>"><%=tlayer.getName()%></option>
+
+    <%
+            }
+        }
+    %>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+查询名称：<font color="red">*</font>
+<Input id="selectid" name="selectname" type="text"/>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="queryid" value="查找" onClick="Find()"/>
 
 <!--div为地图边框，img为地图-->
-<div id="mapframe" style="position: absolute;top: 60px;left: 0;" >
-    <img height="200" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmousemove="movemap(event)" onmouseup="getMap(event)">
+<div id="mapframe" >
+    <img height="200" style="position: relative;
+    left: 0px;
+    top: 0px;
+    height: 500px;
+    width: 850px;
+    cursor: default;" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmousemove="movemap()" onmouseup="getMap(event)">
 </div>
 
-<!-- 保存中心点和范围-->
+
+
+<!-- 不知道用来干什么==. -->
 <IFRAME id="center" style="display: none"></IFRAME>
 <IFRAME id="zoom" style="display: none"></IFRAME>
 
+<!-- 点击选中的时候显示小红框 -->
+<table id="seltable"
+       style="position: absolute; border: 1px solid Red; width: 0px; height: 0px; display: block;">
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<img name="selimg"
+     style="position: absolute; border: 1px solid Red; width: 1px; height: 1px; display: none;">
 <div id="center&zoom"
      style="position: absolute; left: 10px; top: 680px; width: 577px; height: 33px; z-index: 3;display: none;">
     <!--显示中心点和zoom值-->
@@ -147,17 +171,9 @@
 <script language="JavaScript" src="/scripts/init.js"></script>
 <script language="JavaScript" src="/scripts/jquery.min.js"></script>
 <script language="JavaScript" src="/scripts/jquery.mousewheel.min.js"></script>
-<script language="JavaScript" src="/scripts/pan.js"></script>
+
+<script type="text/javascript" src="/scripts/pan.js"></script>
 <script language="JavaScript">
-
-    $("input,select").click(function(e){
-        $(this).select();
-    });
-
-    //加载鹰眼地图
-    $(document).ready(function(){
-        mapbound();
-    });
 
     //监听滚轮.
     $('#imgmap').mousewheel(function(event, delta) {
@@ -177,15 +193,17 @@
         }else{//向下滚，缩小
             map2smaller(x,y);
         }
+
+
+
     });
 
-   /* function maplayer(){
+    function maplayer(){
         var layer;//打开图层控制页面
         resetimg();
         state="player";
         layer=window.open("layer.jsp");
         document.all.player.src="images/index-map-a_09.jpg";
-    }*/
-
+    }
 </script>
 </html>

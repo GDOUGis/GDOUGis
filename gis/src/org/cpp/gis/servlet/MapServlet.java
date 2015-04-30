@@ -219,7 +219,7 @@ public class MapServlet extends HttpServlet {
 	 */
 	private void panmap(MapJ mymap, HttpServletRequest request) {
 		try {
-			Double centerx = new Double(request.getParameter("centerx"));
+            Double centerx = new Double(request.getParameter("centerx"));
 			// 从前台取得鼠标坐标 X ；
 			Double centery = new Double(request.getParameter("centery"));
 			// 从前台取得鼠标坐标 Y ；
@@ -227,7 +227,7 @@ public class MapServlet extends HttpServlet {
 					centery.doubleValue());
 			// 创建一个新的点
 			DoublePoint mappoint = mymap.transformScreenToNumeric(screenpoint);
-			// 转换坐标
+			// 转换坐标1
 			mymap.setCenter(mappoint);
 			// 设定中心
 		} catch (Exception e) {
