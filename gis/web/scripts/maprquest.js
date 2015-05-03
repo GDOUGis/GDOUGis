@@ -167,7 +167,9 @@ function Find()
 	   document.getElementById("selectid").focus();
 	}else{
 		//根据选择的图层和名称改变地图资源
-	   chgmapsrc("rqutype=querymap&layernames="+layernames+"&selectnames="+selectnames);
+        //var url = encodeURI(encodeURI("rqutype=querymap&layernames="+layernames+"&selectnames="+selectnames));//精确编码
+        var url = encodeURI(encodeURI("rqutype=fuzzyQuery&selectnames="+selectnames));//模糊查询
+        chgmapsrc(url);
 	}
 
 }
@@ -182,6 +184,7 @@ function Find()
 function map2bigger(x,y){
 
     var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom=0.5";
+
     $("#imgmap").attr("src",url);
 
 }
@@ -196,4 +199,74 @@ function map2smaller(x,y){
     var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom=2";
     $("#imgmap").attr("src",url);
 
+}
+
+/**
+ * 更新鹰眼地图.
+ */
+function updataBoundMap(){
+    $("#mapboundframe").empty();
+    //alert("清空");
+    $("#mapboundframe").append(" <img id='boundmap'  class='boundmap' GALLERYIMG='false' onclick='mapsmallpaner()'"+
+    "style=' position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;'" +
+    "src="+mapboundserviceurl+"&random="+Math.random()+ ">");
+    //alert("加载完毕");
+    //解决漫游图片跳跃
+    $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;")
+}
+
+/**
+ * 控制图层显示.
+ */
+function showLayer(){
+    //获取被选中的值.
+    var $layer = $("input[name='layerName']:checked");
+
+    var layernames = new Array();
+    for(var i=0;i<$layer.length;i++){
+        layernames[i] = $layer[i].value;
+       // alert(layernames[i]);
+    }
+
+    var url = mapserviceurl + "?rqutype=changeLayer"+"&layernames="+layernames;
+    $("#imgmap").attr("src",encodeURI(encodeURI(url)));
+
+}
+
+/**
+ * 查询.
+ */
+function searchF(){
+    var searchText = $("#searchText").val();
+    //alert(searchText);
+    var url = mapserviceurl + "?rqutype=fuzzyQuery&selectnames="+searchText;
+    var params = {
+        date : new Date()
+    };
+    $.getJSON(encodeURI(encodeURI(url)),params,function(data){
+        var result = data.result;
+        if(result == null || result==""){
+            //alert("没有");
+            $(".result").append("<p>抱歉，找不到该建筑物！</p>");
+        }else{
+            $(".result").empty();
+            $(".result").append("<a>查询结果如下:</a><br>");
+            for(var i=0;i<result.length;i++){
+                $(".result").append("<a href='#' onclick='findByName(this)'>"+result[i]+"</a><br>");
+            }
+        }
+
+    });
+}
+
+/**
+ *根据名称查找.
+ */
+function findByName(a){
+    //alert("进来了");
+    var $a = $(a);
+    var name = $a.text();
+    //alert(name);
+    var url = mapserviceurl + "?rqutype=findByName&queryName="+name;
+    $("#imgmap").attr("src",encodeURI(encodeURI(url)));
 }

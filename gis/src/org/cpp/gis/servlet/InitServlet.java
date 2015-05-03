@@ -74,6 +74,7 @@ public class InitServlet extends HttpServlet {
             MapJ mapJ = new MapJ();
             mapJ.loadGeoset(m_fileToLoad, m_mapPath, null);
             //2.初始化地图信息放到session
+            mapJ.setZoom(2140);
             request.getSession().setAttribute("mapj", mapJ);
             List<String> layerNames = new ArrayList<String>();
             for(int i=0;i<mapJ.getLayers().size();i++){

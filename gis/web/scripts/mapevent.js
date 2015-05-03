@@ -2,8 +2,9 @@
 /**
  * 按下鼠标.
  */
-function mapmousedown(){
-	if(window.event.srcElement.id=="imgmap"){
+/*function mapmousedown(){
+
+	*//*if(window.event.srcElement.id=="imgmap"){
 		//如果为放大操作.
 		if (state=="big"){
 			document.all.seltable.style.display="";
@@ -30,16 +31,18 @@ function mapmousedown(){
 			//alert("left:"+startx+",top:"+starty);
 			eventstate="eventbegin";
 		}
-	}
-	window.event.returnValue=false;
-}
+	}*//*
+	//window.event.returnValue=false;
+}*/
 
 /**
  * 移动鼠标.
  */
-function mapmousemove(){
+/*function mapmousemove(){
+
+
 	
-	if(window.event.srcElement.id=="imgmap"){
+	*//*if(window.event.srcElement.id=="imgmap"){
 		
 		if(state=="big"){
 			if(window.event.button==1){
@@ -48,19 +51,19 @@ function mapmousemove(){
 		}
 		if(state=="pan"){
 			if(window.event.button==1){
-				//alert("进来了");
+				alert("进来了");
 				pan();
 			}
 		}
-	}
-	window.event.returnValue=false;
-}
+	}*//*
+	//window.event.returnValue=false;
+}*/
 
 /**
  * 松开鼠标事件.
  */
-function mapmouseup(){
-	if(eventstate=="eventbegin"){
+/*function mapmouseup(){
+	*//*if(eventstate=="eventbegin"){
 		if(state=="big"){
 			document.all.seltable.style.display="none";
 			mapbigger();
@@ -73,14 +76,14 @@ function mapmouseup(){
 			mappaner();
 		}
 		eventstate="eventend";
-	}
-	window.event.returnValue=false;
-}
+	}*//*
+	//window.event.returnValue=false;
+}*/
 
 /**
  * 不清楚用来做什么==。
  */
-function tablemove(){
+/*function tablemove(){
 	var width;
 	var height;
 	if(window.event.button==1){
@@ -100,23 +103,24 @@ function tablemove(){
 		document.all.seltable.style.width=Math.abs(width)+1;
 	}
 	window.event.returnValue=false;
-}
+}*/
 
 /**
  * 点击放大按钮.
  */
-function mapbig(){
+/*function mapbig(){
 	//重置按钮.
 	resetimg();
 	state="big";
 	document.all.imgmap.style.cursor="default";
 	document.all.bigimg.src="images/index-map-a_03.jpg";
 	document.all.layer1.innerText="当前状态：放大";
-}
+}*/
 
 /**
  * 点击缩小按钮.
  */
+/*
 function mapsmall(){
 	resetimg();
 	state="small";
@@ -124,17 +128,18 @@ function mapsmall(){
 	document.all.smallimg.src="images/index-map-a_05.jpg";
 	document.all.layer1.innerText="当前状态：缩小";
 }
+*/
 
 /**
  * 点击漫游按钮.
  */
-function mappan(){
+/*function mappan(){
 	resetimg();
 	state="pan";
 	document.all.imgmap.style.cursor="move";
 	document.all.panimg.src="images/index-map-a_06.jpg";
 	document.all.layer1.innerText="当前状态：浏览";
-}
+}*/
 
 /**
  * 大地图onreadystatechange触发事件.该事件用于监听服务器响应的状态.
@@ -178,3 +183,26 @@ function bounddownloadstate(){
 	}
 }
 
+/*function imgmapmousedown(){
+
+    mousestate = -1;
+
+
+    startx = window.event.clientX;
+    starty = window.event.clientY;
+}
+function imgmapmouseup(){
+    if(mousestate == 0){
+        var endX = window.event.clientX;
+        var endY = window.event.clientY;
+        var moveX = startx-endX;
+        var moveY = starty-endY;
+        alert(moveX+","+moveY);
+    }
+
+}
+function imgmapmousemove(){
+    if((window.event.button==0 || window.event.button==1) && mousestate==-1){
+        mousestate = 0;
+    }
+}*/

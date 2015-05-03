@@ -1,3 +1,55 @@
+drag = 0;
+move = 0;
+function mousedown()
+{
+    if(drag)
+    {
+        X1 = window.event.x - parseInt(dragimages.style.left);
+        Y1 = window.event.y - parseInt(dragimages.style.top);
+        dragimages.style.Index += 1;
+        move = 1;
+    }
+    startx = window.event.clientX;
+    starty = window.event.clientY;
+}
+function mouseStop()
+{
+    window.event.returnValue = false;
+}
+function mousemove()
+{
+    if (move)
+    {
+        dragimages.style.left = window.event.x - X1;
+        dragimages.style.top = window.event.y - Y1;
+    }
+}
+function mouseup()
+{
+    move = 0;
+
+    var x = window.event.clientX-startx;
+    var y = window.event.clientY-starty;
+    //原来图片的中心点
+    var oldcenterx=parseInt(document.all.imgmap.width)/2;
+    var oldcentery=parseInt(document.all.imgmap.height)/2;
+    //alert(oldcenterx);
+    //新的图片中心点
+    var centerx = oldcenterx-x;
+    var centery = oldcentery-y;
+
+
+
+    chgmapsrc("rqutype=panmap&centerx=" + centerx + "&centery=" + centery);
+    //复原div，一下代码交给updataBoundMap()处理了。
+    //$("#imgdiv").removeAttr("style");
+    //$("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;")
+
+
+
+}
+
+
 function c_mappaner(){
     var centerx;
     var centery;
@@ -47,22 +99,43 @@ function c_pan(){
 }
 
 function movemap(event) {
-    if(window.event.button == 1) {
+   /* if((window.event.button == 1 || window.event.button == 0)&&mouse) {
+        //alert("123");
+        c_pan();
+    }*/
+    if(mousestate == -1){
+        mousestate = 0;
         c_pan();
     }
 }
 
+/**
+ * 按下鼠标.
+ * @param event
+ */
 function recordOldPoint(event) {
 
-    if(window.event.button == 1) {
+    if((window.event.button == 1 || window.event.button == 0)) {
+        mousestate = -1;
         oldx = event.x;
         oldy = event.y;
     }
 
 }
 
+/**
+ * 松开鼠标，请求数据.
+ * @param event
+ */
 function getMap(event) {
-    if(window.event.button == 1) {
+
+    if(mousestate == 0){
+        mousestate = 1;
         c_mappaner();
     }
+
+   /* if((window.event.button == 1 || window.event.button == 0)) {
+        c_mappaner();
+    }
+    mousestate = 1;*/
 }

@@ -3,20 +3,22 @@ package org.cpp.gis.servlet;
 import com.mapinfo.dp.*;
 import com.mapinfo.dp.annotation.AnnotationDataProviderHelper;
 import com.mapinfo.dp.annotation.AnnotationTableDescHelper;
+import com.mapinfo.dp.conn.MINamedConnection;
 import com.mapinfo.dp.util.LocalDataProviderRef;
 import com.mapinfo.dp.util.RewindableFeatureSet;
 import com.mapinfo.graphics.Rendition;
 import com.mapinfo.graphics.RenditionImpl;
-import com.mapinfo.mapj.FeatureFactory;
-import com.mapinfo.mapj.Layer;
-import com.mapinfo.mapj.MapJ;
-import com.mapinfo.mapj.Selection;
+import com.mapinfo.mapj.*;
 import com.mapinfo.mapxtreme.client.MapXtremeImageRenderer;
 import com.mapinfo.theme.SelectionTheme;
 import com.mapinfo.util.DoublePoint;
 import com.mapinfo.util.DoubleRect;
 import com.mapinfo.xmlprot.mxtj.ImageRequestComposer;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.junit.Test;
 
+import javax.management.RuntimeErrorException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -27,9 +29,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.ArrayList;
+import java.net.URLDecoder;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 public class MapServlet extends HttpServlet {
 
@@ -59,9 +61,9 @@ public class MapServlet extends HttpServlet {
 
 	private String imgtype = "jpeg";
 
-	private int imgsizex = 900;
+	private int imgsizex = 960;
 
-	private int imgsizey = 600;
+	private int imgsizey = 620;
 
 	private int smallimgsizex = 300;
 
@@ -133,6 +135,7 @@ public class MapServlet extends HttpServlet {
 		if (mymap == null) {
 			try {
 				mymap = initMapJ();
+
 				// 加载地图
 				if ((request.getParameter("oldx") != null)
 						&& (request.getParameter("oldy") != null)) {
@@ -146,12 +149,12 @@ public class MapServlet extends HttpServlet {
 				}
                 //将地图放到session里面
 				request.getSession().setAttribute("mapj", mymap);
-                //将图层名称放到session里面
+               /* //将图层名称放到session里面
                 List<String> layerNames = new ArrayList<String>();
                 for(int i=0;i<mymap.getLayers().size();i++){
                     layerNames.add(mymap.getLayers().get(i).getName());
                 }
-                request.getSession().setAttribute("layerNames",layerNames);
+                request.getSession().setAttribute("layerNames",layerNames);*/
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -163,11 +166,13 @@ public class MapServlet extends HttpServlet {
 	 * @鹰眼地图初始化
 	 */
 	private MapJ initboundmap(HttpServletRequest request) {
-		MapJ boundmap = null;
+        System.out.println("===============================bound========================================");
+        MapJ boundmap = null;
 		boundmap = (MapJ) request.getSession().getAttribute("boundmap");
 		if (boundmap == null) {
 			try {
 				boundmap = initMapJ();
+                boundmap.setZoom(2140*1.5D);//针对于本地图写死数据
 				// 加载地图
 				/**
 				 * @添加图层的步骤
@@ -242,8 +247,10 @@ public class MapServlet extends HttpServlet {
 		try {
 			System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
 //			mymap.setZoom(resetzoom);
-            mymap.setZoom(214.0);
+            mymap.setZoom(2140.0);
 			// 设定地图范围为最初的范围
+            resetpoint = new DoublePoint(0.24, 0.36);
+            resetpoint = new DoublePoint(0.24, 0.36);
             resetpoint = new DoublePoint(0.24, 0.36);
 			mymap.setCenter(resetpoint);
 			// 设定地图中心为最初的中心点
@@ -399,14 +406,16 @@ public class MapServlet extends HttpServlet {
 					this.smallimgsizex, this.smallimgsizey));
 			boundmap.setDistanceUnits(mymap.getDistanceUnits());
 
-			if (mymap.getZoom() / boundmap.getZoom() >= 0.8D) {
-				boundmap.setZoom(mymap.getZoom() * 1.25D);
-				boundmap.setCenter(mymap.getCenter());
-			} else {
-				System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
-//				boundmap.setZoom(resetzoom);
-//				boundmap.setCenter(resetpoint);
-			}
+
+           /* if (mymap.getZoom() / boundmap.getZoom() >= 0.8D) {
+                System.out.println("test boundmap-----------------------");
+                boundmap.setZoom(mymap.getZoom() * 1.25D);
+                boundmap.setCenter(mymap.getCenter());
+            }else {
+
+                System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
+            }*/
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -501,6 +510,11 @@ public class MapServlet extends HttpServlet {
 		} else if ((rqutype != null) && (rqutype.equals("querymap"))) {
 			String layernames = request.getParameter("layernames");
 			String selectnames = request.getParameter("selectnames");
+
+            //解码
+            layernames= URLDecoder.decode(layernames,"UTF-8");
+            selectnames = URLDecoder.decode(selectnames, "UTF-8");
+
 			System.out.println("图层名称=" + layernames);
 			System.out.println("查询名称=" + selectnames);
 			mymap = initmap(request);
@@ -510,10 +524,52 @@ public class MapServlet extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		} else if((rqutype != null) && (rqutype.equals("fuzzyQuery"))){
+            //String layernames = request.getParameter("layernames");
+            String selectnames = request.getParameter("selectnames");
+
+            //解码
+            //layernames= URLDecoder.decode(layernames,"UTF-8");
+            selectnames = URLDecoder.decode(selectnames, "UTF-8");
+            System.out.println(selectnames+"------------------------------------");
+            mymap = initmap(request);
+
+            try {
+                fuzzyQuery(mymap,selectnames,response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else if(rqutype != null && rqutype.equals("changeLayer")){
+
+            //获取参数.
+            String layerNames = request.getParameter("layernames");
+            layerNames = URLDecoder.decode(layerNames,"UTF-8");
+            //System.out.println(layerNames);
+            String[] showLayers = layerNames.split(",");
+            //System.out.println(showLayers.length);
+
+            mymap = initmap(request);
+            chgmaplayer(mymap,showLayers);
+            responseimg(mymap, response);
+
+        }else if(rqutype != null && rqutype.equals("findByName")){
+
+            //获取参数.
+            String queryName = request.getParameter("queryName");
+            queryName = URLDecoder.decode(queryName,"UTF-8");
+
+            //System.out.println("要查询的是================"+queryName);
+
+            mymap = initmap(request);
+            findByName(mymap,queryName,response);
+
+        }//end if
 	}
 
-	private void errset(String msg) {
+
+
+    private void errset(String msg) {
 		this.errflag = true;
 		this.errmessage = msg;
 	}
@@ -615,5 +671,227 @@ public class MapServlet extends HttpServlet {
 		responseimg(mymap, res);
 
 	}
+
+    /**
+     * 模糊查询.
+     * @param mymap
+     * @param selectnames
+     * @param response
+     */
+    private void fuzzyQuery(MapJ mymap, String selectnames, HttpServletResponse response) throws Exception{
+
+        List<Feature> features = new ArrayList<Feature>();
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("content-type","text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        try{
+            if (mymap == null) {
+                mymap = initMapJ();
+            }
+
+            // 以下是进行图元的查找和渲染
+
+            //获取所有的图层
+            Layers layers = mymap.getLayers();
+
+            //对每个图层进行搜索.
+            Layer m_Layer = null;
+            for(int i=0;i<layers.size();i++){
+                //获得layer
+                m_Layer = layers.elementAt(i);
+                // 删除以上操作已经添加的theme列表
+                m_Layer.getThemeList().removeAll(true);
+                List columnNames = new ArrayList();
+                Feature ftr = null;
+                TableInfo tabInfo = m_Layer.getTableInfo();
+                // 获得ColumnName
+                for (int j = 0; j < tabInfo.getColumnCount(); j++) {
+                    columnNames.add(tabInfo.getColumnName(j));
+                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                }
+
+                // Perform a search to get the Features(records)from the layer
+                //获得当前图层的所有图元
+                RewindableFeatureSet rFtrSet;
+                rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
+
+                // FeatureSet fs = m_Layer.searchAll(columnNames,
+                // QueryParams.ALL_PARAMS);
+
+                //对每个图元进行遍历
+
+                ftr = rFtrSet.getNextFeature();
+
+                while (ftr != null) {
+                    //利用contain模拟模糊搜索.
+                    if (ftr.getAttribute(0).toString().contains(selectnames)) {
+                        System.out.println(ftr.getAttribute(0).toString()+"-------------->"+selectnames);
+                        features.add(ftr);
+                    }
+                    ftr = rFtrSet.getNextFeature();
+                }
+                rFtrSet.rewind();
+            }
+
+            System.out.println(features.size()+"================================");
+            //获取图元的名称
+            List<String> list = new ArrayList<String>();
+            JSONArray jsonArray = new JSONArray();
+            for(Feature f : features){
+                System.out.println(f.getAttribute(0).toString());
+                jsonArray.add(f.getAttribute(0).toString());
+
+            }
+
+            Map<String , Object> topMap  = new HashMap<String, Object>();
+            topMap.put("result",jsonArray);
+            JSONObject jsonObject = JSONObject.fromObject(topMap);
+            out.write(jsonObject.toString());
+
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }finally {
+            out.flush();
+            out.close();
+        }
+    }
+
+    /**
+     * 修改layer的显示.
+     * @param mymap
+     * @param showLayers
+     */
+    private void chgmaplayer(MapJ mymap, String[] showLayers) {
+
+        for(int i=0;i<mymap.getLayers().size();i++){
+            Layer layer =  mymap.getLayers().elementAt(i);
+            boolean flag = false;
+            for(String showLayer : showLayers){
+                if(showLayer.equals(layer.getName())){
+                    flag = true;
+                }
+            }
+            layer.setVisible(flag);
+        }
+    }
+
+    /**
+     * 根据名称查找建筑物.
+     * @param mymap
+     * @param queryName
+     * @param response
+     */
+    private void findByName(MapJ mymap, String queryName, HttpServletResponse response) {
+        try {
+
+            if (mymap == null) {
+                mymap = initMapJ();
+            }
+
+            Feature ftr = null;
+            Feature selFtr = null;
+            //获取所有的图层
+            Layers layers = mymap.getLayers();
+
+            //对每个图层进行搜索.
+            Layer m_Layer = null;
+            for(int i=0;i<layers.size();i++){
+                m_Layer = layers.elementAt(i);
+                // 删除以上操作已经添加的theme列表
+                m_Layer.getThemeList().removeAll(true);
+                List columnNames = new ArrayList();
+
+                TableInfo tabInfo = m_Layer.getTableInfo();
+                // 获得ColumnName
+                for (int j = 0; j < tabInfo.getColumnCount(); j++) {
+                    columnNames.add(tabInfo.getColumnName(j));
+                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                }
+
+                // Perform a search to get the Features(records)from the layer
+                //获得当前图层的所有图元
+                RewindableFeatureSet rFtrSet;
+                rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
+
+                // FeatureSet fs = m_Layer.searchAll(columnNames,
+                // QueryParams.ALL_PARAMS);
+
+                //对每个图元进行遍历
+
+                ftr = rFtrSet.getNextFeature();
+
+                while (ftr != null) {
+                    if (ftr.getAttribute(0).toString().equals(queryName)) {
+                        selFtr = ftr;
+                        //System.out.println("================找到了咯======================");
+                        // 定位点
+                        if (selFtr.getGeometry().getType() == Geometry.TYPE_POINT) {
+                            double newZoomValue;
+                            double currentZoom = mymap.getZoom();
+                            if (m_Layer.isZoomLayer()
+                                    && (currentZoom > m_Layer.getZoomMax() || currentZoom < m_Layer
+                                    .getZoomMin())) {
+                                newZoomValue = m_Layer.getZoomMax() / 2;
+                                mymap.setZoom(newZoomValue);
+                            }
+
+                            mymap.setCenter(selFtr.getGeometry().getBounds().center());
+                        }
+                        // 定位线、面
+                        if (selFtr.getGeometry().getType() == Geometry.TYPE_LINE
+                                || selFtr.getGeometry().getType() == Geometry.TYPE_REGION) {
+
+                            if (selFtr.getGeometry().getBounds().width() > 0
+                                    && selFtr.getGeometry().getBounds().height() > 0) {
+                                mymap.setBounds(ftr.getGeometry().getBounds());
+                                mymap.setZoom(mymap.getZoom() * 1.1);
+                            }
+                        }
+                        break;
+                    }
+                    ftr = rFtrSet.getNextFeature();
+                }
+                rFtrSet.rewind();
+            }
+            // 高亮显示
+
+            // 创建一个 SelectionTheme
+            SelectionTheme selTheme = new SelectionTheme("LocateFeature");
+            // 创建一个Selection对象并且把选择的图元加入
+            Selection sel = new Selection();
+            sel.add(selFtr);
+
+            // 把Selection对象加入到SelectionTheme
+            selTheme.setSelection(sel);
+
+            // 设置SelectionTheme的显示渲染的样式
+            Rendition rend = RenditionImpl.getDefaultRendition();
+            rend.setValue(Rendition.FILL, Color.red);
+            selTheme.setRendition(rend);
+
+            // 添加SelectionTheme到指定layer的theme列表中
+            m_Layer.getThemeList().add(selTheme);
+            // m_Layer.getThemeList().insert(selTheme, 0);
+
+            responseimg(mymap, response);
+
+
+
+        }catch (Exception  e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
+  /*  @Test
+    public void test() throws Exception{
+        MapJ mymap = new MapJ();
+        mymap.loadGeoset("E:\\map\\map.gst", "E:\\map" , null);
+        String layernames = "有字段颜色教学用层";
+        String selectnames = "楼";
+        fuzzyQuery(mymap,layernames,selectnames,null);
+    }*/
 
 }
