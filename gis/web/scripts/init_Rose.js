@@ -8,9 +8,9 @@ var startx=0;
 var starty=0;
 var mapserviceurl="servlet/MapServlet";
 var mapboundserviceurl="servlet/MapServlet?rqutype=boundmap";
-document.onmousedown=mapmousedown;
+/*document.onmousedown=mapmousedown;
 document.onmousemove=mapmousemove;
-document.onmouseup=mapmouseup;
+document.onmouseup=mapmouseup;*/
 document.all.imgmap.onreadystatechange=downloadstate;
 document.all.boundmap.onreadystatechange=bounddownloadstate;
 //document.all.seltable.onmousemove=tablemove;
@@ -28,6 +28,10 @@ document.all.zoom.src=mapserviceurl+"?rqutype=zoom";
 jQuery(document).ready(function(){
 
     $(window).load(function(){
+        var zoom = $("input[name='oldzoom']").val();
+        var rang =  parseInt(2140*15/zoom);//矩形区域距离中心点绝对值.
+        var top = parseInt(document.all.mapframe.style.top);//图片距离顶部的距离.
+        var left = parseInt(document.all.mapframe.style.left);
 
         /**
          * 初始化特征点
@@ -49,11 +53,14 @@ jQuery(document).ready(function(){
             while(i<featuresPoints.length) {
                 ////spanX = featuresPoints[i].x - mapfremeLeft;
                 ////spanY = featuresPoints[i].y - mapfremeTop;
-                //spanX = picwidth/2 + oldx -featuresPoints[i].x;
-                //spanY = picheight/2 + oldy -featuresPoints[i].y;
+                spanX = featuresPoints[i].x;
+                spanY = featuresPoints[i].y;
+                var screenX = spanX-rang;
+                var screenY = spanY-10-rang;
+                var name = featuresPoints[i].name;
                 console.log("Ospan = ("+spanX+", "+spanY+")");
-                $mapframe.append("<sapn style='position:absolute; left:"+i*5+"; top:"+i*5+"; float:left; z-index:9999;'" +
-                "onmouseover='moveFeaturePoint("+i*5+","+i*5+")'>*</span>")
+                $mapframe.append("<a class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')><div style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
 
                 console.log("name: " + featuresPoints[i].name + "\n")
                 console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
@@ -96,12 +103,15 @@ jQuery(document).ready(function(){
  * @param x
  * @param y
  */
-function moveFeaturePoint(x, y) {
-    if(featuresPoints.x == x && featuresPoints.y == y) {
-        alert("你点到我了！！")
-    }
 
-    if(window.event.clientX == x && window.event.clientY == y) {
-        alert("diandaoowle .");
-    }
+function moveFeaturePoint(name) {
+    //alert(name);
+    var mouseX = window.event.clientX;
+    var mouseY = window.event.clientY;
+    $("body").append("<span style='background:#fff;width:150px;height:24px;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
+
+}
+function moveoutFeaturePoint(name){
+    //alert("移开了");
+    $("span[name='"+name+"']").remove();
 }

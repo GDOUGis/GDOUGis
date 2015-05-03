@@ -9,8 +9,6 @@ body{
     background: #99FFFF;
     clear: both;
     zoom: 1;
-    border-top: #82318e 5px solid;
-    border-bottom: #d6d6d6 1px solid;
     overflow: hidden;
 }
 .logo{
