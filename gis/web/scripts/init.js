@@ -25,6 +25,7 @@ document.all.zoom.src=mapserviceurl+"?rqutype=zoom";
  */
 
 jQuery(document).ready(function(){
+
     $(window).load(function(){
         $('#imgmap').each(function(){
            // alert("进来了");

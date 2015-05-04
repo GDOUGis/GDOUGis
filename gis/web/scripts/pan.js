@@ -61,7 +61,7 @@ function c_mappaner(){
     pichigh=parseInt(document.all.imgmap.style.height);
     pictop=parseInt(document.all.imgmap.style.top);
     picleft=parseInt(document.all.imgmap.style.left);
-    picwidth = 600;
+    picwidth = 900;
     pichigh  = 400;
     console.log("("+picwidth+","+ pichigh +","+ picleft +","+picleft+")");
     //alert("wi--"+picwidth+"--he--"+pichigh+"--pictop--"+pictop+"--le--"+picleft);

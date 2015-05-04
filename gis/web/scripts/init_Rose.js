@@ -58,9 +58,11 @@ jQuery(document).ready(function(){
                 var screenX = spanX-rang;
                 var screenY = spanY-10-rang;
                 var name = featuresPoints[i].name;
+                var id = featuresPoints[i].id;
                 console.log("Ospan = ("+spanX+", "+spanY+")");
                 $mapframe.append("<a class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
-                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')><div style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
+                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+                "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
 
                 console.log("name: " + featuresPoints[i].name + "\n")
                 console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
@@ -114,4 +116,12 @@ function moveFeaturePoint(name) {
 function moveoutFeaturePoint(name){
     //alert("移开了");
     $("span[name='"+name+"']").remove();
+}
+
+function showFeatureDetail(id) {
+    var url = "/servlet/MapServlet_Rose?rqutype=showFeatureDetail";
+    var param = {id:id};
+    $.getJSON(url, param, function(data) {
+        console.log("[id:"+data.id+", name:"+data.name+"]")
+    });
 }

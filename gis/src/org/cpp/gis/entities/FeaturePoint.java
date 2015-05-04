@@ -10,6 +10,14 @@ public class FeaturePoint {
     private Double x;
     private Double y;
 
+    @Override
+    public String toString() {
+        return "FeaturePoint{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
+
     public FeaturePoint() {
     }
 
