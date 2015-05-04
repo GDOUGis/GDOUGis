@@ -16,6 +16,7 @@ import com.mapinfo.util.DoubleRect;
 import com.mapinfo.xmlprot.mxtj.ImageRequestComposer;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.cpp.gis.entities.FeaturePoint;
 import org.junit.Test;
 
 import javax.management.RuntimeErrorException;
@@ -564,15 +565,16 @@ public class MapServlet extends HttpServlet {
             mymap = initmap(request);
             findByName(mymap,queryName,response);
 
-        }//end if
-	}
+        }else if((rqutype != null) && (rqutype.equals("loadFeature"))) {
+            mymap = initmap(request);
+            try {
+                loadFeature(response, request, mymap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+}
 
-
-
-    private void errset(String msg) {
-		this.errflag = true;
-		this.errmessage = msg;
-	}
 
 	/**
 	 * @指定查找一个图元
@@ -682,7 +684,7 @@ public class MapServlet extends HttpServlet {
 
         List<Feature> features = new ArrayList<Feature>();
         response.setCharacterEncoding("UTF-8");
-        response.setHeader("content-type","text/html;charset=UTF-8");
+        response.setHeader("content-type","application/javascript");
         PrintWriter out = response.getWriter();
 
         try{
@@ -884,6 +886,107 @@ public class MapServlet extends HttpServlet {
         }
     }
 
+    /**
+     * 加载特征点
+     */
+    private void loadFeature(HttpServletResponse response,HttpServletRequest request, MapJ mapJ) throws Exception{
+        System.out.println("进入loadFeature方法.");
+
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("content-type","application/javascript");
+        PrintWriter out = response.getWriter();
+        try {
+            if (mapJ == null) {
+                mapJ = initMapJ();
+            }
+
+            // 以下是进行图元的查找和渲染
+            Layer m_Layer = mapJ.getLayers().getLayer("有字段颜色教学用层");
+
+            if (m_Layer == null) {
+                System.out.println("没有这个图层");
+                return;
+            }
+
+            // 删除以上操作已经添加的theme列表
+            m_Layer.getThemeList().removeAll(true);
+
+            List columnNames = new ArrayList();
+            Feature ftr;
+
+            TableInfo tabInfo = m_Layer.getTableInfo();
+            // fill vector with Column names
+            for (int i = 0; i < tabInfo.getColumnCount(); i++) {
+                columnNames.add(tabInfo.getColumnName(i));
+                System.out.println(tabInfo.getColumnName(i) + "  --  " + tabInfo.getPrimaryKeyInfo());
+            }
+            // Perform a search to get the Features(records)from the layer
+            RewindableFeatureSet rFtrSet;
+            rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
+
+            // FeatureSet fs = m_Layer.searchAll(columnNames,
+            // QueryParams.ALL_PARAMS);
+            ftr = rFtrSet.getNextFeature();
+
+            DoublePoint doublePoint = null;
+            DoublePoint screenPoint = null;
+            FeaturePoint fp = null;
+            List<FeaturePoint> list = new ArrayList<FeaturePoint>();
+            int j = 0;
+            String name;
+            while (ftr != null) {
+                name = ftr.getAttribute(0).toString();
+                if(!name.equals("") || name != null) {
+                    System.out.print("教学层名称：" + name);
+                    if(ftr != null && ftr.getGeometry() != null) {
+                        doublePoint = ftr.getGeometry().getBounds().center();
+//                       mapJ.setCenter(doublePoint);
+//                        mapJ.setCenter(new DoublePoint(0.24, 0.36));
+                        System.out.println("中心点：（"+doublePoint+"）");
+                        // 坐标转换
+                        screenPoint = mapJ.transformNumericToScreen(doublePoint);
+                        // 过滤超出960 * 620 的坐标点
+                        if(screenPoint.x < 960 && screenPoint.x > 0
+                                && screenPoint.y > 0 && screenPoint.y < 620) {
+                            System.out.println("屏幕坐标：（"+screenPoint +"）");
+                            // 将名称和坐标返回
+                            fp = new FeaturePoint();
+                            fp.setId(j);
+                            fp.setName(name);
+                            fp.setX(screenPoint.x);
+                            fp.setY(screenPoint.y);
+                            /*
+                            存到数据库，工程师执行，一次就够了
+                            fqService.addFeaturePoint(j, name);
+                            */
+                            list.add(fp);
+                            j++;
+                        }
+
+                    }
+                }
+
+                ftr = rFtrSet.getNextFeature();
+            }
+            rFtrSet.rewind();
+            //response.setContentType("text/html;charset=utf-8");
+            JSONArray jsonArray = JSONArray.fromObject(list);
+            //把最新的zoom封装进来
+            double newzoom = mapJ.getZoom();
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("featuresPoints",jsonArray);
+            map.put("newzoom", newzoom);
+            System.out.println(jsonArray.toString());
+            JSONObject mapObject = JSONObject.fromObject(map);
+            out.write(mapObject.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            out.flush();
+            out.close();
+        }
+        System.out.println("退出loadFeature方法.");
+    }
 
   /*  @Test
     public void test() throws Exception{

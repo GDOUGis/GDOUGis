@@ -1,32 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="com.mapinfo.mapj.*"%>
 
 <html>
 <head>
     <title>地图显示</title>
 
     <link href="/css/gisMap.css" rel="stylesheet" type="text/css">
-
-
-    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
-    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="jqueryui/style.css">
-    <script>
-        /*function remove()
-        {
-            document.all.mapframe.onmousemove = mousemove;
-            document.all.mapframe.onmousedown = mousedown;
-            document.all.mapframe.onmouseup = mouseup;
-            document.all.mapframe.ondragstart  = mouseStop;
-        }*/
-    </script>
-
-    <script type="text/javascript" src="/scripts/mapevent.js"></script>
-   <%-- <script type="text/javascript" src="/scripts/mapmove.js"></script>--%>
-    <script type="text/javascript" src="/scripts/maprquest.js"></script>
 
 </head>
 
@@ -58,8 +38,7 @@
 <!--div为地图边框，img为地图-->
 <div id="mapframe"  style="position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
     <div id="imgdiv" onMouseOver="dragimages=imgdiv;drag=1;"style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
-        <%--<img height="200" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmouseover="this.style.cursor='hand'" onmousemove="movemap(event)" onmouseup="getMap(event)" onload="updataBoundMap()" > <img height="200" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmouseover="this.style.cursor='hand'" onmousemove="movemap(event)" onmouseup="getMap(event)" onload="updataBoundMap()" > <img height="200" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmouseover="this.style.cursor='hand'" onmousemove="movemap(event)" onmouseup="getMap(event)" onload="updataBoundMap()" ><%-- <img height="200" id="imgmap" galleryimg="false" onmousedown="recordOldPoint(event)" onmouseover="this.style.cursor='hand'" onmousemove="movemap(event)" onmouseup="getMap(event)" onload="updataBoundMap()" >--%>
-        <img height="200" id="imgmap" galleryimg="false"  onmousemove="mousemove()" onmousedown="mousedown()" onmouseup="mouseup()" ondragstart="mouseStop()" onload="updataBoundMap()" onmouseover="this.style.cursor='pointer'">
+        <img height="200" id="imgmap" galleryimg="false"  onmousemove="mousemove()" onmousedown="mousedown()" onmouseup="mouseup()"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
     </div>
 </div>
 
@@ -116,11 +95,13 @@
     </table>
 </div>
 
-</body>
-<script language="JavaScript" src="/scripts/init.js"></script>
-<script language="JavaScript" src="/scripts/jquery.min.js"></script>
-<script language="JavaScript" src="/scripts/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/scripts/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="/scripts/mapevent.js"></script>
+<script type="text/javascript" src="/scripts/maprquest.js"></script>
 <script language="JavaScript" src="/scripts/pan.js"></script>
+<script type="text/javascript" src="/scripts/init.js"></script>
+
 <script language="JavaScript">
 
     $("input,select").click(function(e){
@@ -152,13 +133,8 @@
         }
     });
 
-   /* function maplayer(){
-        var layer;//打开图层控制页面
-        resetimg();
-        state="player";
-        layer=window.open("layer.jsp");
-        document.all.player.src="images/index-map-a_09.jpg";
-    }*/
-
 </script>
+</body>
+
+
 </html>

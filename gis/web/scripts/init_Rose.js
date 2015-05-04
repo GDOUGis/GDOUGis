@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
                 var name = featuresPoints[i].name;
                 var id = featuresPoints[i].id;
                 console.log("Ospan = ("+spanX+", "+spanY+")");
-                $mapframe.append("<a class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                $mapframe.append("<a hrclass="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
                 "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
                 "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
 

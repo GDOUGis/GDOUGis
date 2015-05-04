@@ -206,13 +206,17 @@ function map2smaller(x,y){
  */
 function updataBoundMap(){
     $("#mapboundframe").empty();
-    //alert("清空");
     $("#mapboundframe").append(" <img id='boundmap'  class='boundmap' GALLERYIMG='false' onclick='mapsmallpaner()'"+
     "style=' position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;'" +
     "src="+mapboundserviceurl+"&random="+Math.random()+ ">");
-    //alert("加载完毕");
+    //loadMapInfo();
+    //-----------------------------------------------------------//
     //解决漫游图片跳跃
-    $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;")
+    $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;");
+
+    loadMapInfo();
+
+
 }
 
 /**
@@ -269,4 +273,88 @@ function findByName(a){
     //alert(name);
     var url = mapserviceurl + "?rqutype=findByName&queryName="+name;
     $("#imgmap").attr("src",encodeURI(encodeURI(url)));
+}
+
+
+/**
+ * 加载地图信息.
+ */
+function loadMapInfo(){
+
+
+    //每次加载之前先移除原先的点
+    $("#mapframe a").remove();
+
+
+    var zoom = $("input[name='oldzoom']").val();
+    var top = parseInt(document.all.mapframe.style.top);//图片距离顶部的距离.
+    var left = parseInt(document.all.mapframe.style.left);
+
+    /**
+     * 初始化特征点
+     */
+    var url = "/servlet/MapServlet?rqutype=loadFeature";
+    var $mapframe = $("#mapframe");
+    var mapfremeLeft = $mapframe.offset().left;
+    var mapfremeTop = $mapframe.offset().top;
+    var picwidth = $mapframe.width();
+    var picheight  = $mapframe.height();
+    $.getJSON(url, null, function(data) {
+
+        var featuresPoints = data.featuresPoints;
+        var newzoom = data.newzoom;
+        var rang =  parseInt(2140*18/newzoom);//矩形区域距离中心点绝对值.
+        console.log("进入getJSON方法..")
+        //featuresPoints = data;
+        console.log(mapfremeLeft + ", " + mapfremeTop + "; " + picwidth + ", " + picheight)
+        var spanX;
+        var spanY;
+        // 绑定数据
+        var i = 0;
+        while(i<featuresPoints.length) {
+            ////spanX = featuresPoints[i].x - mapfremeLeft;
+            ////spanY = featuresPoints[i].y - mapfremeTop;
+            spanX = featuresPoints[i].x;
+            spanY = featuresPoints[i].y;
+            var screenX = spanX-rang+10;
+            var screenY = spanY-rang+10;
+            var name = featuresPoints[i].name;
+            var id = featuresPoints[i].id;
+            console.log("Ospan = ("+spanX+", "+spanY+")");
+            $mapframe.append("<a href='#' class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+            "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+            "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
+
+            console.log("name: " + featuresPoints[i].name + "\n")
+            console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
+
+            i++;
+        }
+        console.log("退出入getJSON方法")
+    });
+}
+/**
+ * 特征点显示
+ * @param x
+ * @param y
+ */
+
+function moveFeaturePoint(name) {
+    //alert(name);
+    var mouseX = window.event.clientX;
+    var mouseY = window.event.clientY;
+    $("body").append("<span style='background:#fff;width:150px;height:24px;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
+
+}
+function moveoutFeaturePoint(name){
+    //alert("移开了");
+    $("span[name='"+name+"']").remove();
+}
+
+function showFeatureDetail(id) {
+    var url = "/servlet/MapServlet_Rose?rqutype=showFeatureDetail";
+    var param = {id:id};
+    $.getJSON(url, param, function(data) {
+        console.log("[id:"+data.id+", name:"+data.name+"]")
+    });
 }
