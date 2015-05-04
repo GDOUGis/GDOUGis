@@ -14,7 +14,10 @@ import com.mapinfo.util.DoublePoint;
 import com.mapinfo.util.DoubleRect;
 import com.mapinfo.xmlprot.mxtj.ImageRequestComposer;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.cpp.gis.entities.FeaturePoint;
+import org.cpp.gis.service.FeaturePointService;
+import org.cpp.gis.service.impl.FeaturePointServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,6 +43,8 @@ public class MapServlet_Rose extends HttpServlet {
     static {
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
     }
+
+    private FeaturePointService fpService = new FeaturePointServiceImpl();
 
 
     // 包含地图文件的路径
@@ -519,8 +524,33 @@ public class MapServlet_Rose extends HttpServlet {
         } else if((rqutype != null) && (rqutype.equals("loadFeature"))) {
             mymap = initmap(request);
             loadFeature(response,request, mymap);
+        } else if((rqutype != null) && (rqutype.equals("showFeatureDetail"))) {
+            String id = request.getParameter("id");
+            showFeatureDetail(id, response);
         }
 	}
+
+    /**
+     * 显示特征点信息.
+     * @param id
+     */
+    private void showFeatureDetail(String id, HttpServletResponse response) {
+        System.out.println("进入showFeatureDetail方法");
+//        System.out.println("------- id : " + id);
+        try {
+            if(!"".equals(id) && id != null) {
+                FeaturePoint fq = new FeaturePoint();
+                fq = fpService.getById(Integer.parseInt(id));
+                JSONObject jsonObject = JSONObject.fromObject(fq);
+                System.out.println(jsonObject.toString());
+                response.setContentType("text/html;charset=utf-8");
+                response.getWriter().write(jsonObject.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("退出showFeatureDetail方法.");
+    }
 
     /**
      * 加载特征点
@@ -577,15 +607,24 @@ public class MapServlet_Rose extends HttpServlet {
                         System.out.println("中心点：（"+doublePoint+"）");
                         // 坐标转换
                         screenPoint = mapJ.transformNumericToScreen(doublePoint);
-                        System.out.println("屏幕坐标：（"+screenPoint +"）");
-                        // 将名称和坐标返回
-                        fp = new FeaturePoint();
-                        fp.setId(j);
-                        fp.setName(name);
-                        fp.setX(screenPoint.x);
-                        fp.setY(screenPoint.y);
-                        list.add(fp);
-                        j++;
+                        // 过滤超出960 * 620 的坐标点
+                        if(screenPoint.x < 960 && screenPoint.x > 0
+                                && screenPoint.y > 0 && screenPoint.y < 620) {
+                            System.out.println("屏幕坐标：（"+screenPoint +"）");
+                            // 将名称和坐标返回
+                            fp = new FeaturePoint();
+                            fp.setId(j);
+                            fp.setName(name);
+                            fp.setX(screenPoint.x);
+                            fp.setY(screenPoint.y);
+                            /*
+                            存到数据库，工程师执行，一次就够了
+                            fqService.addFeaturePoint(j, name);
+                            */
+                            list.add(fp);
+                            j++;
+                        }
+
                     }
                 }
 
