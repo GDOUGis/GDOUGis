@@ -60,9 +60,19 @@ jQuery(document).ready(function(){
                 var name = featuresPoints[i].name;
                 var id = featuresPoints[i].id;
                 console.log("Ospan = ("+spanX+", "+spanY+")");
-                $mapframe.append("<a hrclass="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                $mapframe.append("<a class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
                 "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
-                "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
+                "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
+                "<div class='popover top' data-easein='cardInTop' data-easeout='cardOutTop' id='pop5'>" +
+                "<div class='arrow'></div>" +
+                "<div class='popover-inner'>" +
+                "<h3 class='popover-title'>自定义标题</h3>" +
+                "<div class='popover-content'>" +
+                "<p>自定义内容</p>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "<span style='display: none'>"+name+"</span></div></a>");
 
                 console.log("name: " + featuresPoints[i].name + "\n")
                 console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")

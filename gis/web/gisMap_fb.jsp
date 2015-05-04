@@ -11,9 +11,12 @@
 
 
     <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
-    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <%--<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>--%>
     <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+
     <link rel="stylesheet" href="jqueryui/style.css">
+    <link rel="stylesheet" href="/css/jquery.hotspot.css">
     <script>
         /*function remove()
         {
@@ -117,11 +120,14 @@
 </div>
 
 </body>
-<script language="JavaScript" src="/scripts/init.js"></script>
 <script language="JavaScript" src="/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/scripts/modernizr.custom.49511.js"></script>
+<script type="text/javascript" src="/scripts/jquery.hotspot.min.js"></script>
+
 <script language="JavaScript" src="/scripts/jquery.mousewheel.min.js"></script>
 <script language="JavaScript" src="/scripts/pan.js"></script>
 <script src="/scripts/init_Rose.js"></script>
+
 <script language="JavaScript">
 
     $("input,select").click(function(e){
@@ -131,6 +137,14 @@
     //加载鹰眼地图
     $(document).ready(function(){
         mapbound();
+        /*
+         特征点显示
+         */
+        var _pop2 = $('#mapframe').hotSpot({
+            slideshow : false,
+            triggerBy : 'click',
+            autoHide : false
+        });
     });
 
     //监听滚轮.
@@ -152,6 +166,7 @@
             map2smaller(x,y);
         }
     });
+
 
    /* function maplayer(){
         var layer;//打开图层控制页面
