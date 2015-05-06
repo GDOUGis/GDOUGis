@@ -1,0 +1,14 @@
+!table
+!version 650
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 2
+    教学层名字 Char (20) Index 1 ;
+    教学层描述 Char (200) Index 2 ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "55e97f1b-266a-4498-ae76-461c3789ccd8"
+end_metadata

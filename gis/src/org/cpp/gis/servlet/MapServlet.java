@@ -650,6 +650,8 @@ public class MapServlet extends HttpServlet {
 		}
 		rFtrSet.rewind();
 
+
+
 		// 高亮显示
 
 		// 创建一个 SelectionTheme
@@ -697,11 +699,17 @@ public class MapServlet extends HttpServlet {
             //获取所有的图层
             Layers layers = mymap.getLayers();
 
+
             //对每个图层进行搜索.
             Layer m_Layer = null;
             for(int i=0;i<layers.size();i++){
+
                 //获得layer
                 m_Layer = layers.elementAt(i);
+                //如果该图层用户没有显示，那么不提供给搜索.
+                if(!m_Layer.isVisible()){
+                    continue;
+                }
                 // 删除以上操作已经添加的theme列表
                 m_Layer.getThemeList().removeAll(true);
                 List columnNames = new ArrayList();
@@ -857,6 +865,11 @@ public class MapServlet extends HttpServlet {
                 }
                 rFtrSet.rewind();
             }
+
+            //控制zoom
+            mymap.setZoom(2140/4);
+
+
             // 高亮显示
 
             // 创建一个 SelectionTheme

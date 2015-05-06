@@ -1,0 +1,14 @@
+!table
+!version 650
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 2
+    道路名 Char (20) ;
+    道路描述 Char (200) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "c17dfc8a-e3f5-42ed-8c8e-d11cd1f94f21"
+end_metadata

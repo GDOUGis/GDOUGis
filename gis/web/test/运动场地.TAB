@@ -1,0 +1,14 @@
+!table
+!version 650
+!charset WindowsSimpChinese
+
+Definition Table
+  Type NATIVE Charset "WindowsSimpChinese"
+  Fields 2
+    运动层名字 Char (20) ;
+    运动层描述 Char (200) ;
+begin_metadata
+"\IsReadOnly" = "FALSE"
+"\MapInfo" = ""
+"\MapInfo\TableID" = "596cdf96-bf02-43f1-b157-16ba1873b702"
+end_metadata

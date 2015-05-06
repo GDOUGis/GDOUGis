@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
@@ -37,8 +36,9 @@
 
 <!--div为地图边框，img为地图-->
 <div id="mapframe"  style="position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
-    <div id="imgdiv" onMouseOver="dragimages=imgdiv;drag=1;"style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
-        <img height="200" id="imgmap" galleryimg="false"  onmousemove="mousemove()" onmousedown="mousedown()" onmouseup="mouseup()"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
+    <div id="imgdiv" class="imgdiv" dragimages=imgdiv;drag=1;"style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
+        <img height="200" id="imgmap" galleryimg="false"  onmousemove="mousemove()" onmousedown="mousedown()"
+             onmouseup="mouseup()"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
     </div>
 </div>
 
@@ -93,6 +93,10 @@
             <td width="266">&nbsp;</td>
         </tr>
     </table>
+</div>
+
+<div id="footer" class="footer">
+
 </div>
 
 <script type="text/javascript" src="/scripts/jquery.min.js"></script>

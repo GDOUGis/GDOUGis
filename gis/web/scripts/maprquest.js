@@ -155,7 +155,7 @@ function setlocation(){
 /**
  * 根据图层和名称来查找.
  */
-function Find()
+/*function Find()
 {
 	var layernames = document.getElementById("layerid").value;//获取图层名称
 	var selectnames = document.getElementById("selectid").value;//获取选择查找的名称
@@ -172,7 +172,7 @@ function Find()
         chgmapsrc(url);
 	}
 
-}
+}*/
 
 
 /****************************************ourselves重写的方法*********************************************/
@@ -209,11 +209,10 @@ function updataBoundMap(){
     $("#mapboundframe").append(" <img id='boundmap'  class='boundmap' GALLERYIMG='false' onclick='mapsmallpaner()'"+
     "style=' position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;'" +
     "src="+mapboundserviceurl+"&random="+Math.random()+ ">");
-    //loadMapInfo();
     //-----------------------------------------------------------//
     //解决漫游图片跳跃
     $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;");
-
+    //加载特征点.
     loadMapInfo();
 
 
@@ -248,9 +247,11 @@ function searchF(){
         date : new Date()
     };
     $.getJSON(encodeURI(encodeURI(url)),params,function(data){
+
         var result = data.result;
         if(result == null || result==""){
             //alert("没有");
+            $(".result").empty();
             $(".result").append("<p>抱歉，找不到该建筑物！</p>");
         }else{
             $(".result").empty();
@@ -273,6 +274,8 @@ function findByName(a){
     //alert(name);
     var url = mapserviceurl + "?rqutype=findByName&queryName="+name;
     $("#imgmap").attr("src",encodeURI(encodeURI(url)));
+
+    selectedname = name;
 }
 
 
@@ -281,9 +284,11 @@ function findByName(a){
  */
 function loadMapInfo(){
 
-
+    alert("jiazai");
     //每次加载之前先移除原先的点
     $("#mapframe a").remove();
+    //每次加载移除原先定位的点
+    $(".location").remove();
 
 
     var zoom = $("input[name='oldzoom']").val();
@@ -322,16 +327,30 @@ function loadMapInfo(){
             var id = featuresPoints[i].id;
             console.log("Ospan = ("+spanX+", "+spanY+")");
             $mapframe.append("<a href='#' class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
-            "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+            "onmouseover=moveFeaturePoint('"+name+"',event) onmouseout=moveoutFeaturePoint('"+name+"')>" +
             "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
-
+            if(selectedname == name){
+                //alert("进来了");
+                var x = spanX-70/2;
+                var y = spanY-70;
+                $("#imgdiv").append("<div class='location' style='position:absolute; left:"+x+"; top:"+y+";'><img src='../images/location2.png' height='70px'></div>")
+            }
             console.log("name: " + featuresPoints[i].name + "\n")
             console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
-
             i++;
         }
         console.log("退出入getJSON方法")
     });
+
+   /* //alert(selectedname);
+    //显示定位图片
+    if(selectedname != null){
+        alert("2");
+        //$("."+selectedname).append("<div class='location'><img src='../images/location.png' width='50px;'></div>")
+        var $("."+selectedname);
+        alert();
+    }*/
+
 }
 /**
  * 特征点显示
@@ -339,10 +358,11 @@ function loadMapInfo(){
  * @param y
  */
 
-function moveFeaturePoint(name) {
+function moveFeaturePoint(name,e) {
     //alert(name);
-    var mouseX = window.event.clientX;
-    var mouseY = window.event.clientY;
+    var evn = window.event||e;
+    var mouseX = evn.clientX;
+    var mouseY = evn.clientY;
     $("body").append("<span style='background:#fff;width:150px;height:24px;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
 
 }

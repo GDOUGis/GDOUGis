@@ -7,6 +7,7 @@ var mapboundserviceurl="servlet/MapServlet?rqutype=boundmap";
 startx=0;
 starty=0;
 mousestate ="";//鼠标是否按下的状态
+selectedname = null;
 /*document.onmousedown=mapmousedown;
 document.onmousemove=mapmousemove;
 document.onmouseup=mapmouseup;*/

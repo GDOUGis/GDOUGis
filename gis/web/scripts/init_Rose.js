@@ -51,6 +51,7 @@ jQuery(document).ready(function(){
             // 绑定数据
             var i = 0;
             while(i<featuresPoints.length) {
+
                 ////spanX = featuresPoints[i].x - mapfremeLeft;
                 ////spanY = featuresPoints[i].y - mapfremeTop;
                 spanX = featuresPoints[i].x;
@@ -73,7 +74,6 @@ jQuery(document).ready(function(){
                 "</div>" +
                 "</div>" +
                 "<span style='display: none'>"+name+"</span></div></a>");
-
                 console.log("name: " + featuresPoints[i].name + "\n")
                 console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
 
@@ -129,6 +129,7 @@ function moveoutFeaturePoint(name){
 }
 
 function showFeatureDetail(id) {
+
     var url = "/servlet/MapServlet_Rose?rqutype=showFeatureDetail";
     var param = {id:id};
     $.getJSON(url, param, function(data) {
