@@ -61,19 +61,14 @@ jQuery(document).ready(function(){
                 var name = featuresPoints[i].name;
                 var id = featuresPoints[i].id;
                 console.log("Ospan = ("+spanX+", "+spanY+")");
-                $mapframe.append("<a class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
-                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
-                "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
-                "<div class='popover top' data-easein='cardInTop' data-easeout='cardOutTop' id='pop5'>" +
-                "<div class='arrow'></div>" +
-                "<div class='popover-inner'>" +
-                "<h3 class='popover-title'>自定义标题</h3>" +
-                "<div class='popover-content'>" +
-                "<p>自定义内容</p>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "<span style='display: none'>"+name+"</span></div></a>");
+                $mapframe.append(
+                    "<a onclick=getAliasById("+id+",'"+name+"') data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                    "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+                        "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
+                            "<span style='display: none'>"+name+"</span>" +
+                        "</div>" +
+                   "</a>");
+
                 console.log("name: " + featuresPoints[i].name + "\n")
                 console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
 
@@ -135,4 +130,31 @@ function showFeatureDetail(id) {
     $.getJSON(url, param, function(data) {
         console.log("[id:"+data.id+", name:"+data.name+"]")
     });
+}
+
+/**
+ * 根据ID查找出备用名，并拼接到cContent后面.
+ * @param id
+ * @param name
+ */
+function getAliasById(id, name){
+    console.log("=============进入getAliasById方法.=============")
+    $("#cContent p").remove();
+    $("#cTitle").text("现用名：" + name);
+    $("#fpId").val(id);
+    // 获取父元素
+    var $cContent = $("#cContent");
+
+    var url = "/servlet/MapServlet_Rose?rqutype=getAliasById";
+    var params = {
+        id:id
+    }
+    $.getJSON(url, params, function(alias){
+        var i = 0;
+        for(; i < alias.length; i++) {
+            $cContent.append("<p>"+alias[i]+"</p>");
+            console.log(name + "的备用名【"+id+"】 => " + alias[i])
+        }
+    });
+    console.log("=============退出getAliasById方法.=============")
 }

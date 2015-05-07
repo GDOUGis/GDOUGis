@@ -1,11 +1,16 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="com.mapinfo.mapj.*"%>
 
 <html>
 <head>
-    <title>地图显示</title>
+    <title>地图显示-副本</title>
 
-    <link href="/css/gisMap.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <%--<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>--%>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="jqueryui/style.css">
     <link rel="stylesheet" href="/css/jquery.hotspot.css">
@@ -13,9 +18,35 @@
     <script type="text/javascript" src="/scripts/mapevent.js"></script>
     <script type="text/javascript" src="/scripts/maprquest.js"></script>
 
+
+    <link type="text/css" rel="stylesheet" href="/css/gisMap.css">
 </head>
 
 <body  link="#000000" vlink="#000000" alink="#000000" >
+<!-- 模态框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     style="z-index:10000;" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="cTitle">现用名：</h4>
+            </div>
+            <div class="modal-body" id="cContent">备用名:</div>
+            <hr>
+            <form class="form-inline"  method="post">
+                <input type="hidden" name="id" id="fpId">
+                <div style="margin-left: 10px;" class="form-group">
+                    <input id="cAlias" type="text" name="alias" class="form-control" placeholder="心中的名字">
+                </div>
+                <input id="cSubmit" class="btn btn-primary" type="submit" value="提交">
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="header_warp">
     <div class="header">
@@ -102,12 +133,10 @@
 
 </body>
 <script language="JavaScript" src="/scripts/jquery.min.js"></script>
-<script type="text/javascript" src="/scripts/modernizr.custom.49511.js"></script>
-<script type="text/javascript" src="/scripts/jquery.hotspot.min.js"></script>
-
+<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script language="JavaScript" src="/scripts/jquery.mousewheel.min.js"></script>
 <script language="JavaScript" src="/scripts/pan.js"></script>
-<script src="/scripts/init_Rose.js"></script>
+<%--<script src="/scripts/init_Rose.js"></script>--%>
 
 <script language="JavaScript">
 
@@ -117,7 +146,28 @@
 
     //加载鹰眼地图
     $(document).ready(function(){
-        mapbound();
+
+        $("#cSubmit").click(function(event) {
+            // 获取参数
+            var id = $("#fpId").val();
+            var name = $("#cAlias").val();
+            var url = "/servlet/MapServlet_Rose"
+            var params = {
+                rqutype:"updateAlias",
+                id:id,
+                alias:name
+            };
+            $.getJSON(url, params, function(data) {
+                if(data == 1) {
+                    $("#cAlias").val("");
+                    alert("提交成功！")
+                    $("#cContent").append("<p>" + name + "</p>");
+                } else {
+                    alert("服务器正忙..")
+                }
+            });
+            return false;
+        });
         /*
          特征点显示
          */

@@ -28,6 +28,7 @@ document.all.zoom.src=mapserviceurl+"?rqutype=zoom";
 jQuery(document).ready(function(){
 
     $(window).load(function(){
+
         $('#imgmap').each(function(){
            // alert("进来了");
             var x = 960; //填入目标图片宽度

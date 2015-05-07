@@ -21,4 +21,10 @@ public interface FeaturePointService {
     public FeaturePoint getByName(String name);
 
     public List<FeaturePoint> getAll();
+
+    String[] getAliasById(String id);
+
+    void addAlias(String id, String alias);
+
+    String[] getAliasByName(String name);
 }

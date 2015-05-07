@@ -28,6 +28,12 @@ public class TestFeaturePointDao {
 
     @Test
     public void testReadById() {
-        System.out.println(fpDao.readById(1));
+        System.out.println(fpDao.readById(54));
     }
+
+    @Test
+    public void testUpdateAlias() {
+        fpDao.updateAlias(54, "abcd");
+    }
+
 }

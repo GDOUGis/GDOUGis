@@ -9,12 +9,25 @@ public class FeaturePoint {
     private String name;
     private Double x;
     private Double y;
+    /**
+     * 别名.
+     */
+    private String alias;
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     @Override
     public String toString() {
         return "FeaturePoint{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
                 '}';
     }
 

@@ -32,8 +32,15 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
     }
 
     @Override
-    public void updateAlias(Integer Id, String alias) {
-
+    public void updateAlias(Integer id, String alias) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "UPDATE tb_features SET alias = ? WHERE id = ? ";
+            Object[] paarams = {alias, id};
+            qr.update(sql, paarams);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -52,11 +59,33 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
 
     @Override
     public FeaturePoint readByName(String name) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT * FROM tb_features WHERE name = ?";
+            Object params[] = {name};
+            FeaturePoint fq = (FeaturePoint) qr.query(sql, params, new BeanHandler(FeaturePoint.class));
+            return  fq;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public List<FeaturePoint> readAll() {
+        return null;
+    }
+
+    @Override
+    public FeaturePoint readAliasById(Integer id) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT alias FROM tb_features WHERE id = ?";
+            return (FeaturePoint) qr.query(sql, id, new BeanHandler(FeaturePoint.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

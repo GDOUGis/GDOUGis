@@ -19,6 +19,20 @@ public class TestFeaturePointService {
 
     @Test
     public void testGetById() {
-        System.out.println(fpService.getById(10));
+        System.out.println(fpService.getById(54));
     }
+
+    @Test
+    public void testGetAliasById() {
+        String[] results = fpService.getAliasById("54");
+        for(String s : results) {
+            System.out.println(s);
+        }
+    }
+
+    @Test
+    public void testUpdateAlias() {
+        fpService.addAlias("3", "测试");
+    }
+
 }

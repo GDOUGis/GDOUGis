@@ -15,6 +15,61 @@ body{
     height: 60px;
     //background:url(/images/logo.gif);
 }
+
+.modal-dialog{
+    width:280px;
+    height:300px;;
+}
+
+#cInput {
+    widht:250px;
+    height:30px;
+}
+
+#cSubmit {
+    margin-left: 40px;
+    width:200px;
+    height:30px;
+}
+
+#cContent{
+    font-size: 13px;
+    width:278px;
+    height: 250px;
+    padding-top:5px;
+    padding-left: 5px;
+}
+#cContent input{
+    margin-bottom: 5px;
+}
+
+#cContent p{
+    margin-left: 20px;
+    height: 15px;
+    line-height: 15px;
+}
+
+#cAlias{
+    width:180px;
+    height: 25px;
+}
+
+#modifyPeople{
+    width:180px;
+    height: 25px;
+}
+
+#modifyCollege {
+    width:180px;
+    height: 25px;
+}
+
+#modifyPhone {
+    width:180px;
+    height: 25px;
+}
+
+
 /*
 #mapframe{
   */

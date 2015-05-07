@@ -27,10 +27,10 @@ public interface FeaturePointDao {
     /**
      * 更新备用名.
      * @author Rose.
-     * @param Id
+     * @param id
      * @param alias
      */
-    public void updateAlias(Integer Id, String alias);
+    public void updateAlias(Integer id, String alias);
 
     /**
      * 读取一条数据根据Id.
@@ -54,4 +54,11 @@ public interface FeaturePointDao {
      * @return
      */
     public List<FeaturePoint> readAll();
+
+    /**
+     * 根据特征ID查找别名
+     * @param id
+     * @return
+     */
+    FeaturePoint readAliasById(Integer id);
 }

@@ -527,15 +527,68 @@ public class MapServlet_Rose extends HttpServlet {
         } else if((rqutype != null) && (rqutype.equals("showFeatureDetail"))) {
             String id = request.getParameter("id");
             showFeatureDetail(id, response);
+        } else if((rqutype != null) && (rqutype.equals("getAliasById"))) {
+            getAliasById(request, response);
+        }else if((rqutype != null) && (rqutype.equals("updateAlias"))) {
+            updateAlias(request, response);
         }
 	}
+
+    /**
+     * (添加)更新备用名.
+     * @param request
+     * @param response
+     */
+    private void updateAlias(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入updateAlias方法=====================>>");
+        String id = request.getParameter("id");
+        String alias = request.getParameter("alias");
+        response.setContentType("text/html;charset=utf-8;");
+        try {
+            System.out.println("id:" + id + ", alias:" + alias);
+            if(id != null && alias != null && !"".equals(alias.trim())) {
+                fpService.addAlias(id, alias);
+                response.getWriter().write("1");
+            } else {
+                response.getWriter().write("0");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出updateAlias方法.");
+    }
+
+    /**
+     * 根据特征点ID查找别名.
+     * @param request
+     * @param response
+     */
+    private void getAliasById(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入getAliasById方法=====================>>");
+        String id = request.getParameter("id");
+        String[] alias = null;
+        try {
+            alias = fpService.getAliasById(id);
+            if(alias == null) {
+                return;
+            }
+            response.setContentType("text/html;charset=utf-8");
+            JSONArray jsonArray = JSONArray.fromObject(alias);
+            System.out.println(jsonArray.toString());
+            response.getWriter().write(jsonArray.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出getAliasById方法");
+    }
+
 
     /**
      * 显示特征点信息.
      * @param id
      */
     private void showFeatureDetail(String id, HttpServletResponse response) {
-        System.out.println("进入showFeatureDetail方法");
+        System.out.println("进入showFeatureDetail方法====================>>");
 //        System.out.println("------- id : " + id);
         try {
             if(!"".equals(id) && id != null) {
@@ -549,14 +602,14 @@ public class MapServlet_Rose extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("退出showFeatureDetail方法.");
+        System.out.println("<<====================退出showFeatureDetail方法.");
     }
 
     /**
      * 加载特征点
      */
     private void loadFeature(HttpServletResponse response,HttpServletRequest request, MapJ mapJ) {
-        System.out.println("进入loadFeature方法.");
+        System.out.println("进入loadFeature方法====================>>");
         try {
             if (mapJ == null) {
                 mapJ = initMapJ();
@@ -638,7 +691,7 @@ public class MapServlet_Rose extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("退出loadFeature方法.");
+        System.out.println("<<====================退出loadFeature方法.");
     }
 
     private void testSearchAtPoint(HttpServletRequest request, MapJ mapJ)  {

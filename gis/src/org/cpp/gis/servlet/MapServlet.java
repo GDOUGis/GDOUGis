@@ -3,7 +3,6 @@ package org.cpp.gis.servlet;
 import com.mapinfo.dp.*;
 import com.mapinfo.dp.annotation.AnnotationDataProviderHelper;
 import com.mapinfo.dp.annotation.AnnotationTableDescHelper;
-import com.mapinfo.dp.conn.MINamedConnection;
 import com.mapinfo.dp.util.LocalDataProviderRef;
 import com.mapinfo.dp.util.RewindableFeatureSet;
 import com.mapinfo.graphics.Rendition;
@@ -17,9 +16,9 @@ import com.mapinfo.xmlprot.mxtj.ImageRequestComposer;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cpp.gis.entities.FeaturePoint;
-import org.junit.Test;
+import org.cpp.gis.service.FeaturePointService;
+import org.cpp.gis.service.impl.FeaturePointServiceImpl;
 
-import javax.management.RuntimeErrorException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -44,6 +44,8 @@ public class MapServlet extends HttpServlet {
     static {
         System.setProperty("com.sun.media.jai.disableMediaLib", "true");
     }
+
+    private FeaturePointService fpService = new FeaturePointServiceImpl();
 
 
     // 包含地图文件的路径
@@ -572,8 +574,131 @@ public class MapServlet extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if((rqutype != null) && (rqutype.equals("showFeatureDetail"))) {
+            String id = request.getParameter("id");
+            showFeatureDetail(id, response);
+        } else if((rqutype != null) && (rqutype.equals("getAliasById"))) {
+            getAliasById(request, response);
+        }else if((rqutype != null) && (rqutype.equals("updateAlias"))) {
+            updateAlias(request, response);
+        }else if((rqutype != null) && (rqutype.equals("getAliasByName"))) {
+            getAliasByName(request, response);
+        }else if((rqutype != null) && (rqutype.equals("addModifyName"))) {
+            addModifyName(request, response);
         }
 }
+
+    /**
+     * 添加修改名.
+     * @param request
+     * @param response
+     */
+    private void addModifyName(HttpServletRequest request, HttpServletResponse response) {
+        /* 获取参数 */
+        int fpId = Integer.parseInt(request.getParameter("fpId"));
+        String currentName = request.getParameter("currentName");
+        String modifyName = request.getParameter("modifyName");
+        String modifyDesc = request.getParameter("modifyDesc");
+        String modifyPeople = request.getParameter("modifyPeople");
+        String modifyCollege = request.getParameter("modifyCollege");
+        String modifyPhone = request.getParameter("modifyPhone");
+    }
+
+    /**
+     * 根据名字找备用名.
+     * @param request
+     * @param response
+     */
+    private void getAliasByName(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入getAliasByName方法=====================>>");
+        String name = request.getParameter("name");
+        String[] alias = null;
+        try {
+            alias = fpService.getAliasByName(name);
+            if(alias == null) {
+                return;
+            }
+            response.setContentType("text/html;charset=utf-8");
+            JSONArray jsonArray = JSONArray.fromObject(alias);
+            System.out.println(jsonArray.toString());
+            response.getWriter().write(jsonArray.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出getAliasByName方法");
+    }
+
+
+    /**
+     * (添加)更新备用名.
+     * @param request
+     * @param response
+     */
+    private void updateAlias(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入updateAlias方法=====================>>");
+        String id = request.getParameter("id");
+        String alias = request.getParameter("alias");
+        response.setContentType("text/html;charset=utf-8;");
+        try {
+            System.out.println("id:" + id + ", alias:" + alias);
+            if(id != null && alias != null && !"".equals(alias.trim())) {
+                fpService.addAlias(id, alias);
+                response.getWriter().write("1");
+            } else {
+                response.getWriter().write("0");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出updateAlias方法.");
+    }
+
+    /**
+     * 根据特征点ID查找别名.
+     * @param request
+     * @param response
+     */
+    private void getAliasById(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入getAliasById方法=====================>>");
+        String id = request.getParameter("id");
+        String[] alias = null;
+        try {
+            alias = fpService.getAliasById(id);
+            if(alias == null) {
+                return;
+            }
+            response.setContentType("text/html;charset=utf-8");
+            JSONArray jsonArray = JSONArray.fromObject(alias);
+            System.out.println(jsonArray.toString());
+            response.getWriter().write(jsonArray.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出getAliasById方法");
+    }
+
+
+    /**
+     * 显示特征点信息.
+     * @param id
+     */
+    private void showFeatureDetail(String id, HttpServletResponse response) {
+        System.out.println("进入showFeatureDetail方法====================>>");
+//        System.out.println("------- id : " + id);
+        try {
+            if(!"".equals(id) && id != null) {
+                FeaturePoint fq = new FeaturePoint();
+                fq = fpService.getById(Integer.parseInt(id));
+                JSONObject jsonObject = JSONObject.fromObject(fq);
+                System.out.println(jsonObject.toString());
+                response.setContentType("text/html;charset=utf-8");
+                response.getWriter().write(jsonObject.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("<<====================退出showFeatureDetail方法.");
+    }
 
 
 	/**
@@ -914,7 +1039,15 @@ public class MapServlet extends HttpServlet {
             }
 
             // 以下是进行图元的查找和渲染
+            String webDir = request.getRealPath("/");
+            String mapPath = webDir + "\\map";
+            File mapDir = new File(mapPath);
+            String[] layers = mapDir.list();
+            for(String layerName : layers) {
+                System.out.println(layerName);
+            }
             Layer m_Layer = mapJ.getLayers().getLayer("有字段颜色教学用层");
+
 
             if (m_Layer == null) {
                 System.out.println("没有这个图层");
@@ -964,7 +1097,7 @@ public class MapServlet extends HttpServlet {
                             System.out.println("屏幕坐标：（"+screenPoint +"）");
                             // 将名称和坐标返回
                             fp = new FeaturePoint();
-                            fp.setId(j);
+                            fp.setId(fp.getId() == null? j:fp.getId());
                             fp.setName(name);
                             fp.setX(screenPoint.x);
                             fp.setY(screenPoint.y);

@@ -283,8 +283,6 @@ function findByName(a){
  * 加载地图信息.
  */
 function loadMapInfo(){
-
-    alert("jiazai");
     //每次加载之前先移除原先的点
     $("#mapframe a").remove();
     //每次加载移除原先定位的点
@@ -325,10 +323,13 @@ function loadMapInfo(){
             var screenY = spanY-rang+10;
             var name = featuresPoints[i].name;
             var id = featuresPoints[i].id;
-            console.log("Ospan = ("+spanX+", "+spanY+")");
-            $mapframe.append("<a href='#' class="+name+" style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
-            "onmouseover=moveFeaturePoint('"+name+"',event) onmouseout=moveoutFeaturePoint('"+name+"')>" +
-            "<div onclick='showFeatureDetail("+id+")' style='width:"+rang+" ;height:"+rang+" ;'>*<span style='display: none'>"+name+"</span></div></a>");
+            $mapframe.append(
+                "<a  href='#' onclick=getAliasById("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+                "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
+                "<span style='display: none'>"+name+"</span>" +
+                "</div>" +
+                "</a>");
             if(selectedname == name){
                 //alert("进来了");
                 var x = spanX-70/2;
@@ -377,4 +378,58 @@ function showFeatureDetail(id) {
     $.getJSON(url, param, function(data) {
         console.log("[id:"+data.id+", name:"+data.name+"]")
     });
+}
+
+/**
+ * 根据ID查找出备用名，并拼接到cContent后面.
+ * @param id
+ * @param name
+ */
+function getAliasById(id, name){
+    console.log("=============进入getAliasById方法.=============")
+    $("#cContent p").remove();
+    $("#cTitle").text("现用名：" + name);
+    $("#fpId").val(id);
+    // 获取父元素
+    var $cContent = $("#cContent");
+
+    var url = "/servlet/MapServlet?rqutype=getAliasById";
+    var params = {
+        id:id
+    }
+    $.getJSON(url, params, function(alias){
+        var i = 0;
+        //for(; i < alias.length; i++) {
+        //    $cContent.append("<p>"+alias[i]+"</p>");
+        //    console.log(name + "的备用名【"+id+"】 => " + alias[i])
+        //}
+    });
+    console.log("=============退出getAliasById方法.=============")
+}
+
+/**
+ * 根据ID查找出备用名，并拼接到cContent后面.
+ * @param id
+ * @param name
+ */
+function getAliasByName(id, name){
+    console.log("=============进入getAliasById方法.=============")
+    $("#cContent p").remove();
+    $("#cTitle").text("现用名：" + name);
+    $("#fpId").val(id);
+    // 获取父元素
+    var $cContent = $("#cContent");
+
+    var url = "/servlet/MapServlet?rqutype=getAliasByName";
+    var params = {
+        name:name
+    }
+    $.getJSON(url, params, function(alias){
+        var i = 0;
+        for(; i < alias.length; i++) {
+            $cContent.append("<p>"+alias[i]+"</p>");
+            console.log(name + "的备用名【"+id+"】 => " + alias[i])
+        }
+    });
+    console.log("=============退出getAliasById方法.=============")
 }
