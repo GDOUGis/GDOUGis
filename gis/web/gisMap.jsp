@@ -50,7 +50,7 @@
                     <div style="margin-left: 10px;" class="form-group">
                         <input id="modifyPhone" type="text" class="form-control" placeholder="请输入您的手机号码">
                     </div>
-                    <input id="cSubmit" class="btn btn-primary" type="submit" value="提交">
+                    <input id="cSubmit" class="btn btn-primary" type="button" value="提交">
                 </form>
             </div>
             <div class="modal-footer">
@@ -85,9 +85,8 @@
 
 <!--div为地图边框，img为地图-->
 <div id="mapframe"  style="position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
-    <div id="imgdiv" class="imgdiv" dragimages=imgdiv;drag=1;"style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
-        <img height="200" id="imgmap" galleryimg="false"  onmousemove="mousemove()" onmousedown="mousedown()"
-             onmouseup="mouseup()"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
+    <div id="imgdiv" class="imgdiv" dragimages="imgdiv;drag=1;" style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
+        <img height="200" id="imgmap" galleryimg="false"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
     </div>
 </div>
 
@@ -152,9 +151,9 @@
 <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/scripts/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="/scripts/mapevent.js"></script>
+<script type="text/javascript" src="/scripts/maprquest.js"></script>
 <script language="JavaScript" src="/scripts/pan.js"></script>
 <script type="text/javascript" src="/scripts/init.js"></script>
-<script type="text/javascript" src="/scripts/maprquest.js"></script>
 
 <script language="JavaScript">
 
@@ -179,21 +178,43 @@
             } else {
                 identification = 1;
             }
-            alert(identification);
-            var modifyCollege = $("#modifyCollege");        // 所在学院
-            var modifyPhone = $("#modifyPhone");            // 修改人手机
-            var url = "/servlet/MapServlet"
+            var modifyCollege = $("#modifyCollege").val();        // 所在学院
+            var modifyPhone = $("#modifyPhone").val();            // 修改人手机
+            var url = "servlet/MapServlet?rqutype=addModifyName"
             var params = {
-                rqutype:"addModifyName",
                 fpId:id,
                 currentName:currentName,
                 modifyName:name,
                 modifyDesc:modifyDesc,
                 modifyPeople:modifyPeople,
                 modifyCollege:modifyCollege,
-                modifyPhone:modifyPhone
+                modifyPhone:modifyPhone,
+                identification:identification
             };
-            $.getJSON(url, params, function(data) {
+            console.log(params);
+            console.log("Before addModifyName的getJSON方法");
+            console.log($(".form-inline").serialize());
+            $.ajax(url,{
+                type:"POST",
+                dataType:"html",
+                data:params
+            })
+                    .success(function(response){
+                        alert("run it!!")
+                    })
+                    .error(function(){
+                        alert("error");
+                    });
+//            $.ajax({
+//                type:"POST",
+//                url:url,
+//                data:params,
+//                success: function (result) {
+//                    alert("run it!!")
+//                }
+//            })
+            /*$.getJSON(url, params, function(data) {
+                alert("进入addModifyName的getJSON方法")
                 if(data == 1) {
                     $("#cAlias").val("");
                     $("#modifyDesc").val("");
@@ -204,7 +225,9 @@
                 } else {
                     alert("服务器正忙..")
                 }
-            });
+                alert("退出addModifyName的getJSON方法")
+            });*/
+            alert("After addModifyName的getJSON方法")
             return false;
         });
         mapbound();

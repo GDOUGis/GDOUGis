@@ -18,6 +18,7 @@ import net.sf.json.JSONObject;
 import org.cpp.gis.entities.FeaturePoint;
 import org.cpp.gis.service.FeaturePointService;
 import org.cpp.gis.service.impl.FeaturePointServiceImpl;
+import org.cpp.gis.service.impl.ModifyServiceImpl;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -26,7 +27,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -46,6 +46,7 @@ public class MapServlet extends HttpServlet {
     }
 
     private FeaturePointService fpService = new FeaturePointServiceImpl();
+    private ModifyServiceImpl modifyService = new ModifyServiceImpl();
 
 
     // 包含地图文件的路径
@@ -594,6 +595,7 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void addModifyName(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("进入addModifyName方法=====================>>");
         /* 获取参数 */
         int fpId = Integer.parseInt(request.getParameter("fpId"));
         String currentName = request.getParameter("currentName");
@@ -602,6 +604,25 @@ public class MapServlet extends HttpServlet {
         String modifyPeople = request.getParameter("modifyPeople");
         String modifyCollege = request.getParameter("modifyCollege");
         String modifyPhone = request.getParameter("modifyPhone");
+        String modifyIdentification = request.getParameter("identification");
+//        response.setContentType("text/html;charset=utf-8");
+//        PrintWriter out = null;
+        try {
+//            out = response.getWriter();
+            /* 校验 */
+
+            modifyService.addModify(modifyName,modifyDesc,modifyPeople,modifyCollege,modifyPhone,
+                    modifyIdentification,fpId,currentName);
+
+//            out.write("1");
+        } catch (Exception e) {
+//            out.write("0");
+            e.printStackTrace();
+        } finally {
+//            out.flush();
+//            out.close();
+        }
+        System.out.println("<<====================退出getAliasByName方法");
     }
 
     /**
@@ -1039,13 +1060,13 @@ public class MapServlet extends HttpServlet {
             }
 
             // 以下是进行图元的查找和渲染
-            String webDir = request.getRealPath("/");
-            String mapPath = webDir + "\\map";
-            File mapDir = new File(mapPath);
-            String[] layers = mapDir.list();
-            for(String layerName : layers) {
-                System.out.println(layerName);
-            }
+//            String webDir = request.getRealPath("/");
+//            String mapPath = webDir + "\\map";
+//            File mapDir = new File(mapPath);
+//            String[] layers = mapDir.list();
+//            for(String layerName : layers) {
+//                System.out.println(layerName);
+//            }
             Layer m_Layer = mapJ.getLayers().getLayer("有字段颜色教学用层");
 
 
@@ -1083,18 +1104,18 @@ public class MapServlet extends HttpServlet {
             while (ftr != null) {
                 name = ftr.getAttribute(0).toString();
                 if(!name.equals("") || name != null) {
-                    System.out.print("教学层名称：" + name);
+//                    System.out.print("教学层名称：" + name);
                     if(ftr != null && ftr.getGeometry() != null) {
                         doublePoint = ftr.getGeometry().getBounds().center();
 //                       mapJ.setCenter(doublePoint);
 //                        mapJ.setCenter(new DoublePoint(0.24, 0.36));
-                        System.out.println("中心点：（"+doublePoint+"）");
+//                        System.out.println("中心点：（"+doublePoint+"）");
                         // 坐标转换
                         screenPoint = mapJ.transformNumericToScreen(doublePoint);
                         // 过滤超出960 * 620 的坐标点
                         if(screenPoint.x < 960 && screenPoint.x > 0
                                 && screenPoint.y > 0 && screenPoint.y < 620) {
-                            System.out.println("屏幕坐标：（"+screenPoint +"）");
+//                            System.out.println("屏幕坐标：（"+screenPoint +"）");
                             // 将名称和坐标返回
                             fp = new FeaturePoint();
                             fp.setId(fp.getId() == null? j:fp.getId());
@@ -1131,6 +1152,120 @@ public class MapServlet extends HttpServlet {
             out.flush();
             out.close();
         }
+        System.out.println("退出loadFeature方法.");
+    }
+
+
+    /**
+     * 加载特征点
+     */
+    private void loadFeature_new(HttpServletResponse response,HttpServletRequest request, MapJ mapJ) throws Exception{
+        System.out.println("进入loadFeature方法.");
+
+        response.setCharacterEncoding("UTF-8");
+//        response.setHeader("content-type","application/javascript");
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+
+        try {
+            if (mapJ == null) {
+                mapJ = initMapJ();
+            }
+
+            // 以下是进行图元的查找和渲染
+
+            //获取所有的图层
+            Layers layers = mapJ.getLayers();
+            //对每个图层进行搜索.
+            Layer m_Layer = null;
+
+            for(int i = 0; i < layers.size(); i++) {
+                //获得layer
+                m_Layer = layers.elementAt(i);
+                //如果该图层用户没有显示，那么不提供给搜索.
+                if(!m_Layer.isVisible()){
+                    continue;
+                }
+                // 删除以上操作已经添加的theme列表
+                m_Layer.getThemeList().removeAll(true);
+                List columnNames = new ArrayList();
+                Feature ftr = null;
+                TableInfo tabInfo = m_Layer.getTableInfo();
+                // 获得ColumnName
+                for (int j = 0; j < tabInfo.getColumnCount(); j++) {
+                    columnNames.add(tabInfo.getColumnName(j));
+                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                }
+                // Perform a search to get the Features(records)from the layer
+                //获得当前图层的所有图元
+                RewindableFeatureSet rFtrSet;
+                rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
+
+                // FeatureSet fs = m_Layer.searchAll(columnNames,
+                // QueryParams.ALL_PARAMS);
+
+                /*对每个图元进行遍历*/
+                ftr = rFtrSet.getNextFeature();
+
+                DoublePoint doublePoint = null;
+                DoublePoint screenPoint = null;
+                FeaturePoint fp = null;
+                List<FeaturePoint> list = new ArrayList<FeaturePoint>();
+                int j = 0;
+                String name;
+                while (ftr != null) {
+                    name = ftr.getAttribute(0).toString();
+                    if(!"".equals(name.trim()) || name != null) {
+                        System.out.print("layer's name：" + name);
+                        if(ftr != null && ftr.getGeometry() != null) {
+                            doublePoint = ftr.getGeometry().getBounds().center();
+//                       mapJ.setCenter(doublePoint);
+//                        mapJ.setCenter(new DoublePoint(0.24, 0.36));
+                            System.out.println("center point：（"+doublePoint+"）");
+                            // 坐标转换
+                            screenPoint = mapJ.transformNumericToScreen(doublePoint);
+                            // 过滤超出960 * 620 的坐标点
+                            if(screenPoint.x < 960 && screenPoint.x > 0
+                                    && screenPoint.y > 0 && screenPoint.y < 620) {
+                                System.out.println("screen point：（"+screenPoint +"）");
+                                // 将名称和坐标返回
+                                fp = new FeaturePoint();
+                                fp.setId(fp.getId() == null? j:fp.getId());
+                                fp.setName(name);
+                                fp.setX(screenPoint.x);
+                                fp.setY(screenPoint.y);
+                            /*
+                            存到数据库，工程师执行，一次就够了
+                            fqService.addFeaturePoint(j, name);
+                            */
+                                list.add(fp);
+                                j++;
+                            }
+
+                        }
+                    }
+
+                    ftr = rFtrSet.getNextFeature();
+                }
+                rFtrSet.rewind();
+                //response.setContentType("text/html;charset=utf-8");
+                JSONArray jsonArray = JSONArray.fromObject(list);
+                //把最新的zoom封装进来
+                double newzoom = mapJ.getZoom();
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("featuresPoints",jsonArray);
+                map.put("newzoom", newzoom);
+                System.out.println(jsonArray.toString());
+                JSONObject mapObject = JSONObject.fromObject(map);
+                out.write(mapObject.toString());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            out.flush();
+            out.close();
+        }
+
         System.out.println("退出loadFeature方法.");
     }
 

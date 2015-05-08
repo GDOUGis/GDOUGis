@@ -205,6 +205,7 @@ function map2smaller(x,y){
  * 更新鹰眼地图.
  */
 function updataBoundMap(){
+    console.log("==> updateBoundMap.")
     $("#mapboundframe").empty();
     $("#mapboundframe").append(" <img id='boundmap'  class='boundmap' GALLERYIMG='false' onclick='mapsmallpaner()'"+
     "style=' position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;'" +
@@ -214,8 +215,7 @@ function updataBoundMap(){
     $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;");
     //加载特征点.
     loadMapInfo();
-
-
+    console.log("updateBoundMap ==>")
 }
 
 /**
@@ -283,6 +283,7 @@ function findByName(a){
  * 加载地图信息.
  */
 function loadMapInfo(){
+    console.log("==> loadMapInfo.");
     //每次加载之前先移除原先的点
     $("#mapframe a").remove();
     //每次加载移除原先定位的点
@@ -351,7 +352,7 @@ function loadMapInfo(){
         var $("."+selectedname);
         alert();
     }*/
-
+    console.log("loadMapInfo ==>");
 }
 /**
  * 特征点显示
