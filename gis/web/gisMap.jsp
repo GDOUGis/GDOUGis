@@ -5,11 +5,21 @@
 <head>
     <title>地图显示</title>
 
+
+
     <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
     <!-- bootstrap -->
     <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="/css/gisMap.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/css/gisMap.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/css/bootstrap-slider.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
 
@@ -85,8 +95,17 @@
 
 <!--div为地图边框，img为地图-->
 <div id="mapframe"  style="position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
-    <div id="imgdiv" class="imgdiv" dragimages="imgdiv;drag=1;" style="position: absolute;top: 0px;left: 0;width: 960px;height: 600px;">
-        <img height="200" id="imgmap" galleryimg="false"  onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
+    <div id="imgdiv" class="imgdiv">
+        <img height="200" id="imgmap" galleryimg="false" onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
+    </div>
+</div>
+
+<%--滚动条--%>
+<div id="scroll">
+    <div style="position: absolute;left: 72px;top: 280px;"><a href="#" title="放大" onclick="bigger();"><span class="glyphicon glyphicon-plus"></span></a></div>
+    <div style="position: absolute;left: 72px;top: 560px;"><a href="#" title="缩小" onclick="smaller();"><span class="glyphicon glyphicon-minus"></span></a></div>
+    <div class="well" id="well" style="position: absolute;left: 50px;top: 300px;">
+        <input id="ex4" data-slider-id='ex4Slider'  type="text" data-slider-handle="square" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="1" data-slider-orientation="vertical"/>
     </div>
 </div>
 
@@ -151,11 +170,13 @@
 <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/scripts/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="/scripts/mapevent.js"></script>
-<script type="text/javascript" src="/scripts/maprquest.js"></script>
 <script language="JavaScript" src="/scripts/pan.js"></script>
 <script type="text/javascript" src="/scripts/init.js"></script>
+<script type="text/javascript" src="/scripts/maprquest.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/bootstrap-slider.js"></script>
 
 <script language="JavaScript">
+
 
     $("input,select").click(function(e){
         $(this).select();
@@ -163,6 +184,7 @@
 
     //加载鹰眼地图
     $(document).ready(function(){
+
         $("#cSubmit").click(function(event) {
             // 获取参数
             var currentName = $("#cTitle").text();
@@ -194,7 +216,7 @@
             console.log(params);
             console.log("Before addModifyName的getJSON方法");
             console.log($(".form-inline").serialize());
-           /* $.ajax(url,{
+            $.ajax(url,{
                 type:"POST",
                 dataType:"html",
                 data:params
@@ -204,7 +226,7 @@
                     })
                     .error(function(){
                         alert("error");
-                    });*/
+                    });
 //            $.ajax({
 //                type:"POST",
 //                url:url,
@@ -213,44 +235,95 @@
 //                    alert("run it!!")
 //                }
 //            })
-            $.getJSON(url, params, function(data) {
-                alert("进入addModifyName的getJSON方法")
-                if(data == "1") {
-                    $("#cAlias").val("");
-                    $("#modifyDesc").val("");
-                    $("#modifyPeople").val("");
-                    $("#modifyCollege").val("");
-                    $("#modifyPhone").val("");
-                    alert("提交成功！")
-                } else {
-                    alert("服务器正忙..")
-                }
-                alert("退出addModifyName的getJSON方法")
-            });
+            /*$.getJSON(url, params, function(data) {
+             alert("进入addModifyName的getJSON方法")
+             if(data == 1) {
+             $("#cAlias").val("");
+             $("#modifyDesc").val("");
+             $("#modifyPeople").val("");
+             $("#modifyCollege").val("");
+             $("#modifyPhone").val("");
+             alert("提交成功！")
+             } else {
+             alert("服务器正忙..")
+             }
+             alert("退出addModifyName的getJSON方法")
+             });*/
             alert("After addModifyName的getJSON方法")
             return false;
         });
-        mapbound();
-    });
 
-    //监听滚轮.
-    $('#imgmap').mousewheel(function(event, delta) {
-        //鼠标xy
-        var x = event.clientX;
-        var y = event.clientY;
-        //图片所在div距离屏幕边界的xy
-        var imgx = document.all.mapframe.style.left;
-        var imgy = document.all.mapframe.style.top;
-        //计算得出相对于图片的xy
-        x = parseInt(x) - parseInt(imgx);
-        y = parseInt(y) - parseInt(imgy);
-        //alert(x+","+y);
-        //向上滚,放大
-        if(delta==1){
-            map2bigger(x,y);
-        }else{//向下滚，缩小
-            map2smaller(x,y);
-        }
+        mapbound();
+
+
+
+        //显示滚动条.
+        myslider = $("#ex4").slider({
+            reversed : true
+        });
+        slideVal = 1;
+        $("#ex4").on("slideStart", function(slideEvt) {
+            slideVal = slideEvt.value;
+            mysliderState = null;//去除放大缩小的状态;
+        });
+        $("#ex4").on("slideStop", function(slideEvt) {
+
+            var val = slideEvt.value;
+            //原来图片的中心点
+            var x =parseInt(document.all.imgmap.width)/2;
+            var y =parseInt(document.all.imgmap.height)/2;
+            var newzoom = 1;
+            if(slideVal - val >0){//缩小
+                for(var i=0;i<slideVal-val;i++){
+                    newzoom = newzoom * 2;
+                }
+                //console.log([slideEvt.value ,newzoom,x,y]);
+                var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom="+newzoom+"&random="+Math.random();
+                $("#imgmap").attr("src",url);
+            }
+            if(slideVal - val < 0){//放大
+                for(var i=0;i<val-slideVal;i++){
+                    newzoom = newzoom * 0.5;
+                }
+                //console.log([slideEvt.value ,newzoom,x,y]);
+                var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom="+newzoom+"&random="+Math.random();
+                $("#imgmap").attr("src",url);
+            }
+            slideVal = val;
+        });
+
+        //监听滚轮.
+        $('#imgmap').mousewheel(function(event, delta) {
+            //鼠标xy
+            var x = event.clientX;
+            var y = event.clientY;
+            //图片所在div距离屏幕边界的xy
+            var imgx = document.all.mapframe.style.left;
+            var imgy = document.all.mapframe.style.top;
+            //计算得出相对于图片的xy
+            x = parseInt(x) - parseInt(imgx);
+            y = parseInt(y) - parseInt(imgy);
+            //alert(x+","+y);
+            //向上滚,放大
+            if(delta==1){
+                //$("#ex4").attr("data-slider-value",$("#ex4").attr("data-slider-value")+1);
+                //alert();
+                var oldVal = myslider.slider("getValue");
+                if(oldVal<5){
+                    mysliderState = 'big';
+                    map2bigger(x,y);
+                    //myslider.slider("setValue",oldVal+1);//更新滚动条.
+                }
+            }else{//向下滚，缩小
+                var oldVal = myslider.slider("getValue");
+                if(oldVal>1) {
+                    mysliderState = "small";
+                    map2smaller(x, y);
+                    //myslider.slider("setValue", oldVal - 1);//更新滚动条.
+                }
+
+            }
+        });
     });
 
 </script>

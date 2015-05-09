@@ -1,82 +1,4 @@
 /**
- * 放大地图.
- */
-function mapbigger(){
-	var centerx;
-	var centery;
-	var newzoom;
-	var frametop;
-	var frameleft;
-	var tablewidth;
-	var tablehigh;
-	var picwidth;
-	var pichigh;
-	frametop=parseInt(document.all.mapframe.style.top);
-	frameleft=parseInt(document.all.mapframe.style.left);
-	tablehigh=parseInt(document.all.seltable.style.height);
-	tablewidth=parseInt(document.all.seltable.style.width);
-	tableleft=parseInt(document.all.seltable.style.left);
-	tabletop=parseInt(document.all.seltable.style.top);
-	picwidth=parseInt(document.all.imgmap.style.width);
-	pichigh=parseInt(document.all.imgmap.style.height);
-	centerx=tablewidth/2+tableleft-frameleft;
-	centery=tablehigh/2+tabletop-frametop;
-	if(tablewidth>tablehigh){
-		//newzoom=tablewidth/picwidth
-		newzoom=0.5;
-	}
-	else{
-		//newzoom=tablehigh/pichigh
-		newzoom=0.5;
-	}
-	if(newzoom==0){
-		newzoom=0.5;
-	}
-	//计算出新的地图坐标大小之后改变地图的显示。
-	chgmapsrc("rqutype=chgmapview&centerx="+centerx+"&centery="+centery+"&newzoom="+newzoom);
-}
-
-/**
- * 缩小地图.
- */
-function mapsmaller(){
-	var centerx;
-	var centery;
-	var frametop;
-	var frameleft;
-	frametop=parseInt(document.all.mapframe.style.top);
-	frameleft=parseInt(document.all.mapframe.style.left);
-	centerx=window.event.clientX-(frameleft+1);
-	centery=window.event.clientY-(frametop+1);
-	chgmapsrc("rqutype=chgmapview&centerx="+centerx+"&centery="+centery+"&newzoom=2");
-}
-
-/**
- * 漫游地图.
- */
-function mappaner(){
-	var centerx;
-	var centery;
-	var picwidth;
-	var pichigh;
-	var picleft;
-	var pictop;
-	picwidth=parseInt(document.all.imgmap.style.width);
-	pichigh=parseInt(document.all.imgmap.style.height);
-	pictop=parseInt(document.all.imgmap.style.top);
-	picleft=parseInt(document.all.imgmap.style.left);
-	//alert("wi--"+picwidth+"--he--"+pichigh+"--pictop--"+pictop+"--le--"+picleft);
-	if(pictop!=0&&picleft!=0){
-		centerx=picwidth/2-picleft;
-		centery=pichigh/2-pictop;
-		//alert(picwidth + ',' + picleft + ',' + centerx + ',' + centery);
-		chgmapsrc("rqutype=panmap&centerx="+centerx+"&centery="+centery);
-		document.all.imgmap.style.left=0;
-		document.all.imgmap.style.top=0;
-	}
-}
-
-/**
  * 调整鹰眼地图.
  */
 function mapsmallpaner(){
@@ -115,6 +37,7 @@ function mapreset(){
  */
 function mapbound(){
     mapbounder();
+
 	/*if(document.all.mapboundframe.style.display=="none"){
 		//获得略缩图，加载略缩图.
 		mapbounder();
@@ -124,9 +47,9 @@ function mapbound(){
 	else{
 		document.all.mapboundframe.style.display="none";
 	}*/
-	resetimg();
+	/*resetimg();
 	state="bound";
-	document.all.bound.src="images/index-map-a_08.jpg";
+	document.all.bound.src="images/index-map-a_08.jpg";*/
 }
 
 /**
@@ -202,6 +125,35 @@ function map2smaller(x,y){
 }
 
 /**
+ * 点击放大按钮放大.
+ */
+function bigger(){
+    var oldVal = myslider.slider("getValue");
+    if(oldVal<5){
+        mysliderState = 'big';
+        var x =parseInt(document.all.imgmap.width)/2;
+        var y =parseInt(document.all.imgmap.height)/2;
+        var newzoom = 0.5;
+        var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom="+newzoom+"&random="+Math.random();
+        $("#imgmap").attr("src",url);
+    }
+}
+/**
+ * 点击缩小按钮缩小。
+ */
+function smaller(){
+    var oldVal = myslider.slider("getValue");
+    if(oldVal>1){
+        mysliderState = 'small';
+        var x =parseInt(document.all.imgmap.width)/2;
+        var y =parseInt(document.all.imgmap.height)/2;
+        var newzoom = 2;
+        var url = mapserviceurl+"?rqutype=chgmapview"+"&centerx="+x+"&centery="+y+"&newzoom="+newzoom+"&random="+Math.random();
+        $("#imgmap").attr("src",url);
+    }
+}
+
+/**
  * 更新鹰眼地图.
  */
 function updataBoundMap(){
@@ -216,6 +168,14 @@ function updataBoundMap(){
     //加载特征点.
     loadMapInfo();
     console.log("updateBoundMap ==>")
+    //更新滚动条.
+    if(mysliderState == "big"){
+        var oldVal = myslider.slider("getValue");
+        myslider.slider("setValue",oldVal+1);//更新滚动条.
+    }else if(mysliderState == "small"){
+        var oldVal = myslider.slider("getValue");
+        myslider.slider("setValue",oldVal-1);//更新滚动条.
+    }
 }
 
 /**
