@@ -131,6 +131,15 @@
         <url-pattern>/servlet/MapServlet_Rose</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>userServlet</servlet-name>
+        <servlet-class>org.cpp.gis.servlet.UserServletl</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>userServlet</servlet-name>
+        <url-pattern>/servlet/UserServlet</url-pattern>
+    </servlet-mapping>
     <!-- 编码过滤器 -->
     <filter>
         <filter-name>SetCharacterEncodig</filter-name>

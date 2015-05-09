@@ -194,7 +194,7 @@
             console.log(params);
             console.log("Before addModifyName的getJSON方法");
             console.log($(".form-inline").serialize());
-            $.ajax(url,{
+           /* $.ajax(url,{
                 type:"POST",
                 dataType:"html",
                 data:params
@@ -204,7 +204,7 @@
                     })
                     .error(function(){
                         alert("error");
-                    });
+                    });*/
 //            $.ajax({
 //                type:"POST",
 //                url:url,
@@ -213,9 +213,9 @@
 //                    alert("run it!!")
 //                }
 //            })
-            /*$.getJSON(url, params, function(data) {
+            $.getJSON(url, params, function(data) {
                 alert("进入addModifyName的getJSON方法")
-                if(data == 1) {
+                if(data == "1") {
                     $("#cAlias").val("");
                     $("#modifyDesc").val("");
                     $("#modifyPeople").val("");
@@ -226,7 +226,7 @@
                     alert("服务器正忙..")
                 }
                 alert("退出addModifyName的getJSON方法")
-            });*/
+            });
             alert("After addModifyName的getJSON方法")
             return false;
         });

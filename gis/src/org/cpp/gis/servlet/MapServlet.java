@@ -605,22 +605,23 @@ public class MapServlet extends HttpServlet {
         String modifyCollege = request.getParameter("modifyCollege");
         String modifyPhone = request.getParameter("modifyPhone");
         String modifyIdentification = request.getParameter("identification");
-//        response.setContentType("text/html;charset=utf-8");
-//        PrintWriter out = null;
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = null;
         try {
-//            out = response.getWriter();
+            out = response.getWriter();
+
             /* 校验 */
+
 
             modifyService.addModify(modifyName,modifyDesc,modifyPeople,modifyCollege,modifyPhone,
                     modifyIdentification,fpId,currentName);
-
-//            out.write("1");
+            out.write("1");
         } catch (Exception e) {
-//            out.write("0");
+            out.write("0");
             e.printStackTrace();
         } finally {
-//            out.flush();
-//            out.close();
+            out.flush();
+            out.close();
         }
         System.out.println("<<====================退出getAliasByName方法");
     }

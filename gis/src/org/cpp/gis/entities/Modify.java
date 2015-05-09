@@ -16,6 +16,21 @@ public class Modify {
 
     private Integer featuere_id;
 
+    @Override
+    public String toString() {
+        return "Modify{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", people='" + people + '\'' +
+                ", identification=" + identification +
+                ", college='" + college + '\'' +
+                ", phone='" + phone + '\'' +
+                ", times=" + times +
+                ", featuere_id=" + featuere_id +
+                '}';
+    }
+
     public Integer getFeatuere_id() {
         return featuere_id;
     }
