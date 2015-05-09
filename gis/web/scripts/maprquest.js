@@ -26,10 +26,8 @@ function mapsmallpaner(){
  * 重置地图，初始状态.
  */
 function mapreset(){
-    resetimg();
-	state="reset";
+    alert("123");
 	chgmapsrc("rqutype=resetmap");
-	document.all.resetimg.src="images/index-map-a_07.jpg";
 }
 
 /**

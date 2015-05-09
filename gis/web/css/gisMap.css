@@ -117,31 +117,10 @@ body{
     float: left;
     background-color:#4276FF;
 }
-
-#mapboundframe{
-    position: absolute;
-    left: 10px;
-    top: 60px;
-    height: 182px;
-    width: 242px;
-    background-color: #18FF6F;
-    layer-background-color: #99FFFF;
-    border: 1px #339933 solid;
-    float:left;
-    display: block;
-    z-index: 9999;
-    border-radius: 5px;
+#ex4Slider .slider-selection {
+    background: #BABABA;
 }
 
-#boundmap{
-    position: absolute;
-    left: 1px;
-    top: 1px;
-    height: 180px;
-    width: 240px;
-    visibility: visible;
-    float:left;
-}
 .tool_warp{
     font-family: '微软雅黑';
 }

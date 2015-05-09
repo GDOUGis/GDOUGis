@@ -86,11 +86,11 @@
 </div>
 
 
-<!--div缩略图边框，img为缩略图,初始化为隐藏的-->
+<%--<!--div缩略图边框，img为缩略图,初始化为隐藏的-->
 <div id="mapboundframe" style=" position: absolute;left: 10px;top: 70px;height: 182px;width: 242px;background-color: #fff;layer-background-color: #99FFFF;border: 1px #339933 solid;float:left;display: block;z-index: 9999;border-radius: 5px;">
     <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
             style=" position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;">
-</div>
+</div>--%>
 
 
 <!--div为地图边框，img为地图-->
@@ -102,15 +102,21 @@
 
 <%--滚动条--%>
 <div id="scroll">
-    <div style="position: absolute;left: 72px;top: 280px;"><a href="#" title="放大" onclick="bigger();"><span class="glyphicon glyphicon-plus"></span></a></div>
-    <div style="position: absolute;left: 72px;top: 560px;"><a href="#" title="缩小" onclick="smaller();"><span class="glyphicon glyphicon-minus"></span></a></div>
-    <div class="well" id="well" style="position: absolute;left: 50px;top: 300px;">
+    <div style="position: absolute;left: 72px;top: 100px;"><a href="#" title="重置" onclick="mapreset()"><span class="glyphicon glyphicon-refresh"></span></a></div>
+    <div style="position: absolute;left: 72px;top: 130px;"><a href="#" title="放大" onclick="bigger();"><span class="glyphicon glyphicon-plus"></span></a></div>
+    <div style="position: absolute;left: 72px;top: 410px;"><a href="#" title="缩小" onclick="smaller();"><span class="glyphicon glyphicon-minus"></span></a></div>
+    <div class="well" id="well" style="position: absolute;left: 50px;top: 150px;">
         <input id="ex4" data-slider-id='ex4Slider'  type="text" data-slider-handle="square" data-slider-min="1" data-slider-max="5" data-slider-step="1" data-slider-value="1" data-slider-orientation="vertical"/>
     </div>
 </div>
 
 <div class="tool_warp" style="position: absolute;top: 70px;left: 980px;">
-    <div class="tool_header">
+    <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
+    <div id="mapboundframe" style="height: 182px;width: 242px; display: block;border: 1px solid #000000;">
+        <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
+             style=" height: 180px;width: 240px;visibility: visible;float:left;">
+    </div>
+    <%--<div class="tool_header">
         <h3>欢迎使用广东海洋大学数字地图</h3>
     </div>
     <div class="layer" style="font-size: 10px;">
@@ -118,7 +124,7 @@
         <c:forEach items="${layerNames}" var="layerName">
             <input type="checkbox" name="layerName" value="${layerName}" checked="true" onchange="showLayer()">${layerName}<br>
         </c:forEach>
-    </div>
+    </div>--%>
     <hr>
     <div class="search">
         <input type="text" id="searchText" placeholder="请输入您要搜索的建筑物名称"> <button id="searchBtn" onclick="searchF()">查询</button>

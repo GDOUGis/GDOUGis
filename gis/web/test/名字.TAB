@@ -4,15 +4,13 @@
 
 Definition Table
   Type NATIVE Charset "WindowsSimpChinese"
-  Fields 5
+  Fields 4
     Type Integer ;
-    Str Char (20) ;
+    Str Char (200) ;
     X Float ;
     Y Float ;
-    Description Float ;
 begin_metadata
 "\IsReadOnly" = "FALSE"
 "\MapInfo" = ""
-"\MapInfo\TableID" = "4ade8227-be5f-4db9-baaa-28e94fc8bc7c"
-"\MapInfo\ParentTableID" = "62214cba-b5f7-4b2a-8129-90f446e7a11e"
+"\MapInfo\TableID" = "6644ed91-ab38-4020-929a-e22b44f992ec"
 end_metadata
