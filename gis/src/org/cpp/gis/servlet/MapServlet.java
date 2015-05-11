@@ -601,6 +601,7 @@ public class MapServlet extends HttpServlet {
         System.out.println("进入addModifyName方法=====================>>");
         /* 获取参数 */
         int fpId = Integer.parseInt(request.getParameter("fpId"));
+        System.out.println(fpId);
         String currentName = request.getParameter("currentName");
         String modifyName = request.getParameter("modifyName");
         String modifyDesc = request.getParameter("modifyDesc");
@@ -1263,10 +1264,10 @@ public class MapServlet extends HttpServlet {
                                 fp.setName(name);
                                 fp.setX(screenPoint.x);
                                 fp.setY(screenPoint.y);
-                            /*
-                            存到数据库，工程师执行，一次就够了
-                            fqService.addFeaturePoint(j, name);
-                            */
+
+                            //存到数据库，工程师执行，一次就够了
+//                            fpService.addFeaturePoint(id, name);
+
                                 list.add(fp);
                                 id++;
                             }

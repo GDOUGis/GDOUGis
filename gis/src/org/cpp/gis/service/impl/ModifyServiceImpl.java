@@ -35,6 +35,7 @@ public class ModifyServiceImpl {
             modify.setPhone(modifyPhone);
             modify.setFeature_id(fpId);
 
+            System.out.println(modify.toString());
             modifyDao.create(modify);
         } catch (NumberFormatException e) {
             e.printStackTrace();
