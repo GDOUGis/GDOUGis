@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=utf-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html>
@@ -24,6 +24,7 @@
 </head>
 
 <body  link="#000000" vlink="#000000" alink="#000000" >
+<div class="body-r"></div>
 <!-- 模态框 -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
      style="z-index:10000;" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -31,7 +32,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="cTitle">现用名：</h4>
+                <h4 class="modal-title" id="cTitle"></h4>
             </div>
             <div class="modal-body" id="cContent">
                 <form class="form-inline"  method="post">
@@ -76,10 +77,9 @@
         <div class="logo">
             <div style="float: left">
                 <a href="#">
-                    <img src="images/logo.gif" height="60px">
+                    <img src="images/header.png" height="60px">
                 </a>
             </div>
-            <div style="float: left;margin-top: 10px;margin-left: 10px;"><span style="font-size: 24px;font-family: '微软雅黑';">校园地图</span></div>
         </div>
         <!--logo结束处-->
     </div>
@@ -258,7 +258,7 @@
             return false;
         });
 
-        mapbound();
+        //mapbound();
 
 
 

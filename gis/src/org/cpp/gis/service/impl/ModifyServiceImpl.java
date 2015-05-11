@@ -22,6 +22,7 @@ public class ModifyServiceImpl {
     public void addModify(String modifyName, String modifyDesc, String modifyPeople, String modifyCollege,
                            String modifyPhone,String modifyIdentification, int fpId, String currentName) {
         try {
+            System.out.println(currentName+" --------------");
             FeaturePoint featurePoint = featurePointDao.readByName(currentName);
             if(null != featurePoint) {
                 fpId = featurePoint.getId();
