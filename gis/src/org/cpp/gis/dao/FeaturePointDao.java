@@ -61,4 +61,6 @@ public interface FeaturePointDao {
      * @return
      */
     FeaturePoint readAliasById(Integer id);
+
+    int getTotalRecord();
 }

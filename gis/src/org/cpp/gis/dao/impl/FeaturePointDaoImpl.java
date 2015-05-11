@@ -2,6 +2,7 @@ package org.cpp.gis.dao.impl;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.cpp.gis.dao.FeaturePointDao;
 import org.cpp.gis.entities.FeaturePoint;
 import org.cpp.gis.utils.JDBCUtil;
@@ -87,5 +88,22 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
         }
 
         return null;
+    }
+
+    /**
+     * 获取特征点的总记录数.
+     * @return
+     */
+    @Override
+    public int getTotalRecord() {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT COUNT(*) FROM tb_features";
+            long l = (Long) qr.query(sql, new ScalarHandler());
+            return (int) l;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

@@ -45,30 +45,25 @@
 		</script>
 	</c:if>
 	<div id="container">
-		<form action="${pageContext.request.contextPath }/adminLogin.action"
-			method="post" onsubmit="return validate()">
+		<%--<form action="${pageContext.request.contextPath }/servlet/UserServlet?method=login"
+			method="post" onsubmit="return validate()">--%><form action="${pageContext.request.contextPath }/servlet/UserServlet?method=login"
+			method="post">
 			<div class="login">后台登录</div>
 			<div class="username-text">用户名:</div>
 			<div class="password-text">密码:</div>
 			<div class="username-field">
-				<input type="text" name="admin.username" id="username"
+				<input type="text" name="username" id="username"
 					placeholder="请输入用户名" value="admin" />
 			</div>
 			<div class="password-field">
-				<input type="password" name="admin.password" id="password"
+				<input type="password" name="password" id="password"
 					placeholder="请输入密码"  value="admin"/>
-			</div>
-			<input type="checkbox" name="remember-me" id="remember-me" /><label
-				for="remember-me">Remember me</label>
-			<div class="forgot-usr-pwd">
-				Forgot <a href="#">username</a> or <a href="#">password</a>?
 			</div>
 			<input type="submit" name="submit" value="GO" />
 		</form>
 	</div>
 	<div id="footer">
-		Copyright &copy; 2014.Company name All rights reserved.<a
-			target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+		Copyright &copy; 2014.Company name All rights reserved.
 	</div>
 </body>
 </html>

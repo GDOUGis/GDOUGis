@@ -6,6 +6,7 @@ import org.cpp.gis.factory.DaoFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+
 /**
  * FeaturePointDao测试类.
  * Created by Rose on 2015/5/3.

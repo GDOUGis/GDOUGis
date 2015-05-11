@@ -33,7 +33,7 @@ public class ModifyServiceImpl {
             modify.setIdentification(Integer.parseInt(modifyIdentification));
             modify.setPeople(modifyPeople);
             modify.setPhone(modifyPhone);
-            modify.setFeatuere_id(fpId);
+            modify.setFeature_id(fpId);
 
             modifyDao.create(modify);
         } catch (NumberFormatException e) {
@@ -87,5 +87,53 @@ public class ModifyServiceImpl {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 根据特征点分组并返回翻页数据.
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public List<Modify> getModifiedPDGrounpByFN(int pageNum, int pageSize) {
+        List<Modify> list = null;
+        try {
+            int totalRecord = modifyDao.getTotalRecord();
+            Page page = PageUtil.createPage(pageSize,totalRecord,pageNum);
+            list = modifyDao.getModifiedPageDataGroupByFN(page.getBeginIndex(), pageSize);
+            return  list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 加载被修改过的特征点的分页统计数据.
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public List<Modify> getFPModifyPD(String pageNum, String pageSize) {
+        List<Modify> list = null;
+        try {
+            int totalRecord = modifyDao.getAllGroupRecord();
+            Page page = PageUtil.createPage(Integer.parseInt(pageSize),totalRecord,Integer.parseInt(pageNum));
+            list =modifyDao.getFPModifyPD(page.getBeginIndex(), Integer.parseInt(pageSize));
+            return  list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * 获取被修改过的特征点详情.
+     * @param feature_id
+     * @return
+     */
+    public List<Modify> getModifyDetail(int feature_id) {
+        return modifyDao.getModifyDetail(feature_id);
     }
 }

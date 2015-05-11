@@ -39,4 +39,23 @@ public class UserServiceImpl {
     public User getUserByName(String username) {
         return userDao.readByName(username);
     }
+
+    /**
+     * 登陆.
+     * @param username
+     * @param password
+     * @return
+     */
+    public User login(String username, String password) {
+        // 先根据username找到user，再匹配密码
+        User user = userDao.readByName(username);
+        if(null == user) {
+            return null;
+        }
+        if("".equals(password) || !user.getPassword().equals(password.trim())) {
+            return null;
+        }
+
+        return user;
+    }
 }

@@ -21,7 +21,7 @@ public class ModifyDaoImpl {
             String sql = "INSERT INTO tb_modify(name, description, people, identification," +
                     "college, phone, feature_id) values(?,?,?,?,?,?,?)";
             Object[] params = {modify.getName(), modify.getDescription(), modify.getPeople(),
-                modify.getIdentification(), modify.getCollege(), modify.getPhone(), modify.getFeatuere_id()};
+                modify.getIdentification(), modify.getCollege(), modify.getPhone(), modify.getFeature_id()};
             qr.update(sql,params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,5 +87,76 @@ public class ModifyDaoImpl {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 根据特征点分组返回修改名的统计信息.
+     * @param beginIndex
+     * @param pageSize
+     * @return
+     */
+    public List<Modify> getModifiedPageDataGroupByFN(int beginIndex, int pageSize) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT name, count(*) times FROM tb_modify GROUP BY feature_id LIMIT ?,?";
+            Object[] params = {beginIndex, pageSize};
+            return (List<Modify>) qr.query(sql, params, new BeanListHandler(Modify.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 加载被修改过的特征点的分页统计数据.
+     * @param beginIndex
+     * @param i
+     * @return
+     */
+    public List<Modify> getFPModifyPD(int beginIndex, int i) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "select f.id feature_id, f.name name, count(m.feature_id) times from tb_features f, tb_modify m " +
+                    "where m.feature_id = f.id group by m.feature_id limit ?,?";
+            Object[] params = {beginIndex, i};
+            return (List<Modify>) qr.query(sql, params, new BeanListHandler(Modify.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取分组后的总记录数.
+     * @return
+     */
+    public int getAllGroupRecord() {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "select f.id feature_id, f.name name, count(m.feature_id) times from tb_features f, tb_modify m " +
+                    "where m.feature_id = f.id group by m.feature_id ";
+            List<Modify> list = (List<Modify>) qr.query(sql, new BeanListHandler(Modify.class));
+            return list.size();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取修改名详情信息.
+     * @param feature_id
+     * @return
+     */
+    public List<Modify> getModifyDetail(int feature_id) {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT * FROM tb_modify WHERE feature_id = ?";
+            return (List<Modify>) qr.query(sql, feature_id, new BeanListHandler(Modify.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }
