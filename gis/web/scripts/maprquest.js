@@ -369,7 +369,7 @@ function showFeatureDetail(id) {
 function getAliasById(id, name){
     console.log("=============进入getAliasById方法.=============")
     $("#cContent p").remove();
-    $("#cTitle").text("现用名：" + name);
+    $("#cTitle").text(name);
     $("#fpId").val(id);
     // 获取父元素
     var $cContent = $("#cContent");
@@ -396,7 +396,7 @@ function getAliasById(id, name){
 function getAliasByName(id, name){
     console.log("=============进入getAliasById方法.=============")
     $("#cContent p").remove();
-    $("#cTitle").text("现用名：" + name);
+    $("#cTitle").text(name);
     $("#fpId").val(id);
     // 获取父元素
     var $cContent = $("#cContent");
