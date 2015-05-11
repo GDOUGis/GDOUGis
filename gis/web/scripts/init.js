@@ -10,6 +10,7 @@ mousestate ="";//鼠标是否按下的状态
 selectedname = null;
 myslider = null;
 mysliderState = null;
+
 /*document.onmousedown=mapmousedown;
 document.onmousemove=mapmousemove;
 document.onmouseup=mapmouseup;*/

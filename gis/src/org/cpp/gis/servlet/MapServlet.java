@@ -253,9 +253,7 @@ public class MapServlet extends HttpServlet {
 //			mymap.setZoom(resetzoom);
             mymap.setZoom(2140.0);
 			// 设定地图范围为最初的范围
-            resetpoint = new DoublePoint(0.24, 0.36);
-            resetpoint = new DoublePoint(0.24, 0.36);
-            resetpoint = new DoublePoint(0.24, 0.36);
+            resetpoint = new DoublePoint(Double.parseDouble(request.getSession().getAttribute("oldx").toString()),Double.parseDouble(request.getSession().getAttribute("oldy").toString()));
 			mymap.setCenter(resetpoint);
 			// 设定地图中心为最初的中心点
 		} catch (Exception e) {
@@ -292,53 +290,57 @@ public class MapServlet extends HttpServlet {
                 sout.flush();
 				sout.close();
 		} catch (Exception localException1) {
+            localException1.printStackTrace();
 		}
 	}
 
-	private void responsetext(MapJ mymap, HttpServletResponse response,
+	private void responsetext(MapJ mymap, HttpServletRequest request,HttpServletResponse response,
 			String flag) {
 		try {
 			PrintWriter out = response.getWriter();
 			response.setContentType("text/html; charset=UTF-8");
 			if (flag.equals("centerpoint")) {
 				DoublePoint centerpoint = mymap.getCenter();
-				out
-						.print(String
-								.valueOf(String
-										.valueOf(new StringBuffer(
-												"<body onload=\"setxy()\"><input name=centerx type=hidden value=")
-												.append(centerpoint.x)
-												.append(">")
-												.append(
-														"<input name=centery type=hidden value=")
-												.append(centerpoint.y)
-												.append(">")
-												.append("</body>")
-												.append(
-														"<script language=\"JavaScript\">")
-												.append("function setxy(){")
-												.append(
-														"parent.document.all.oldx.value=document.all.centerx.value;")
-												.append(
-														"parent.document.all.oldy.value=document.all.centery.value")
-												.append("}")
-												.append("</script>"))));
+                request.getSession().setAttribute("oldx",centerpoint.x);
+                request.getSession().setAttribute("oldy",centerpoint.y);
+                         out
+                                 .print(String
+                                         .valueOf(String
+                                                 .valueOf(new StringBuffer(
+                                                         "<body onload=\"setxy()\"><input name=centerx type=hidden value=")
+                                                         .append(centerpoint.x)
+                                                         .append(">")
+                                                         .append(
+                                                                 "<input name=centery type=hidden value=")
+                                                         .append(centerpoint.y)
+                                                         .append(">")
+                                                         .append("</body>")
+                                                         .append(
+                                                                 "<script language=\"JavaScript\">")
+                                                         .append("function setxy(){")
+                                                         .append(
+                                                                 "parent.document.all.oldx.value=document.all.centerx.value;")
+                                                         .append(
+                                                                 "parent.document.all.oldy.value=document.all.centery.value")
+                                                         .append("}")
+                                                         .append("</script>"))));
 			} else {
-				out
-						.print(String
-								.valueOf(String
-										.valueOf(new StringBuffer(
-												"<body onload=\"setzoom()\"><input name=zoom type=hidden value=")
-												.append(mymap.getZoom())
-												.append(">")
-												.append("</body>")
-												.append(
-														"<script language=\"JavaScript\">")
-												.append("function setzoom(){")
-												.append(
-														"parent.document.all.oldzoom.value=document.all.zoom.value;")
-												.append("}")
-												.append("</script>"))));
+                request.getSession().setAttribute("oldzoom",mymap.getZoom());
+                out
+                        .print(String
+                                .valueOf(String
+                                        .valueOf(new StringBuffer(
+                                                "<body onload=\"setzoom()\"><input name=zoom type=hidden value=")
+                                                .append(mymap.getZoom())
+                                                .append(">")
+                                                .append("</body>")
+                                                .append(
+                                                        "<script language=\"JavaScript\">")
+                                                .append("function setzoom(){")
+                                                .append(
+                                                        "parent.document.all.oldzoom.value=document.all.zoom.value;")
+                                                .append("}")
+                                                .append("</script>"))));
 			}
 
 		} catch (Exception e) {
@@ -498,10 +500,10 @@ public class MapServlet extends HttpServlet {
 			responseimg(mymap, response);
 		} else if ((rqutype != null) && (rqutype.equals("centerpoint"))) {
 			mymap = initmap(request);
-			responsetext(mymap, response, "centerpoint");
+			responsetext(mymap, request,response, "centerpoint");
 		} else if ((rqutype != null) && (rqutype.equals("zoom"))) {
 			mymap = initmap(request);
-			responsetext(mymap, response, "zoom");
+			responsetext(mymap, request,response, "zoom");
 		} else if ((rqutype != null) && (rqutype.equals("boundmap"))) {
 			mymap = initmap(request);
 			boundmap = initboundmap(request);
@@ -571,7 +573,8 @@ public class MapServlet extends HttpServlet {
         }else if((rqutype != null) && (rqutype.equals("loadFeature"))) {
             mymap = initmap(request);
             try {
-                loadFeature(response, request, mymap);
+               loadFeature_new(response, request, mymap);
+               //loadFeature(response, request, mymap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -857,6 +860,16 @@ public class MapServlet extends HttpServlet {
                 if(!m_Layer.isVisible()){
                     continue;
                 }
+                //以下图层不用搜索
+                if(m_Layer.getName().equals("绿地")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("铺地层")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("名字")){
+                    continue;
+                }
                 // 删除以上操作已经添加的theme列表
                 m_Layer.getThemeList().removeAll(true);
                 List columnNames = new ArrayList();
@@ -1072,7 +1085,7 @@ public class MapServlet extends HttpServlet {
 
 
             if (m_Layer == null) {
-                System.out.println("没有这个图层");
+                System.out.println("没有这个图层233333333333333333333");
                 return;
             }
 
@@ -1100,7 +1113,7 @@ public class MapServlet extends HttpServlet {
             DoublePoint screenPoint = null;
             FeaturePoint fp = null;
             List<FeaturePoint> list = new ArrayList<FeaturePoint>();
-            int j = 0;
+            int id = 0;
             String name;
             while (ftr != null) {
                 name = ftr.getAttribute(0).toString();
@@ -1119,7 +1132,7 @@ public class MapServlet extends HttpServlet {
 //                            System.out.println("屏幕坐标：（"+screenPoint +"）");
                             // 将名称和坐标返回
                             fp = new FeaturePoint();
-                            fp.setId(fp.getId() == null? j:fp.getId());
+                            fp.setId(fp.getId() == null? id:fp.getId());
                             fp.setName(name);
                             fp.setX(screenPoint.x);
                             fp.setY(screenPoint.y);
@@ -1128,7 +1141,7 @@ public class MapServlet extends HttpServlet {
                             fqService.addFeaturePoint(j, name);
                             */
                             list.add(fp);
-                            j++;
+                            id++;
                         }
 
                     }
@@ -1168,6 +1181,7 @@ public class MapServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
 
+        int id = 0;//给id赋值.
         try {
             if (mapJ == null) {
                 mapJ = initMapJ();
@@ -1177,14 +1191,28 @@ public class MapServlet extends HttpServlet {
 
             //获取所有的图层
             Layers layers = mapJ.getLayers();
+
             //对每个图层进行搜索.
             Layer m_Layer = null;
+
+
+            List<FeaturePoint> list = new ArrayList<FeaturePoint>();
 
             for(int i = 0; i < layers.size(); i++) {
                 //获得layer
                 m_Layer = layers.elementAt(i);
+
                 //如果该图层用户没有显示，那么不提供给搜索.
                 if(!m_Layer.isVisible()){
+                    continue;
+                }
+                if(m_Layer.getName().equals("绿地")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("铺地层")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("名字")){
                     continue;
                 }
                 // 删除以上操作已经添加的theme列表
@@ -1211,27 +1239,27 @@ public class MapServlet extends HttpServlet {
                 DoublePoint doublePoint = null;
                 DoublePoint screenPoint = null;
                 FeaturePoint fp = null;
-                List<FeaturePoint> list = new ArrayList<FeaturePoint>();
-                int j = 0;
+
+
                 String name;
                 while (ftr != null) {
                     name = ftr.getAttribute(0).toString();
                     if(!"".equals(name.trim()) || name != null) {
-                        System.out.print("layer's name：" + name);
+                        //System.out.print("layer's name：" + m_Layer.getName()+"ftr name:"+name);
                         if(ftr != null && ftr.getGeometry() != null) {
                             doublePoint = ftr.getGeometry().getBounds().center();
 //                       mapJ.setCenter(doublePoint);
 //                        mapJ.setCenter(new DoublePoint(0.24, 0.36));
-                            System.out.println("center point：（"+doublePoint+"）");
+                            //System.out.println("center point：（"+doublePoint+"）");
                             // 坐标转换
                             screenPoint = mapJ.transformNumericToScreen(doublePoint);
                             // 过滤超出960 * 620 的坐标点
                             if(screenPoint.x < 960 && screenPoint.x > 0
                                     && screenPoint.y > 0 && screenPoint.y < 620) {
-                                System.out.println("screen point：（"+screenPoint +"）");
+                                //System.out.println("screen point：（"+screenPoint +"）");
                                 // 将名称和坐标返回
                                 fp = new FeaturePoint();
-                                fp.setId(fp.getId() == null? j:fp.getId());
+                                fp.setId(fp.getId() == null? id:fp.getId());
                                 fp.setName(name);
                                 fp.setX(screenPoint.x);
                                 fp.setY(screenPoint.y);
@@ -1240,7 +1268,7 @@ public class MapServlet extends HttpServlet {
                             fqService.addFeaturePoint(j, name);
                             */
                                 list.add(fp);
-                                j++;
+                                id++;
                             }
 
                         }
@@ -1249,17 +1277,18 @@ public class MapServlet extends HttpServlet {
                     ftr = rFtrSet.getNextFeature();
                 }
                 rFtrSet.rewind();
-                //response.setContentType("text/html;charset=utf-8");
-                JSONArray jsonArray = JSONArray.fromObject(list);
-                //把最新的zoom封装进来
-                double newzoom = mapJ.getZoom();
-                Map<String,Object> map = new HashMap<String, Object>();
-                map.put("featuresPoints",jsonArray);
-                map.put("newzoom", newzoom);
-                System.out.println(jsonArray.toString());
-                JSONObject mapObject = JSONObject.fromObject(map);
-                out.write(mapObject.toString());
             }
+
+            JSONArray jsonArray = JSONArray.fromObject(list);
+            double newzoom = mapJ.getZoom();
+            //封装到顶层结果集
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("featuresPoints",jsonArray);
+            map.put("newzoom", newzoom);
+
+            //System.out.println(jsonArray.toString());
+            JSONObject mapObject = JSONObject.fromObject(map);
+            out.write(mapObject.toString());
         } catch (Exception e){
             e.printStackTrace();
         } finally {
@@ -1270,13 +1299,5 @@ public class MapServlet extends HttpServlet {
         System.out.println("退出loadFeature方法.");
     }
 
-  /*  @Test
-    public void test() throws Exception{
-        MapJ mymap = new MapJ();
-        mymap.loadGeoset("E:\\map\\map.gst", "E:\\map" , null);
-        String layernames = "有字段颜色教学用层";
-        String selectnames = "楼";
-        fuzzyQuery(mymap,layernames,selectnames,null);
-    }*/
 
 }

@@ -12,13 +12,18 @@ function mapsmallpaner(){
 	var frameleft;
 	var boundhigh;
 	var maphigh;
+	//frametop=parseInt(document.all.mapboundframe.style.top);
+	//frameleft=parseInt(document.all.mapboundframe.style.left);
 	frametop=parseInt(document.all.mapboundframe.style.top);
 	frameleft=parseInt(document.all.mapboundframe.style.left);
     //alert(window.event);
-	centerx=evt.clientX-(frameleft+1);
+	//centerx=evt.clientX-(frameleft+1);
+	//centery=evt.clientY-(frametop+1);
+	centerx=evt.clientX-(frameleft)+30;
+	centery=evt.clientY-(frametop)+20;
 
-	centery=evt.clientY-(frametop+1);
    // alert(centerx + "," + centery);
+    //alert("rqutype=smallpanmap&centerx="+centerx+"&centery="+centery);
 	chgmapsrc("rqutype=smallpanmap&centerx="+centerx+"&centery="+centery);
 }
 
@@ -26,7 +31,8 @@ function mapsmallpaner(){
  * 重置地图，初始状态.
  */
 function mapreset(){
-    alert("123");
+    myslider.slider("setValue",1);//更新滚动条.
+    mysliderState = null;
 	chgmapsrc("rqutype=resetmap");
 }
 
@@ -170,9 +176,15 @@ function updataBoundMap(){
     if(mysliderState == "big"){
         var oldVal = myslider.slider("getValue");
         myslider.slider("setValue",oldVal+1);//更新滚动条.
+        mysliderState = null;
     }else if(mysliderState == "small"){
         var oldVal = myslider.slider("getValue");
         myslider.slider("setValue",oldVal-1);//更新滚动条.
+        mysliderState = null;
+    }else if(selectedname != null){
+        myslider.slider("setValue",3);//更新滚动条.
+        mysliderState = null;
+
     }
 }
 
@@ -255,13 +267,20 @@ function loadMapInfo(){
     /**
      * 初始化特征点
      */
-    var url = "/servlet/MapServlet?rqutype=loadFeature";
+    var url = "/servlet/MapServlet";
+
     var $mapframe = $("#mapframe");
     var mapfremeLeft = $mapframe.offset().left;
     var mapfremeTop = $mapframe.offset().top;
     var picwidth = $mapframe.width();
     var picheight  = $mapframe.height();
-    $.getJSON(url, null, function(data) {
+    var params = {
+        'rqutype':'loadFeature',
+        'date':new Date()
+    }
+
+    $.getJSON(url, params, function(data) {
+       // alert("返回数据啦");
 
         var featuresPoints = data.featuresPoints;
         var newzoom = data.newzoom;
@@ -278,13 +297,15 @@ function loadMapInfo(){
             ////spanY = featuresPoints[i].y - mapfremeTop;
             spanX = featuresPoints[i].x;
             spanY = featuresPoints[i].y;
-            var screenX = spanX-rang+10;
-            var screenY = spanY-rang+10;
+            //var screenX = spanX-rang+10;
+            //var screenY = spanY-rang+10;
+            var screenX = spanX-rang/2;
+            var screenY = spanY-rang/2;
             var name = featuresPoints[i].name;
             var id = featuresPoints[i].id;
-            $mapframe.append(
+            $("#imgdiv").append(
                 "<a  href='#' onclick=getAliasById("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
-                "onmouseover=moveFeaturePoint('"+name+"') onmouseout=moveoutFeaturePoint('"+name+"')>" +
+                "onmouseover=moveFeaturePoint('"+name+"',event) onmouseout=moveoutFeaturePoint('"+name+"')>" +
                 "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
                 "<span style='display: none'>"+name+"</span>" +
                 "</div>" +
@@ -323,12 +344,13 @@ function moveFeaturePoint(name,e) {
     var evn = window.event||e;
     var mouseX = evn.clientX;
     var mouseY = evn.clientY;
-    $("body").append("<span style='background:#fff;width:150px;height:24px;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
+    $("body").append("<span class='FeatureName' style='background:#ffffff;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
 
 }
 function moveoutFeaturePoint(name){
     //alert("移开了");
     $("span[name='"+name+"']").remove();
+    $(".FeatureName").remove();
 }
 
 function showFeatureDetail(id) {

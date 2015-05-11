@@ -91,17 +91,21 @@
     <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
             style=" position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;">
 </div>--%>
-
+<!--div缩略图边框，img为缩略图,初始化为隐藏的-->
+<div id="mapboundframe" style="position: absolute;top: 70px;left: 980px;height: 183px;width: 243px; display: block;border: 1px solid #000000;">
+    <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
+         style=" height: 180px;width: 240px;visibility: visible;float:left;">
+</div>
 
 <!--div为地图边框，img为地图-->
-<div id="mapframe"  style="position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
+<div id="mapframe"  style="z-index: 0;position: absolute;top: 70px;left: 0;width: 960px;height: 600px; overflow: hidden;"  >
     <div id="imgdiv" class="imgdiv">
         <img height="200" id="imgmap" galleryimg="false" onload="updataBoundMap()" ondragstart="mouseStop()" onmouseover="this.style.cursor='pointer'">
     </div>
 </div>
 
 <%--滚动条--%>
-<div id="scroll">
+<div id="scroll" style="z-index: 999;top:0;">
     <div style="position: absolute;left: 72px;top: 100px;"><a href="#" title="重置" onclick="mapreset()"><span class="glyphicon glyphicon-refresh"></span></a></div>
     <div style="position: absolute;left: 72px;top: 130px;"><a href="#" title="放大" onclick="bigger();"><span class="glyphicon glyphicon-plus"></span></a></div>
     <div style="position: absolute;left: 72px;top: 410px;"><a href="#" title="缩小" onclick="smaller();"><span class="glyphicon glyphicon-minus"></span></a></div>
@@ -110,12 +114,7 @@
     </div>
 </div>
 
-<div class="tool_warp" style="position: absolute;top: 70px;left: 980px;">
-    <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
-    <div id="mapboundframe" style="height: 182px;width: 242px; display: block;border: 1px solid #000000;">
-        <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
-             style=" height: 180px;width: 240px;visibility: visible;float:left;">
-    </div>
+<div class="tool_warp" style="position: absolute;top: 270px;left: 980px;">
     <%--<div class="tool_header">
         <h3>欢迎使用广东海洋大学数字地图</h3>
     </div>
@@ -161,7 +160,7 @@
                 <font size="2">&nbsp;&nbsp;&nbsp;&nbsp;视野(米):</font>
                 <input type="Text"
                        style="border: none; background: #DFFFDF; text-align: left;"
-                       name="oldzoom">
+                       name="oldzoom" value="oldzoom">
             </td>
             <td width="266">&nbsp;</td>
         </tr>
@@ -298,11 +297,14 @@
             slideVal = val;
         });
 
+        //定时器
+        myTimeOut = null;
         //监听滚轮.
         $('#imgmap').mousewheel(function(event, delta) {
+            var evn = event || window.event;
             //鼠标xy
-            var x = event.clientX;
-            var y = event.clientY;
+            var x = evn.clientX;
+            var y = evn.clientY;
             //图片所在div距离屏幕边界的xy
             var imgx = document.all.mapframe.style.left;
             var imgy = document.all.mapframe.style.top;
@@ -310,22 +312,32 @@
             x = parseInt(x) - parseInt(imgx);
             y = parseInt(y) - parseInt(imgy);
             //alert(x+","+y);
+            //再次触发就清理
+            if(myTimeOut != null){
+                //再次触发清理定时器
+                window.clearTimeout(myTimeOut);
+                mysliderState = null;
+            }
             //向上滚,放大
             if(delta==1){
                 //$("#ex4").attr("data-slider-value",$("#ex4").attr("data-slider-value")+1);
-                //alert();
                 var oldVal = myslider.slider("getValue");
                 if(oldVal<5){
+                    myTimeOut=window.setTimeout(function(){myfunction()},500);
                     mysliderState = 'big';
-                    map2bigger(x,y);
-                    //myslider.slider("setValue",oldVal+1);//更新滚动条.
+                    //map2bigger(x,y);
+                    function myfunction(){
+                        map2bigger(x,y);
+                    }
                 }
             }else{//向下滚，缩小
                 var oldVal = myslider.slider("getValue");
                 if(oldVal>1) {
+                    myTimeOut=window.setTimeout(function(){myfunction2()},500);
                     mysliderState = "small";
-                    map2smaller(x, y);
-                    //myslider.slider("setValue", oldVal - 1);//更新滚动条.
+                    function myfunction2(){
+                        map2smaller(x, y);
+                    }
                 }
 
             }
