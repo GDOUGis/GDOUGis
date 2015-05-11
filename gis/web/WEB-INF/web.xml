@@ -133,12 +133,22 @@
 
     <servlet>
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>org.cpp.gis.servlet.UserServletl</servlet-class>
+        <servlet-class>org.cpp.gis.servlet.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>userServlet</servlet-name>
         <url-pattern>/servlet/UserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>modifyServlet</servlet-name>
+        <servlet-class>org.cpp.gis.servlet.ModifyServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>modifyServlet</servlet-name>
+        <url-pattern>/servlet/ModifyServlet</url-pattern>
     </servlet-mapping>
     <!-- 编码过滤器 -->
     <filter>

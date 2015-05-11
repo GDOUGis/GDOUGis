@@ -6,6 +6,8 @@ import org.cpp.gis.factory.DaoFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * ModifyDaoImpl 测试单元.
  * Created by Rose on 2015/5/8.
@@ -28,8 +30,35 @@ public class TestModifyDao {
         modify.setIdentification(1);
         modify.setPeople("Rose");
         modify.setPhone("13132165487");
-        modify.setFeatuere_id(1);
+        modify.setFeature_id(1);
 
         modifyDao.create(modify);
+    }
+
+    @Test
+    public void testGetModifiedPageDataGroupByFN() {
+        List<Modify> list = modifyDao.getModifiedPageDataGroupByFN(1, 10);
+        for(int i = 0; i<list.size(); i++) {
+            System.out.println(list.get(i).getName() + " == > " + list.get(i).getTimes());
+        }
+    }
+
+    @Test
+    public void testGetFPModifyPD() {
+        List<Modify> list = modifyDao.getFPModifyPD(1, 10);
+        for(int i = 0; i<list.size(); i++) {
+            System.out.println(list.get(i).getFeature_id()+":"+ list.get(i).getName() + " == > " + list.get(i).getTimes());
+        }
+    }
+
+    @Test
+    public void testGetAllGroupRecord() {
+        System.out.println(modifyDao.getAllGroupRecord());
+    }
+
+    @Test
+    public void testGetModifyDetail() {
+        List<Modify> list = modifyDao.getModifyDetail(54);
+        System.out.println(list.toString());
     }
 }

@@ -1,6 +1,8 @@
 package org.cpp.gis.servlet;
 
+import org.cpp.gis.entities.Modify;
 import org.cpp.gis.entities.User;
+import org.cpp.gis.service.impl.ModifyServiceImpl;
 import org.cpp.gis.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -8,14 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/5/9.
  */
-public class UserServletl extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     private UserServiceImpl userService = new UserServiceImpl();
+    private ModifyServiceImpl modifyService = new ModifyServiceImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,12 +34,11 @@ public class UserServletl extends HttpServlet {
      * @param resp
      */
     private void login(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("==> login");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        PrintWriter out = null;
+        System.out.println("un:"+username+", pw:"+password);
         try {
-            out = resp.getWriter();
-            resp.setContentType("text/html;charset=utf-8");
              /*判空*/
             if(username == null || password == null ||
                     "".equals(username.trim()) || "".equals(password.trim())) {
@@ -44,16 +46,20 @@ public class UserServletl extends HttpServlet {
             }
 
             /*查找是否存在该用户，存在则返回1并将user存到sessin域中，否则返回0*/
-            User user = userService.getUserByName(username);
+            User user = userService.login(username, password);
             if(user == null) {
-                out.write("0");
             } else {
                 req.getSession().setAttribute("user", user);
-                out.write("1");
+                List<Modify> list = modifyService.getFPModifyPD("1","20");
+                // 将分页结果存到request域.
+                System.out.println(list.toString());
+                req.setAttribute("list", list);
+                req.getRequestDispatcher("/WEB-INF/views/table.jsp").forward(req, resp);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("login ==>");
     }
 
     @Override

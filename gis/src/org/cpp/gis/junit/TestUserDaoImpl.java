@@ -2,9 +2,8 @@ package org.cpp.gis.junit;
 
 import org.cpp.gis.dao.impl.UserDaoImpl;
 import org.cpp.gis.entities.User;
-import org.cpp.gis.factory.DaoFactory;
-import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * UserDaoImpl测试单元.
@@ -14,10 +13,10 @@ public class TestUserDaoImpl {
 
     private UserDaoImpl userDao = null;
 
-    @Before
+    /*@Before
     public void init(){
         userDao = DaoFactory.getInstance().createDao("org.cpp.gis.dao.impl.UserDaoImpl");
-    }
+    }*/
 
     @Test
     public void testCreateUser() {

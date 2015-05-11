@@ -14,7 +14,7 @@ public class Modify {
     private String phone;
     private Integer times;
 
-    private Integer featuere_id;
+    private Integer feature_id;
 
     @Override
     public String toString() {
@@ -27,16 +27,16 @@ public class Modify {
                 ", college='" + college + '\'' +
                 ", phone='" + phone + '\'' +
                 ", times=" + times +
-                ", featuere_id=" + featuere_id +
+                ", featuere_id=" + feature_id +
                 '}';
     }
 
-    public Integer getFeatuere_id() {
-        return featuere_id;
+    public Integer getFeature_id() {
+        return feature_id;
     }
 
-    public void setFeatuere_id(Integer featuere_id) {
-        this.featuere_id = featuere_id;
+    public void setFeature_id(Integer feature_id) {
+        this.feature_id = feature_id;
     }
 
     public Integer getId() {

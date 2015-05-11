@@ -32,4 +32,10 @@ public class TestModifyServiceImpl {
             System.out.println(list.get(i).toString());
         }
     }
+
+    @Test
+    public void testGetFPModifyPD() {
+        List<Modify> list = modifyService.getFPModifyPD("1", "50");
+        System.out.println(list.toString());
+    }
 }
