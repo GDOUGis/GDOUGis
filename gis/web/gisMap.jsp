@@ -221,17 +221,17 @@
             console.log(params);
             console.log("Before addModifyName的getJSON方法");
             console.log($(".form-inline").serialize());
-            $.ajax(url,{
-                type:"POST",
-                dataType:"html",
-                data:params
-            })
-                    .success(function(response){
-                        alert("run it!!")
-                    })
-                    .error(function(){
-                        alert("error");
-                    });
+//            $.ajax(url,{
+//                type:"POST",
+//                dataType:"html",
+//                data:params
+//            })
+//                    .success(function(response){
+//                        alert("run it!!")
+//                    })
+//                    .error(function(){
+//                        alert("error");
+//                    });
 //            $.ajax({
 //                type:"POST",
 //                url:url,
@@ -240,20 +240,20 @@
 //                    alert("run it!!")
 //                }
 //            })
-            /*$.getJSON(url, params, function(data) {
-             alert("进入addModifyName的getJSON方法")
-             if(data == 1) {
-             $("#cAlias").val("");
-             $("#modifyDesc").val("");
-             $("#modifyPeople").val("");
-             $("#modifyCollege").val("");
-             $("#modifyPhone").val("");
-             alert("提交成功！")
-             } else {
-             alert("服务器正忙..")
-             }
-             alert("退出addModifyName的getJSON方法")
-             });*/
+            $.getJSON(url, params, function(data) {
+                 alert("进入addModifyName的getJSON方法")
+                 if(data == "1") {
+                     $("#cAlias").val("");
+                     $("#modifyDesc").val("");
+                     $("#modifyPeople").val("");
+                     $("#modifyCollege").val("");
+                     $("#modifyPhone").val("");
+                     alert("提交成功！")
+                 } else {
+                     alert("服务器正忙..")
+                 }
+                 alert("退出addModifyName的getJSON方法")
+                 });
             alert("After addModifyName的getJSON方法")
             return false;
         });

@@ -304,7 +304,7 @@ function loadMapInfo(){
             var name = featuresPoints[i].name;
             var id = featuresPoints[i].id;
             $("#imgdiv").append(
-                "<a  href='#' onclick=getAliasById("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                "<a  href='#' onclick=getAliasByName("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
                 "onmouseover=moveFeaturePoint('"+name+"',event) onmouseout=moveoutFeaturePoint('"+name+"')>" +
                 "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
                 "<span style='display: none'>"+name+"</span>" +
