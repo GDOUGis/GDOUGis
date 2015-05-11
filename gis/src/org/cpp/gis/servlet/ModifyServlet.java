@@ -2,8 +2,13 @@ package org.cpp.gis.servlet;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.cpp.gis.entities.FeaturePoint;
 import org.cpp.gis.entities.Modify;
+import org.cpp.gis.service.FeaturePointService;
+import org.cpp.gis.service.impl.FeaturePointServiceImpl;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
+import org.cpp.gis.utils.Result;
+import org.omg.CORBA.Request;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -47,9 +52,22 @@ public class ModifyServlet extends HttpServlet {
         System.out.println("==> showModifiedFPDetail ");
         try {
             int feature_id = Integer.parseInt(req.getParameter("feature_id"));
-            List<Modify> list = modifyService.getModifyDetail(feature_id);
+
+            String pageNum = req.getParameter("pageNum");
+            String pageSize = req.getParameter("pageSize");
+            if(pageNum==null){
+                pageNum = "1";
+            }
+            if(pageSize==null){
+                pageSize = "10";
+            }
+            Result result = modifyService.getModifyDetail(feature_id,pageNum,pageSize);
             // 将分页结果存到request域.
-            req.setAttribute("list", list);
+            req.setAttribute("result", result);
+            //将特征点名放到request
+            FeaturePointService fs = new FeaturePointServiceImpl();
+            FeaturePoint f  = fs.getById(feature_id);
+            req.setAttribute("featurePointName",f.getName());
             // 请求转发.
             req.getRequestDispatcher("/WEB-INF/views/modifyFpDetail.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
@@ -73,12 +91,20 @@ public class ModifyServlet extends HttpServlet {
         try {
             String pageNum = req.getParameter("pageNum");
             String pageSize = req.getParameter("pageSize");
-            List<Modify> list = modifyService.getFPModifyPD(pageNum,pageSize);
-            // 将分页结果存到request域.
-            req.setAttribute("list", list);
-            for(int i = 0; i<list.size(); i++) {
-                System.out.println(list.get(i).getFeature_id()+":"+ list.get(i).getName() + " == > " + list.get(i).getTimes());
+            if(pageNum==null){
+                pageNum = "1";
             }
+            if(pageSize==null){
+                pageSize = "10";
+            }
+            Result result = modifyService.getFPModifyPD(pageNum,pageSize);
+            // 将分页结果存到request域.
+            req.setAttribute("result", result);
+            List list = result.getList();
+           /* for(int i = 0; i<list.size(); i++) {
+                System.out.println(list.get(i).getFeature_id()+":"+ list.get(i).getName() + " == > " + list.get(i).getTimes());
+            }*/
+            req.getRequestDispatcher("/WEB-INF/views/table.jsp").forward(req,resp);
         } catch (Exception e) {
             e.printStackTrace();
         }

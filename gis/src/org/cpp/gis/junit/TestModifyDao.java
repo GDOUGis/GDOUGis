@@ -58,7 +58,7 @@ public class TestModifyDao {
 
     @Test
     public void testGetModifyDetail() {
-        List<Modify> list = modifyDao.getModifyDetail(54);
-        System.out.println(list.toString());
+       /* *//*List<Modify> list = modifyDao.getModifyDetail(54);*//*
+        System.out.println(list.toString());*/
     }
 }

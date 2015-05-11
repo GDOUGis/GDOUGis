@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>时尚show管理员登录</title>
+<title>校园地图管理员登录</title>
  <link rel="shortcut icon" href="${pageContext.request.contextPath }/browser/img/common/1.ico" type="image/x-icon"/>
 <!-- CSS -->
 <link rel="stylesheet"

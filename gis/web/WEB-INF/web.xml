@@ -150,6 +150,16 @@
         <servlet-name>modifyServlet</servlet-name>
         <url-pattern>/servlet/ModifyServlet</url-pattern>
     </servlet-mapping>
+
+    <!--转发servlet-->
+    <servlet>
+        <servlet-name>forwardServlet</servlet-name>
+        <servlet-class>org.cpp.gis.servlet.ForwardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>forwardServlet</servlet-name>
+        <url-pattern>/servlet/ForwardServlet</url-pattern>
+    </servlet-mapping>
     <!-- 编码过滤器 -->
     <filter>
         <filter-name>SetCharacterEncodig</filter-name>

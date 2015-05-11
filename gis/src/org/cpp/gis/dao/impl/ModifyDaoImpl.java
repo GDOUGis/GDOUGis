@@ -148,15 +148,27 @@ public class ModifyDaoImpl {
      * @param feature_id
      * @return
      */
-    public List<Modify> getModifyDetail(int feature_id) {
+    public List<Modify> getModifyDetail(int feature_id,int beginIndex, int pageSize) {
         try {
             QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "SELECT * FROM tb_modify WHERE feature_id = ?";
-            return (List<Modify>) qr.query(sql, feature_id, new BeanListHandler(Modify.class));
+            String sql = "SELECT * FROM tb_modify WHERE feature_id = ? LIMIT ?,?";
+            Object params[] = {feature_id,beginIndex,pageSize};
+            return (List<Modify>) qr.query(sql,params, new BeanListHandler(Modify.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
 
+
+    public int getModifyTotalRecord(int feature_id){
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT count(*) FROM tb_modify WHERE feature_id = ?";
+            long l = (Long) qr.query(sql,feature_id, new ScalarHandler());
+            return (int) l;
+        }catch (Exception e){
+            throw new  RuntimeException(e);
+        }
     }
 }

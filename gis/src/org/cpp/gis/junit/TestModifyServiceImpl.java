@@ -2,6 +2,7 @@ package org.cpp.gis.junit;
 
 import org.cpp.gis.entities.Modify;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
+import org.cpp.gis.utils.Result;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class TestModifyServiceImpl {
 
     @Test
     public void testGetFPModifyPD() {
-        List<Modify> list = modifyService.getFPModifyPD("1", "50");
-        System.out.println(list.toString());
+        Result result= modifyService.getFPModifyPD("1", "50");
+        System.out.println(result.toString());
     }
 }

@@ -7,6 +7,7 @@ import org.cpp.gis.entities.Modify;
 import org.cpp.gis.factory.DaoFactory;
 import org.cpp.gis.utils.Page;
 import org.cpp.gis.utils.PageUtil;
+import org.cpp.gis.utils.Result;
 
 import java.util.List;
 
@@ -114,13 +115,16 @@ public class ModifyServiceImpl {
      * @param pageSize
      * @return
      */
-    public List<Modify> getFPModifyPD(String pageNum, String pageSize) {
+    public Result getFPModifyPD(String pageNum, String pageSize) {
+        Result result = new Result();
         List<Modify> list = null;
         try {
             int totalRecord = modifyDao.getAllGroupRecord();
             Page page = PageUtil.createPage(Integer.parseInt(pageSize),totalRecord,Integer.parseInt(pageNum));
             list =modifyDao.getFPModifyPD(page.getBeginIndex(), Integer.parseInt(pageSize));
-            return  list;
+            result.setList(list);
+            result.setPage(page);
+            return  result;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,7 +137,18 @@ public class ModifyServiceImpl {
      * @param feature_id
      * @return
      */
-    public List<Modify> getModifyDetail(int feature_id) {
-        return modifyDao.getModifyDetail(feature_id);
+    public Result getModifyDetail(int feature_id,String pageNum, String pageSize) {
+        Result result = new Result();
+        List<Modify> list = null;
+        try {
+            int totalRecord = modifyDao.getModifyTotalRecord(feature_id);
+            Page page = PageUtil.createPage(Integer.parseInt(pageSize),totalRecord,Integer.parseInt(pageNum));
+            list =modifyDao.getModifyDetail(feature_id,page.getBeginIndex(),Integer.parseInt(pageSize));
+            result.setList(list);
+            result.setPage(page);
+            return  result;
+        } catch (Exception e) {
+           throw new RuntimeException(e);
+        }
     }
 }

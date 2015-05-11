@@ -8,7 +8,7 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private Integer isSu;       // 是否为超级用户.
+    private Integer is_Su;       // 是否为超级用户.
 
     @Override
     public String toString() {
@@ -16,7 +16,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", isSu=" + isSu +
+                ", isSu=" + is_Su +
                 '}';
     }
 
@@ -44,11 +44,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getIsSu() {
-        return isSu;
+    public Integer getIs_Su() {
+        return is_Su;
     }
 
-    public void setIsSu(Integer isSu) {
-        this.isSu = isSu;
+    public void setIs_Su(Integer is_Su) {
+        this.is_Su = is_Su;
     }
 }
