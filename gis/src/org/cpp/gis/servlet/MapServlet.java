@@ -249,7 +249,7 @@ public class MapServlet extends HttpServlet {
 	 */
 	private void resetmap(MapJ mymap, HttpServletRequest request) {
 		try {
-			System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
+			//System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
 //			mymap.setZoom(resetzoom);
             mymap.setZoom(2140.0);
 			// 设定地图范围为最初的范围
@@ -486,7 +486,7 @@ public class MapServlet extends HttpServlet {
 			mymap = initmap(request);
 			responseimg(mymap, response);
 		} else if ((rqutype != null) && (rqutype.equals("chgmapview"))) {
-            System.out.println("================ajax=======================");
+           // System.out.println("================ajax=======================");
             mymap = initmap(request);
 			chgmapview(mymap, request);
 			responseimg(mymap, response);
@@ -521,8 +521,8 @@ public class MapServlet extends HttpServlet {
             layernames= URLDecoder.decode(layernames,"UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
 
-			System.out.println("图层名称=" + layernames);
-			System.out.println("查询名称=" + selectnames);
+			//System.out.println("图层名称=" + layernames);
+			//System.out.println("查询名称=" + selectnames);
 			mymap = initmap(request);
 
 			try {
@@ -537,7 +537,7 @@ public class MapServlet extends HttpServlet {
             //解码
             //layernames= URLDecoder.decode(layernames,"UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
-            System.out.println(selectnames+"------------------------------------");
+           // System.out.println(selectnames+"------------------------------------");
             mymap = initmap(request);
 
             try {
@@ -601,7 +601,7 @@ public class MapServlet extends HttpServlet {
         System.out.println("进入addModifyName方法=====================>>");
         /* 获取参数 */
         int fpId = Integer.parseInt(request.getParameter("fpId"));
-        System.out.println(fpId);
+       // System.out.println(fpId);
         String currentName = request.getParameter("currentName");
         String modifyName = request.getParameter("modifyName");
         String modifyDesc = request.getParameter("modifyDesc");
@@ -646,7 +646,7 @@ public class MapServlet extends HttpServlet {
             }
             response.setContentType("text/html;charset=utf-8");
             JSONArray jsonArray = JSONArray.fromObject(alias);
-            System.out.println(jsonArray.toString());
+          //  System.out.println(jsonArray.toString());
             response.getWriter().write(jsonArray.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -666,7 +666,7 @@ public class MapServlet extends HttpServlet {
         String alias = request.getParameter("alias");
         response.setContentType("text/html;charset=utf-8;");
         try {
-            System.out.println("id:" + id + ", alias:" + alias);
+            //System.out.println("id:" + id + ", alias:" + alias);
             if(id != null && alias != null && !"".equals(alias.trim())) {
                 fpService.addAlias(id, alias);
                 response.getWriter().write("1");
@@ -695,7 +695,7 @@ public class MapServlet extends HttpServlet {
             }
             response.setContentType("text/html;charset=utf-8");
             JSONArray jsonArray = JSONArray.fromObject(alias);
-            System.out.println(jsonArray.toString());
+            //System.out.println(jsonArray.toString());
             response.getWriter().write(jsonArray.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -716,7 +716,7 @@ public class MapServlet extends HttpServlet {
                 FeaturePoint fq = new FeaturePoint();
                 fq = fpService.getById(Integer.parseInt(id));
                 JSONObject jsonObject = JSONObject.fromObject(fq);
-                System.out.println(jsonObject.toString());
+               // System.out.println(jsonObject.toString());
                 response.setContentType("text/html;charset=utf-8");
                 response.getWriter().write(jsonObject.toString());
             }
@@ -760,7 +760,7 @@ public class MapServlet extends HttpServlet {
 		// fill vector with Column names
 		for (int i = 0; i < tabInfo.getColumnCount(); i++) {
 			columnNames.add(tabInfo.getColumnName(i));
-			System.out.println(tabInfo.getColumnName(i) + "  --  ");
+			//System.out.println(tabInfo.getColumnName(i) + "  --  ");
 		}
 		// Perform a search to get the Features(records)from the layer
 		RewindableFeatureSet rFtrSet;
@@ -879,7 +879,7 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                   //System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
 
                 // Perform a search to get the Features(records)from the layer
@@ -910,7 +910,7 @@ public class MapServlet extends HttpServlet {
             List<String> list = new ArrayList<String>();
             JSONArray jsonArray = new JSONArray();
             for(Feature f : features){
-                System.out.println(f.getAttribute(0).toString());
+               // System.out.println(f.getAttribute(0).toString());
                 jsonArray.add(f.getAttribute(0).toString());
 
             }
@@ -978,7 +978,7 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                   // System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
 
                 // Perform a search to get the Features(records)from the layer
@@ -1100,7 +1100,7 @@ public class MapServlet extends HttpServlet {
             // fill vector with Column names
             for (int i = 0; i < tabInfo.getColumnCount(); i++) {
                 columnNames.add(tabInfo.getColumnName(i));
-                System.out.println(tabInfo.getColumnName(i) + "  --  " + tabInfo.getPrimaryKeyInfo());
+               // System.out.println(tabInfo.getColumnName(i) + "  --  " + tabInfo.getPrimaryKeyInfo());
             }
             // Perform a search to get the Features(records)from the layer
             RewindableFeatureSet rFtrSet;
@@ -1158,7 +1158,7 @@ public class MapServlet extends HttpServlet {
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("featuresPoints",jsonArray);
             map.put("newzoom", newzoom);
-            System.out.println(jsonArray.toString());
+           // System.out.println(jsonArray.toString());
             JSONObject mapObject = JSONObject.fromObject(map);
             out.write(mapObject.toString());
         } catch (Exception e) {
@@ -1224,7 +1224,7 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                   // System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
                 // Perform a search to get the Features(records)from the layer
                 //获得当前图层的所有图元

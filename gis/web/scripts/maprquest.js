@@ -33,6 +33,9 @@ function mapsmallpaner(){
 function mapreset(){
     myslider.slider("setValue",1);//更新滚动条.
     mysliderState = null;
+    selectedname = null;
+    //每次加载移除原先定位的点
+    $(".location").remove();
 	chgmapsrc("rqutype=resetmap");
 }
 
@@ -314,7 +317,7 @@ function loadMapInfo(){
                 //alert("进来了");
                 var x = spanX-70/2;
                 var y = spanY-70;
-                $("#imgdiv").append("<div class='location' style='position:absolute; left:"+x+"; top:"+y+";'><img src='../images/location2.png' height='70px'></div>")
+                $("#imgdiv").append("<div class='location' style=position:absolute; left:"+x+"; top:"+y+";'><img src='../images/location2.png' height='70px'></div>")
             }
             console.log("name: " + featuresPoints[i].name + "\n")
             console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
@@ -342,9 +345,9 @@ function loadMapInfo(){
 function moveFeaturePoint(name,e) {
     //alert(name);
     var evn = window.event||e;
-    var mouseX = evn.clientX;
+    var mouseX = evn.clientX+2;
     var mouseY = evn.clientY;
-    $("body").append("<span class='FeatureName' style='background:#ffffff;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
+    $("body").append("<span class='FeatureName' style='border-radius:5px; color:#fff;font-size:24px;background:red;position:absolute; left:"+mouseX+"; top:"+mouseY+";' name='"+name+"'>"+name+"</span>");
 
 }
 function moveoutFeaturePoint(name){
