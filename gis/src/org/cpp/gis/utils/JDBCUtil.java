@@ -14,7 +14,7 @@ public class JDBCUtil {
     private static ComboPooledDataSource dataSource = null;
 
     static {
-        dataSource = new ComboPooledDataSource();
+        dataSource = new ComboPooledDataSource("rose");
     }
 
     /**

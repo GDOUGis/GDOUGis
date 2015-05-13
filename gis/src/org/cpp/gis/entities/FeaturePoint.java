@@ -10,16 +10,28 @@ public class FeaturePoint {
     private Double x;
     private Double y;
     /**
-     * 别名.
+     * 拟用名.
      */
-    private String alias;
+    private String prepareName;
+    /**
+     * 拟改说明.
+     */
+    private String description;
 
-    public String getAlias() {
-        return alias;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPrepareName() {
+        return prepareName;
+    }
+
+    public void setPrepareName(String prepareName) {
+        this.prepareName = prepareName;
     }
 
     @Override
@@ -27,7 +39,7 @@ public class FeaturePoint {
         return "FeaturePoint{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", alias='" + alias + '\'' +
+                ", alias='" + prepareName + '\'' +
                 '}';
     }
 

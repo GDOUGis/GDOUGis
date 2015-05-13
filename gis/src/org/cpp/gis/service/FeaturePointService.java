@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface FeaturePointService {
 
-    public void addFeaturePoint(Integer Id, String name);
+    public void addFeaturePoint(FeaturePoint featurePoint);
 
     public void updateFeaturePointName(Integer Id, String name);
 

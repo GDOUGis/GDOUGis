@@ -19,8 +19,9 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
     public void create(FeaturePoint featurePoint) {
         try {
             QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "INSERT INTO tb_features(id, name) VALUES(?,?)";
-            Object params[] = {featurePoint.getId(), featurePoint.getName()};
+            String sql = "INSERT INTO tb_features(id, name, description, prepareName) VALUES(?, ?, ?, ?)";
+            Object params[] = {featurePoint.getId(), featurePoint.getName(), featurePoint.getDescription(),
+                featurePoint.getPrepareName()};
             qr.update(sql, params);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,9 +37,9 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
     public void updateAlias(Integer id, String alias) {
         try {
             QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "UPDATE tb_features SET alias = ? WHERE id = ? ";
-            Object[] paarams = {alias, id};
-            qr.update(sql, paarams);
+            String sql = "UPDATE tb_features SET prepareName = ? WHERE id = ? ";
+            Object[] params = {alias, id};
+            qr.update(sql, params);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -285,7 +285,7 @@ function loadMapInfo(){
     $.getJSON(url, params, function(data) {
        // alert("返回数据啦");
 
-        var featuresPoints = data.featuresPoints;
+        var featurePoints = data.featurePoints;
         var newzoom = data.newzoom;
         var rang =  parseInt(2140*18/newzoom);//矩形区域距离中心点绝对值.
         console.log("进入getJSON方法..")
@@ -295,19 +295,19 @@ function loadMapInfo(){
         var spanY;
         // 绑定数据
         var i = 0;
-        while(i<featuresPoints.length) {
+        while(i<featurePoints.length) {
             ////spanX = featuresPoints[i].x - mapfremeLeft;
             ////spanY = featuresPoints[i].y - mapfremeTop;
-            spanX = featuresPoints[i].x;
-            spanY = featuresPoints[i].y;
+            spanX = featurePoints[i].x;
+            spanY = featurePoints[i].y;
             //var screenX = spanX-rang+10;
             //var screenY = spanY-rang+10;
             var screenX = spanX-rang/2;
             var screenY = spanY-rang/2;
-            var name = featuresPoints[i].name;
-            var id = featuresPoints[i].id;
+            var name = featurePoints[i].name;
+            var id = featurePoints[i].id;
             $("#imgdiv").append(
-                "<a  href='#' onclick=getAliasByName("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
+                "<a  href='#' onclick=getFeaturePoint("+id+",'"+name+"') class="+name+"  data-toggle='modal' data-target='#myModal' style='position:absolute; left:"+screenX+"; top:"+screenY+"; float:left; z-index:9999;'" +
                 "onmouseover=moveFeaturePoint('"+name+"',event) onmouseout=moveoutFeaturePoint('"+name+"')>" +
                 "<div style='width:"+rang+" ;height:"+rang+" ;'>*" +
                 "<span style='display: none'>"+name+"</span>" +
@@ -319,8 +319,8 @@ function loadMapInfo(){
                 var y = spanY-70;
                 $("#imgdiv").append("<div class='location' style=position:absolute; left:"+x+"; top:"+y+";'><img src='../images/location2.png' height='70px'></div>")
             }
-            console.log("name: " + featuresPoints[i].name + "\n")
-            console.log("location:("+featuresPoints[i].x+", "+featuresPoints[i].y+")")
+            console.log("name: " + featurePoints[i].name + "\n")
+            console.log("location:("+featurePoints[i].x+", "+featurePoints[i].y+")")
             i++;
         }
         console.log("退出入getJSON方法")
@@ -409,11 +409,22 @@ function getAliasByName(id, name){
         name:name
     }
     $.getJSON(url, params, function(alias){
-        var i = 0;
-        for(; i < alias.length; i++) {
-            $cContent.append("<p>"+alias[i]+"</p>");
-            console.log(name + "的备用名【"+id+"】 => " + alias[i])
-        }
     });
     console.log("=============退出getAliasById方法.=============")
+}
+
+function getFeaturePoint(id, name) {
+    console.log("=============进入getFeaturePoint方法.=============");
+    $("#cTitle").text(name);
+    $("#fpId").val(id);
+    var url = "/servlet/FeaturePointServlet";
+    var params = {
+        method:"getFeaturePoint",
+        currentName:name
+    };
+    $.getJSON(url, params, function(featurePoint){
+        $("#cPrepareName").text(featurePoint.prepareName);
+        $("#cPrepareDesc").val(featurePoint.description);
+    });
+    console.log("=============退出getFeaturePoint方法.=============");
 }

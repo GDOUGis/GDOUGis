@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
 
-    <filter>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>org.cpp.gis.filter.CharacterEncodingFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <!-- spring -->
+    <!--<filter>-->
+        <!--<filter-name>CharacterEncodingFilter</filter-name>-->
+        <!--<filter-class>org.cpp.gis.filter.CharacterEncodingFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>CharacterEncodingFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+     <!--spring -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:conf/applicationContext.xml</param-value>
@@ -83,12 +83,12 @@
         <init-param>
             <!--地图存放路径配置-->
             <param-name>mapPath</param-name>
-            <param-value>test4</param-value>
+            <param-value>test5</param-value>
         </init-param>
         <init-param>
             <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
             <param-name>fileToLoad</param-name>
-            <param-value>test4/map.gst</param-value>
+            <param-value>test5/map.gst</param-value>
         </init-param>
         <init-param>
             <!-- 地图服务器的引用路径配置 -->
@@ -110,12 +110,12 @@
         <init-param>
             <!--地图存放路径配置-->
             <param-name>mapPath</param-name>
-            <param-value>test4</param-value>
+            <param-value>test5</param-value>
         </init-param>
         <init-param>
             <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
             <param-name>fileToLoad</param-name>
-            <param-value>test4/map.gst</param-value>
+            <param-value>test5/map.gst</param-value>
         </init-param>
         <init-param>
             <!-- 地图服务器的引用路径配置 -->
@@ -160,6 +160,15 @@
         <url-pattern>/servlet/ModifyServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>featurePointServlet</servlet-name>
+        <servlet-class>org.cpp.gis.servlet.FeaturePointServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>featurePointServlet</servlet-name>
+        <url-pattern>/servlet/FeaturePointServlet</url-pattern>
+    </servlet-mapping>
     <!--转发servlet-->
     <servlet>
         <servlet-name>forwardServlet</servlet-name>
@@ -169,7 +178,7 @@
         <servlet-name>forwardServlet</servlet-name>
         <url-pattern>/servlet/ForwardServlet</url-pattern>
     </servlet-mapping>
-    <!-- 编码过滤器 -->
+     <!--编码过滤器-->
     <filter>
         <filter-name>SetCharacterEncodig</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

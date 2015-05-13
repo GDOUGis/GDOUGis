@@ -32,7 +32,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="cTitle"></h4>
+                <h4 class="modal-title" >现用名：<span id="cTitle"></span></h4>
+                <h4 class="modal-title" >拟改名：<span id="cPrepareName"></span></h4>
+                <h4 class="modal-title">拟改说明：
+                    <textarea readonly="readonly" rows="3" id="cPrepareDesc" class="form-control" placeholder="拟用说明"></textarea>
+                </h4>
             </div>
             <div class="modal-body" id="cContent">
                 <form class="form-inline"  method="post">
@@ -42,7 +46,7 @@
                         <input id="cAlias" type="text" name="alias" class="form-control" placeholder="心中的名字">
                     </div>
                     <label class="control-label">说 &nbsp; &nbsp;明：</label>
-                    <div style="margin-left: 10px;" class="form-group">
+                    <div style="margin-left: 8px;" class="form-group">
                         <textarea cols="20" rows="3" id="modifyDesc" type="text"
                                   name="modifyDesc" class="form-control" placeholder="修改说明"></textarea>
                     </div>

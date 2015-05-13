@@ -15,11 +15,12 @@ public class FeaturePointServiceImpl implements FeaturePointService{
 
     private FeaturePointDao fpDao = DaoFactory.getInstance().createDao("org.cpp.gis.dao.impl.FeaturePointDaoImpl");
 
-    public void addFeaturePoint(Integer Id, String name) {
-        FeaturePoint fq = new FeaturePoint();
-        fq.setId(Id);
-        fq.setName(name);
-        fpDao.create(fq);
+    public void addFeaturePoint(FeaturePoint featurePoint) {
+        String desc = featurePoint.getDescription();
+        if("".equals(desc) || null == desc) {
+            desc = "NONE";
+        }
+        fpDao.create(featurePoint);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class FeaturePointServiceImpl implements FeaturePointService{
 
     @Override
     public FeaturePoint getByName(String name) {
-        return null;
+        return fpDao.readByName(name);
     }
 
     @Override
@@ -50,10 +51,10 @@ public class FeaturePointServiceImpl implements FeaturePointService{
     @Override
     public String[] getAliasById(String id) {
         FeaturePoint fp = fpDao.readById(Integer.parseInt(id));
-        if(fp.getAlias() == null || "".equals(fp.getAlias())) {
+        if(fp.getPrepareName() == null || "".equals(fp.getPrepareName())) {
             return null;
         }
-        String[] results = fp.getAlias().split("#");
+        String[] results = fp.getPrepareName().split("#");
         return results;
     }
 
@@ -62,7 +63,7 @@ public class FeaturePointServiceImpl implements FeaturePointService{
         try {
             // 先读取该特征点的别名
             FeaturePoint fp = fpDao.readAliasById(Integer.parseInt(id));
-            String oldAlias = fp.getAlias();
+            String oldAlias = fp.getPrepareName();
             if(oldAlias == null || "".equals(oldAlias.trim())) {        // 该特征点一开始就没有备用名
                 System.out.println("一开始是空的："+ oldAlias);
                 fpDao.updateAlias(Integer.parseInt(id), alias);
@@ -80,10 +81,10 @@ public class FeaturePointServiceImpl implements FeaturePointService{
     @Override
     public String[] getAliasByName(String name) {
         FeaturePoint fp = fpDao.readByName(name);
-        if (fp.getAlias() == null || "".equals(fp.getAlias())) {
+        if (fp.getPrepareName() == null || "".equals(fp.getPrepareName())) {
             return null;
         }
-        String[] results = fp.getAlias().split("#");
+        String[] results = fp.getPrepareName().split("#");
         return results;
     }
 }
