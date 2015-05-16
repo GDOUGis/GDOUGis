@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
 
     <%
-        response.sendRedirect("/servlet/InitServlet");
+        response.sendRedirect(request.getContextPath()+"/servlet/InitServlet");
     %>
   </body>
 </html>

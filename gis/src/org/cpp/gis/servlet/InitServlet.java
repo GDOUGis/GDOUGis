@@ -1,7 +1,6 @@
 package org.cpp.gis.servlet;
 
 import com.mapinfo.mapj.MapJ;
-import com.mapinfo.util.DoublePoint;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;

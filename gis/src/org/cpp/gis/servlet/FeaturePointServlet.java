@@ -41,10 +41,12 @@ public class FeaturePointServlet extends HttpServlet {
         try {
 //            String currentName = new String(req.getParameter("name").getBytes("iso-8859-1"), "UTF-8");
             String currentName = req.getParameter("currentName");
+            System.out.println("currentName:" + currentName);
             FeaturePoint featurePoint = featurePointService.getByName(currentName);
             resp.setContentType("text/html;charset=utf-8");
             JSONObject jsonObject = JSONObject.fromObject(featurePoint);
             writer = resp.getWriter();
+            System.out.println(featurePoint.toString());
             writer.write(jsonObject.toString());
             writer.flush();
         } catch (Exception e) {

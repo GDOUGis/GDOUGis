@@ -1250,7 +1250,7 @@ public class MapServlet extends HttpServlet {
                     name = ftr.getAttribute(0).toString();
                     desc = ftr.getAttribute(1).toString();
                     prepareName = ftr.getAttribute(2).toString();
-                    System.out.println(name +", -- desc:"+desc+", --  prepareName:"+prepareName);
+//                    System.out.println(name +", -- desc:"+desc+", --  prepareName:"+prepareName);
                     if(!"".equals(name.trim()) || name != null) {
                         //System.out.print("layer's name：" + m_Layer.getName()+"ftr name:"+name);
                         if(ftr != null && ftr.getGeometry() != null) {

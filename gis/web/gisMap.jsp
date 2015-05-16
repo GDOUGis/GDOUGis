@@ -175,13 +175,13 @@
 
 </div>
 
-<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
 <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/scripts/jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="/scripts/mapevent.js"></script>
-<script language="JavaScript" src="/scripts/pan.js"></script>
-<script type="text/javascript" src="/scripts/init.js"></script>
-<script type="text/javascript" src="/scripts/maprquest.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/mapevent.js"></script>
+<script language="JavaScript" src="${pageContext.request.contextPath}/scripts/pan.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/init.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/maprquest.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/bootstrap-slider.js"></script>
 
 <script language="JavaScript">
