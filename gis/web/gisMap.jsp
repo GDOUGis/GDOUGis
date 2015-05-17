@@ -84,6 +84,9 @@
                     <img src="${pageContext.request.contextPath}/images/header.png" height="60px">
                 </a>
             </div>
+            <div style="float: right;margin-top: 15px;font-family: 微软雅黑;">
+                <a href="${pageContext.request.contextPath}/admin.jsp">进入后台管理</a>
+            </div>
         </div>
         <!--logo结束处-->
     </div>
