@@ -119,3 +119,28 @@ body{
     top: 70px;
     left: 980px;
 }
+
+
+#footer {
+    margin: auto;
+    margin-top: 630px;
+    width: 500px;
+    height: 30px;
+    background: url(../images/footer-bg.png) bottom center no-repeat;
+    text-align: center;
+    font-family: "Times New Roman", Times, Georgia;
+    font-weight: normal;
+    font-size: 16px;
+    color: #8d8d8d;
+}
+
+
+#footer a {
+    text-decoration: none;
+    color: #8d8d8d;
+}
+
+#footer a:hover, #footer a:focus {
+    text-decoration: none;
+    color: #2d2d2d;
+}

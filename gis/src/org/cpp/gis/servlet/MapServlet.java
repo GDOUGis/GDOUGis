@@ -79,6 +79,9 @@ public class MapServlet extends HttpServlet {
 
 	static double resetzoom = 0.0D;
 
+    private boolean hightLight = false;
+
+
 	public void init(ServletConfig config) throws ServletException {
 
 		super.init(config);
@@ -249,7 +252,7 @@ public class MapServlet extends HttpServlet {
 	 */
 	private void resetmap(MapJ mymap, HttpServletRequest request) {
 		try {
-			System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
+			//System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
 //			mymap.setZoom(resetzoom);
             mymap.setZoom(2140.0);
 			// 设定地图范围为最初的范围
@@ -521,8 +524,8 @@ public class MapServlet extends HttpServlet {
             layernames= URLDecoder.decode(layernames,"UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
 
-			System.out.println("图层名称=" + layernames);
-			System.out.println("查询名称=" + selectnames);
+			//System.out.println("图层名称=" + layernames);
+			//System.out.println("查询名称=" + selectnames);
 			mymap = initmap(request);
 
 			try {
@@ -537,7 +540,7 @@ public class MapServlet extends HttpServlet {
             //解码
             //layernames= URLDecoder.decode(layernames,"UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
-            System.out.println(selectnames+"------------------------------------");
+            //System.out.println(selectnames+"------------------------------------");
             mymap = initmap(request);
 
             try {
@@ -566,6 +569,7 @@ public class MapServlet extends HttpServlet {
             queryName = URLDecoder.decode(queryName,"UTF-8");
 
             //System.out.println("要查询的是================"+queryName);
+            //System.out.println("要查询的是================"+queryName);
 
             mymap = initmap(request);
             findByName(mymap,queryName,response);
@@ -589,6 +593,20 @@ public class MapServlet extends HttpServlet {
             getAliasByName(request, response);
         }else if((rqutype != null) && (rqutype.equals("addModifyName"))) {
             addModifyName(request, response);
+        }else if((rqutype != null) && (rqutype.equals("hightLight"))){
+            //获取参数.
+            String queryName = request.getParameter("queryName");
+            queryName = URLDecoder.decode(queryName,"UTF-8");
+
+            //System.out.println("要高亮的是================"+queryName);
+
+            mymap = initmap(request);
+
+            hightLight = true;
+
+
+            findByName(mymap,queryName,response);
+
         }
 }
 
@@ -961,6 +979,9 @@ public class MapServlet extends HttpServlet {
                 mymap = initMapJ();
             }
 
+            Double oldzoom = mymap.getZoom();
+            DoublePoint oldCenter = mymap.getCenter();
+
             Feature ftr = null;
             Feature selFtr = null;
             //获取所有的图层
@@ -972,13 +993,14 @@ public class MapServlet extends HttpServlet {
                 m_Layer = layers.elementAt(i);
                 // 删除以上操作已经添加的theme列表
                 m_Layer.getThemeList().removeAll(true);
+
                 List columnNames = new ArrayList();
 
                 TableInfo tabInfo = m_Layer.getTableInfo();
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                    //System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
 
                 // Perform a search to get the Features(records)from the layer
@@ -1024,12 +1046,22 @@ public class MapServlet extends HttpServlet {
                     }
                     ftr = rFtrSet.getNextFeature();
                 }
+                if(selFtr!=null){
+                    break;
+                }
                 rFtrSet.rewind();
             }
+
 
             //控制zoom
             mymap.setZoom(2140/4);
 
+            if(hightLight){
+                System.out.println("qingqiugaoliang+++++++++++++++++++++++++++++++++++++++++++++");
+                mymap.setZoom(oldzoom);
+                mymap.setCenter(oldCenter);
+                hightLight = false;
+            }
 
             // 高亮显示
 
@@ -1037,6 +1069,7 @@ public class MapServlet extends HttpServlet {
             SelectionTheme selTheme = new SelectionTheme("LocateFeature");
             // 创建一个Selection对象并且把选择的图元加入
             Selection sel = new Selection();
+
             sel.add(selFtr);
 
             // 把Selection对象加入到SelectionTheme
@@ -1044,7 +1077,8 @@ public class MapServlet extends HttpServlet {
 
             // 设置SelectionTheme的显示渲染的样式
             Rendition rend = RenditionImpl.getDefaultRendition();
-            rend.setValue(Rendition.FILL, Color.red);
+            //rend.setValue(Rendition.FILL, Color.red);
+            rend.setValue(Rendition.FILL , Color.red);
             selTheme.setRendition(rend);
 
             // 添加SelectionTheme到指定layer的theme列表中

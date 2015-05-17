@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>报表</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body style="font-family: 微软雅黑">
     <table class="table table-striped">

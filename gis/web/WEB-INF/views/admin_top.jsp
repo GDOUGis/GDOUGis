@@ -17,7 +17,7 @@
         <div class="logo">
             <div style="float: left">
                 <a href="#">
-                    <img src="../../images/logo.gif" height="60px">
+                    <img src="${pageContext.request.contextPath}/images/logo.gif" height="60px">
                 </a>
             </div>
             <div style="float: left;margin-top: 10px;margin-left: 10px;"><span style="font-size: 24px;font-family: '微软雅黑';">校园地图后台管理</span></div>

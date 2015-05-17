@@ -87,7 +87,5 @@ public class InitServlet extends HttpServlet {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
     }
-
 }

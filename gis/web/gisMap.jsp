@@ -171,8 +171,8 @@
     </table>
 </div>
 
-<div id="footer" class="footer">
-
+<div id="footer">
+    Copyright &copy; 2015.CPP Studio All rights reserved.
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>

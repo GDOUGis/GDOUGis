@@ -31,6 +31,8 @@ public class ForwardServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request,response);
             }else if("updatePwdUI".equals(resource)){
                 request.getRequestDispatcher("/WEB-INF/views/updatePwdUI.jsp").forward(request,response);
+            }else if("admin_bottom".equals(resource)){
+                request.getRequestDispatcher("/WEB-INF/views/admin_bottom.jsp").forward(request,response);
             }
 
         }catch (Exception e){

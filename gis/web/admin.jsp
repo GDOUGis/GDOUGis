@@ -63,7 +63,7 @@
 		</form>
 	</div>
 	<div id="footer">
-		Copyright &copy; 2014.Company name All rights reserved.
+		Copyright &copy; 2015.CPP Studio All rights reserved.
 	</div>
 </body>
 </html>

@@ -241,7 +241,6 @@ function searchF(){
  *根据名称查找.
  */
 function findByName(a){
-    //alert("进来了");
     var $a = $(a);
     var name = $a.text();
     //alert(name);
@@ -317,7 +316,7 @@ function loadMapInfo(){
                 //alert("进来了");
                 var x = spanX-70/2;
                 var y = spanY-70;
-                $("#imgdiv").append("<div class='location' style=position:absolute; left:"+x+"; top:"+y+";'><img src='../images/location2.png' height='70px'></div>")
+                $("#imgdiv").append("<div class='location' style='position:absolute; left:"+x+"; top:"+y+";'><img src='images/location2.png' height='70px'></div>");
             }
             console.log("name: " + featurePoints[i].name + "\n")
             console.log("location:("+featurePoints[i].x+", "+featurePoints[i].y+")")
@@ -325,15 +324,6 @@ function loadMapInfo(){
         }
         console.log("退出入getJSON方法")
     });
-
-   /* //alert(selectedname);
-    //显示定位图片
-    if(selectedname != null){
-        alert("2");
-        //$("."+selectedname).append("<div class='location'><img src='../images/location.png' width='50px;'></div>")
-        var $("."+selectedname);
-        alert();
-    }*/
     console.log("loadMapInfo ==>");
 }
 /**
@@ -426,5 +416,10 @@ function getFeaturePoint(id, name) {
         $("#cPrepareName").text(featurePoint.prepareName);
         $("#cPrepareDesc").val(featurePoint.description);
     });
+    //高亮
+    if(name != null){
+        var url = mapserviceurl + "?rqutype=hightLight&queryName="+name;
+        $("#imgmap").attr("src",encodeURI(encodeURI(url)));
+    }
     console.log("=============退出getFeaturePoint方法.=============");
 }
