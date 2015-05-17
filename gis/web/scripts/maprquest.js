@@ -270,7 +270,7 @@ function loadMapInfo(){
     /**
      * 初始化特征点
      */
-    var url = "/servlet/MapServlet";
+    var url = "servlet/MapServlet";
 
     var $mapframe = $("#mapframe");
     var mapfremeLeft = $mapframe.offset().left;
@@ -357,7 +357,7 @@ function moveoutFeaturePoint(name){
 }
 
 function showFeatureDetail(id) {
-    var url = "/servlet/MapServlet_Rose?rqutype=showFeatureDetail";
+    var url = "servlet/MapServlet_Rose?rqutype=showFeatureDetail";
     var param = {id:id};
     $.getJSON(url, param, function(data) {
         console.log("[id:"+data.id+", name:"+data.name+"]")
@@ -377,7 +377,7 @@ function getAliasById(id, name){
     // 获取父元素
     var $cContent = $("#cContent");
 
-    var url = "/servlet/MapServlet?rqutype=getAliasById";
+    var url = "servlet/MapServlet?rqutype=getAliasById";
     var params = {
         id:id
     }
@@ -404,7 +404,7 @@ function getAliasByName(id, name){
     // 获取父元素
     var $cContent = $("#cContent");
 
-    var url = "/servlet/MapServlet?rqutype=getAliasByName";
+    var url = "servlet/MapServlet?rqutype=getAliasByName";
     var params = {
         name:name
     }
@@ -417,7 +417,7 @@ function getFeaturePoint(id, name) {
     console.log("=============进入getFeaturePoint方法.=============");
     $("#cTitle").text(name);
     $("#fpId").val(id);
-    var url = "/servlet/FeaturePointServlet";
+    var url = "servlet/FeaturePointServlet";
     var params = {
         method:"getFeaturePoint",
         currentName:name

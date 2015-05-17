@@ -81,7 +81,7 @@
         <div class="logo">
             <div style="float: left">
                 <a href="#">
-                    <img src="images/header.png" height="60px">
+                    <img src="${pageContext.request.contextPath}/images/header.png" height="60px">
                 </a>
             </div>
         </div>

@@ -81,7 +81,8 @@ public class InitServlet extends HttpServlet {
             }
             request.getSession().setAttribute("layerNames",layerNames);
             //3.重定向跳转到gisMap.jsp
-            response.sendRedirect("/gisMap.jsp");
+            response.sendRedirect(request.getContextPath()+"/gisMap.jsp");
+            //request.getRequestDispatcher("/gisMap.jsp").forward(request,response);
         }catch (Exception e ){
             e.printStackTrace();
             throw new RuntimeException(e);
