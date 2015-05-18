@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>后台管理</title>
+    <title>校园地图后台管理</title>
 </head>
 <frameset rows="64,*,60"  frameborder="no" border="0" framespacing="0">
     <frame src="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=admin_top" name="topFrame" noresize="noresize" frameborder="no"  scrolling="no" marginwidth="0" marginheight="0"  />

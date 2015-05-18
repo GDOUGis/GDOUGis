@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <title>校园地图后台管理</title>
 
     <!-- bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">

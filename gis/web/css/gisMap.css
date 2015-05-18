@@ -112,9 +112,9 @@ body{
     font-family: '微软雅黑';
 }
 .body-r{
-    width: 360px;
-    height: 535px;
-    background: url("../images/body-r.png");
+    width: 365px;
+    height: 540px;
+    background: url("../images/body-r.gif");
     position: absolute;
     top: 70px;
     left: 980px;

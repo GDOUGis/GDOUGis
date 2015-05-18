@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 
 /**
  * Created by Administrator on 2015/5/12.
@@ -41,6 +42,7 @@ public class FeaturePointServlet extends HttpServlet {
         try {
 //            String currentName = new String(req.getParameter("name").getBytes("iso-8859-1"), "UTF-8");
             String currentName = req.getParameter("currentName");
+            currentName = URLDecoder.decode(currentName,"UTF-8");
             System.out.println("currentName:" + currentName);
             FeaturePoint featurePoint = featurePointService.getByName(currentName);
             resp.setContentType("text/html;charset=utf-8");

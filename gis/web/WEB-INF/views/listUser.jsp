@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <title>报表</title>
+    <title>校园地图后台管理</title>
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body style="font-family: 微软雅黑">
@@ -43,7 +43,7 @@
     </c:if>
 </div>
 
-<script type="text/javascript" src="/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
 
 </body>
 </html>

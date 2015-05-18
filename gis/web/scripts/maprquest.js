@@ -410,7 +410,7 @@ function getFeaturePoint(id, name) {
     var url = "servlet/FeaturePointServlet";
     var params = {
         method:"getFeaturePoint",
-        currentName:name
+        currentName:encodeURI(name)
     };
     $.getJSON(url, params, function(featurePoint){
         $("#cPrepareName").text(featurePoint.prepareName);

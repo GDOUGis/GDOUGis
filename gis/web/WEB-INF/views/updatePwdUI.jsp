@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <title></title>
+    <title>校园地图后台管理</title>
 
     <!-- bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">

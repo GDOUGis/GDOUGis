@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>地图显示</title>
+    <title>校园地图后台管理</title>
     <link href="${pageContext.request.contextPath}/css/gisMap.css" rel="stylesheet" type="text/css">
 
 </head>

@@ -107,11 +107,152 @@ public class MapServlet extends HttpServlet {
 			mapxtremeurl = strParam;
 		}
 
-
-
 	}
 
-	/**
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.doPost(request, response);
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        if (this.errflag == true) {
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html; charset=UTF-8");
+            out.print(new String(this.errmessage.getBytes("UTF-8"),
+                    "iso-8859-1"));
+            out.close();
+        }
+        MapJ mymap = null;
+        MapJ boundmap = null;
+        String rqutype = request.getParameter("rqutype");
+        if ((rqutype != null) && (rqutype.equals("initmap"))) {
+            mymap = initmap(request);
+            responseimg(mymap, response);
+        } else if ((rqutype != null) && (rqutype.equals("chgmapview"))) {
+            System.out.println("================ajax=======================");
+            mymap = initmap(request);
+            chgmapview(mymap, request);
+            responseimg(mymap, response);
+        } else if ((rqutype != null) && (rqutype.equals("panmap"))) {
+            mymap = initmap(request);
+            panmap(mymap, request);
+            responseimg(mymap, response);
+        } else if ((rqutype != null) && (rqutype.equals("resetmap"))) {
+            mymap = initmap(request);
+            resetmap(mymap, request);
+            responseimg(mymap, response);
+        } else if ((rqutype != null) && (rqutype.equals("centerpoint"))) {
+            mymap = initmap(request);
+            responsetext(mymap, request,response, "centerpoint");
+        } else if ((rqutype != null) && (rqutype.equals("zoom"))) {
+            mymap = initmap(request);
+            responsetext(mymap, request,response, "zoom");
+        } else if ((rqutype != null) && (rqutype.equals("boundmap"))) {
+            mymap = initmap(request);
+            boundmap = initboundmap(request);
+            responsebound(mymap, boundmap, response);
+        } else if ((rqutype != null) && (rqutype.equals("smallpanmap"))) {
+            mymap = initmap(request);
+            boundmap = initboundmap(request);
+            resetbybound(mymap, boundmap, request);
+            responseimg(mymap, response);
+        } else if ((rqutype != null) && (rqutype.equals("querymap"))) {
+            String layernames = request.getParameter("layernames");
+            String selectnames = request.getParameter("selectnames");
+
+            //解码
+            layernames= URLDecoder.decode(layernames,"UTF-8");
+            selectnames = URLDecoder.decode(selectnames, "UTF-8");
+
+            //System.out.println("图层名称=" + layernames);
+            //System.out.println("查询名称=" + selectnames);
+            mymap = initmap(request);
+
+            try {
+                selectF(mymap,layernames,selectnames,response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if((rqutype != null) && (rqutype.equals("fuzzyQuery"))){
+            //String layernames = request.getParameter("layernames");
+            String selectnames = request.getParameter("selectnames");
+
+            //解码
+            //layernames= URLDecoder.decode(layernames,"UTF-8");
+            selectnames = URLDecoder.decode(selectnames, "UTF-8");
+            //System.out.println(selectnames+"------------------------------------");
+            mymap = initmap(request);
+
+            try {
+                fuzzyQuery(mymap,selectnames,response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else if(rqutype != null && rqutype.equals("changeLayer")){
+
+            //获取参数.
+            String layerNames = request.getParameter("layernames");
+            layerNames = URLDecoder.decode(layerNames,"UTF-8");
+            //System.out.println(layerNames);
+            String[] showLayers = layerNames.split(",");
+            //System.out.println(showLayers.length);
+
+            mymap = initmap(request);
+            chgmaplayer(mymap,showLayers);
+            responseimg(mymap, response);
+
+        }else if(rqutype != null && rqutype.equals("findByName")){
+
+            //获取参数.
+            String queryName = request.getParameter("queryName");
+            queryName = URLDecoder.decode(queryName,"UTF-8");
+
+            //System.out.println("要查询的是================"+queryName);
+            //System.out.println("要查询的是================"+queryName);
+
+            mymap = initmap(request);
+            findByName(mymap,queryName,response);
+
+        }else if((rqutype != null) && (rqutype.equals("loadFeature"))) {
+            mymap = initmap(request);
+            try {
+                loadFeature_new(response, request, mymap);
+                //loadFeature(response, request, mymap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if((rqutype != null) && (rqutype.equals("showFeatureDetail"))) {
+            String id = request.getParameter("id");
+            showFeatureDetail(id, response);
+        } else if((rqutype != null) && (rqutype.equals("getAliasById"))) {
+            getAliasById(request, response);
+        }else if((rqutype != null) && (rqutype.equals("updateAlias"))) {
+            updateAlias(request, response);
+        }else if((rqutype != null) && (rqutype.equals("getAliasByName"))) {
+            getAliasByName(request, response);
+        }else if((rqutype != null) && (rqutype.equals("addModifyName"))) {
+            addModifyName(request, response);
+        }else if((rqutype != null) && (rqutype.equals("hightLight"))){
+            //获取参数.
+            String queryName = request.getParameter("queryName");
+            queryName = URLDecoder.decode(queryName,"UTF-8");
+
+            //System.out.println("要高亮的是================"+queryName);
+
+            mymap = initmap(request);
+
+            hightLight = true;
+
+
+            findByName(mymap,queryName,response);
+
+        }
+    }
+
+
+    /**
 	 * *@加载地图
 	 */
 	public MapJ initMapJ() throws Exception {
@@ -154,14 +295,10 @@ public class MapServlet extends HttpServlet {
                     mymap.setCenter(mappoint);
 					mymap.setZoom(oldzoom.doubleValue());
 				}
+
+                mymap.setZoom(2140);
                 //将地图放到session里面
 				request.getSession().setAttribute("mapj", mymap);
-               /* //将图层名称放到session里面
-                List<String> layerNames = new ArrayList<String>();
-                for(int i=0;i<mymap.getLayers().size();i++){
-                    layerNames.add(mymap.getLayers().get(i).getName());
-                }
-                request.getSession().setAttribute("layerNames",layerNames);*/
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -467,148 +604,6 @@ public class MapServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		this.doPost(request, response);
-	}
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		if (this.errflag == true) {
-			PrintWriter out = response.getWriter();
-			response.setContentType("text/html; charset=UTF-8");
-			out.print(new String(this.errmessage.getBytes("UTF-8"),
-					"iso-8859-1"));
-			out.close();
-		}
-		MapJ mymap = null;
-		MapJ boundmap = null;
-		String rqutype = request.getParameter("rqutype");
-		if ((rqutype != null) && (rqutype.equals("initmap"))) {
-			mymap = initmap(request);
-			responseimg(mymap, response);
-		} else if ((rqutype != null) && (rqutype.equals("chgmapview"))) {
-            System.out.println("================ajax=======================");
-            mymap = initmap(request);
-			chgmapview(mymap, request);
-			responseimg(mymap, response);
-		} else if ((rqutype != null) && (rqutype.equals("panmap"))) {
-			mymap = initmap(request);
-			panmap(mymap, request);
-			responseimg(mymap, response);
-		} else if ((rqutype != null) && (rqutype.equals("resetmap"))) {
-			mymap = initmap(request);
-			resetmap(mymap, request);
-			responseimg(mymap, response);
-		} else if ((rqutype != null) && (rqutype.equals("centerpoint"))) {
-			mymap = initmap(request);
-			responsetext(mymap, request,response, "centerpoint");
-		} else if ((rqutype != null) && (rqutype.equals("zoom"))) {
-			mymap = initmap(request);
-			responsetext(mymap, request,response, "zoom");
-		} else if ((rqutype != null) && (rqutype.equals("boundmap"))) {
-			mymap = initmap(request);
-			boundmap = initboundmap(request);
-			responsebound(mymap, boundmap, response);
-		} else if ((rqutype != null) && (rqutype.equals("smallpanmap"))) {
-			mymap = initmap(request);
-			boundmap = initboundmap(request);
-			resetbybound(mymap, boundmap, request);
-			responseimg(mymap, response);
-		} else if ((rqutype != null) && (rqutype.equals("querymap"))) {
-			String layernames = request.getParameter("layernames");
-			String selectnames = request.getParameter("selectnames");
-
-            //解码
-            layernames= URLDecoder.decode(layernames,"UTF-8");
-            selectnames = URLDecoder.decode(selectnames, "UTF-8");
-
-			//System.out.println("图层名称=" + layernames);
-			//System.out.println("查询名称=" + selectnames);
-			mymap = initmap(request);
-
-			try {
-				selectF(mymap,layernames,selectnames,response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if((rqutype != null) && (rqutype.equals("fuzzyQuery"))){
-            //String layernames = request.getParameter("layernames");
-            String selectnames = request.getParameter("selectnames");
-
-            //解码
-            //layernames= URLDecoder.decode(layernames,"UTF-8");
-            selectnames = URLDecoder.decode(selectnames, "UTF-8");
-            //System.out.println(selectnames+"------------------------------------");
-            mymap = initmap(request);
-
-            try {
-                fuzzyQuery(mymap,selectnames,response);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }else if(rqutype != null && rqutype.equals("changeLayer")){
-
-            //获取参数.
-            String layerNames = request.getParameter("layernames");
-            layerNames = URLDecoder.decode(layerNames,"UTF-8");
-            //System.out.println(layerNames);
-            String[] showLayers = layerNames.split(",");
-            //System.out.println(showLayers.length);
-
-            mymap = initmap(request);
-            chgmaplayer(mymap,showLayers);
-            responseimg(mymap, response);
-
-        }else if(rqutype != null && rqutype.equals("findByName")){
-
-            //获取参数.
-            String queryName = request.getParameter("queryName");
-            queryName = URLDecoder.decode(queryName,"UTF-8");
-
-            //System.out.println("要查询的是================"+queryName);
-            //System.out.println("要查询的是================"+queryName);
-
-            mymap = initmap(request);
-            findByName(mymap,queryName,response);
-
-        }else if((rqutype != null) && (rqutype.equals("loadFeature"))) {
-            mymap = initmap(request);
-            try {
-               loadFeature_new(response, request, mymap);
-               //loadFeature(response, request, mymap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if((rqutype != null) && (rqutype.equals("showFeatureDetail"))) {
-            String id = request.getParameter("id");
-            showFeatureDetail(id, response);
-        } else if((rqutype != null) && (rqutype.equals("getAliasById"))) {
-            getAliasById(request, response);
-        }else if((rqutype != null) && (rqutype.equals("updateAlias"))) {
-            updateAlias(request, response);
-        }else if((rqutype != null) && (rqutype.equals("getAliasByName"))) {
-            getAliasByName(request, response);
-        }else if((rqutype != null) && (rqutype.equals("addModifyName"))) {
-            addModifyName(request, response);
-        }else if((rqutype != null) && (rqutype.equals("hightLight"))){
-            //获取参数.
-            String queryName = request.getParameter("queryName");
-            queryName = URLDecoder.decode(queryName,"UTF-8");
-
-            //System.out.println("要高亮的是================"+queryName);
-
-            mymap = initmap(request);
-
-            hightLight = true;
-
-
-            findByName(mymap,queryName,response);
-
-        }
-}
 
     /**
      * 添加修改名.
@@ -1057,7 +1052,6 @@ public class MapServlet extends HttpServlet {
             mymap.setZoom(2140/4);
 
             if(hightLight){
-                System.out.println("qingqiugaoliang+++++++++++++++++++++++++++++++++++++++++++++");
                 mymap.setZoom(oldzoom);
                 mymap.setCenter(oldCenter);
                 hightLight = false;
@@ -1308,7 +1302,7 @@ public class MapServlet extends HttpServlet {
                                 fp.setY(screenPoint.y);
 
                             //存到数据库，工程师执行，一次就够了
-//                            fpService.addFeaturePoint(fp);
+                            //fpService.addFeaturePoint(fp);
 
                                 list.add(fp);
                                 id++;

@@ -3,13 +3,13 @@
 
 <html>
 <head>
-    <title>地图显示</title>
+    <title>广东海洋大学校园地图</title>
 
 
 
     <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
     <!-- bootstrap -->
-    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" charset="utf-8">
 
     <link href="${pageContext.request.contextPath}/css/gisMap.css" rel="stylesheet" type="text/css">
     <link href="${pageContext.request.contextPath}/css/bootstrap-slider.css" rel="stylesheet" type="text/css">
@@ -85,8 +85,8 @@
                 </a>
             </div>
             <div style="float: right;margin-top: 15px;font-family: 微软雅黑;">
-                <a href="${pageContext.request.contextPath}/admin.jsp">进入后台管理</a>
-            </div>
+                <a href="${pageContext.request.contextPath}/admin.jsp" target="_blank">进入后台管理</a>
+        </div>
         </div>
         <!--logo结束处-->
     </div>
@@ -179,7 +179,7 @@
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
-<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.mousewheel.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/mapevent.js"></script>
 <script language="JavaScript" src="${pageContext.request.contextPath}/scripts/pan.js"></script>

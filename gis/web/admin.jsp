@@ -34,8 +34,10 @@
 			}
 		}
 	}
+    if(window.parent != window){
+        window.parent.location.href = window.location.href;
+    }
 </script>
-
 </head>
 
 <body>

@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>校园地图后台管理</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){

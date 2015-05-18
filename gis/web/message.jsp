@@ -9,16 +9,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-    <title></title>
+    <title>广东海洋大学校园地图</title>
     <!-- bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 
+    <script>
+       if(window.parent != window){
+           window.parent.location.href = window.location.href;
+       }
+    </script>
 </head>
-<body>
-    <h3>出错了==。</h3>
-    <c:if test="${!empty message}">
-        <h4>${message}</h4>
-    </c:if>
-    <button class="btn btn-primary" onclick="window.history.go(-1)">返回</button>
+<body style="text-align: center">
+   <div style="margin-top: 200px;">
+       <h3>出错了==。</h3>
+       <c:if test="${!empty message}">
+           <h4>${message}</h4>
+       </c:if>
+       <button class="btn btn-primary" onclick="window.history.go(-1)">返回</button>
+       <a class="btn btn-primary" href="${pageContext.request.contextPath}/servlet/InitServlet">首页</a>
+   </div>
 </body>
 </html>

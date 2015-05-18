@@ -89,8 +89,9 @@ public class UserServlet extends HttpServlet {
     private void logout(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.getSession().removeAttribute("user");
-            PrintWriter out = resp.getWriter();
-            out.println("<script language='javascript'>window.parent.location='/admin.jsp'</script>");
+            //PrintWriter out = resp.getWriter();
+            resp.sendRedirect(req.getContextPath()+"/admin.jsp");
+            //out.println("<script language='javascript'>window.parent.location='/admin.jsp'</script>");
         }catch (Exception e ){
             e.printStackTrace();
         }
@@ -106,8 +107,9 @@ public class UserServlet extends HttpServlet {
             String username = req.getParameter("username");
             String passowrd = req.getParameter("password");
             User u = userService.getUserByName(username);
-            if(u!=null){
-
+            if(u!=null || username==null || "".equals(username)){
+                req.setAttribute("message","该用户已经存在");
+                req.getRequestDispatcher("/message.jsp").forward(req,resp);
             }else{
                 userService.addUser(username,passowrd);
             }
