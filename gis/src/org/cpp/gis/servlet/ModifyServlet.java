@@ -7,15 +7,15 @@ import org.cpp.gis.entities.Modify;
 import org.cpp.gis.service.FeaturePointService;
 import org.cpp.gis.service.impl.FeaturePointServiceImpl;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
+import org.cpp.gis.utils.ExcelUtil;
 import org.cpp.gis.utils.Result;
-import org.omg.CORBA.Request;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,49 @@ public class ModifyServlet extends HttpServlet {
             loadFPModifyPD(req, resp);
         } else if((method != null) && (method.equals("showModifiedFPDetail"))) {
             showModifiedFPDetail(req, resp);
+        } else if((method != null) && (method.equals("exportData"))) {
+            exportData(req, resp);
         }
+    }
+
+    /**
+     * 导出数据.
+     * @param req
+     * @param resp
+     */
+    private void exportData(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("==> exportData");
+        OutputStream out = null;
+        BufferedInputStream buf = null;
+        try {
+            // 本地生成excel
+            String basePath = req.getContextPath();
+            String filePath = ExcelUtil.exportExcel(basePath);
+            buf = new BufferedInputStream(new FileInputStream(filePath));
+            byte[] tmpBuf = new byte[1024];
+            int len = 0;
+            resp.reset();
+            // 写出
+            resp.setCharacterEncoding("utf-8");
+            resp.setContentType("application/x-msdownload");
+            resp.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filePath, "utf-8"));
+            out = resp.getOutputStream();
+            while((len = buf.read(tmpBuf)) > 0) {
+                out.write(tmpBuf, 0, len);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                buf.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("exportData ==>");
     }
 
     /**

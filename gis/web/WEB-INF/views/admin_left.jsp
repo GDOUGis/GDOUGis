@@ -42,6 +42,7 @@
         <div class="div3">
             <ul>
                 <li><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=loadFPModifyPD" TARGET="main">数据统计</a></li>
+                <li><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=exportData" >导出数据</a></li>
             </ul>
         </div>
 
