@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>校园地图后台管理</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 
     <!-- bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">

@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>校园地图后台管理</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
+
 </head>
 <body>
 

@@ -12,6 +12,7 @@
     <title>广东海洋大学校园地图</title>
     <!-- bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 
     <script>
        if(window.parent != window){

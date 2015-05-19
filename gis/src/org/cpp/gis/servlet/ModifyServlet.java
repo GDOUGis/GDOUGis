@@ -56,7 +56,7 @@ public class ModifyServlet extends HttpServlet {
         BufferedInputStream buf = null;
         try {
             // 本地生成excel
-            String basePath = req.getContextPath();
+            String basePath = req.getRealPath("/excel");
             String filePath = ExcelUtil.exportExcel(basePath);
             buf = new BufferedInputStream(new FileInputStream(filePath));
             byte[] tmpBuf = new byte[1024];

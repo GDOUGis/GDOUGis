@@ -8,6 +8,7 @@ import jxl.write.WriteException;
 import org.cpp.gis.entities.Modify;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
 
+import javax.xml.ws.Response;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -51,6 +52,7 @@ public class ExportToExcel {
 
             // 写进文档
             wwb.write();
+
 
         } catch (Exception e) {
             e.printStackTrace();

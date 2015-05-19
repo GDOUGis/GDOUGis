@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>校园地图后台管理</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
+
 </head>
 <frameset rows="64,*,60"  frameborder="no" border="0" framespacing="0">
     <frame src="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=admin_top" name="topFrame" noresize="noresize" frameborder="no"  scrolling="no" marginwidth="0" marginheight="0"  />

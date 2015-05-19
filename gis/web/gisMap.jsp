@@ -5,7 +5,7 @@
 <head>
     <title>广东海洋大学校园地图</title>
 
-
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 
     <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
     <!-- bootstrap -->
@@ -248,7 +248,7 @@
 //                }
 //            })
             $.getJSON(url, params, function(data) {
-                 alert("进入addModifyName的getJSON方法")
+                 //alert("进入addModifyName的getJSON方法")
                  if(data == "1") {
                      $("#cAlias").val("");
                      $("#modifyDesc").val("");
@@ -259,9 +259,9 @@
                  } else {
                      alert("服务器正忙..")
                  }
-                 alert("退出addModifyName的getJSON方法")
+                 //alert("退出addModifyName的getJSON方法")
                  });
-            alert("After addModifyName的getJSON方法")
+            //alert("After addModifyName的getJSON方法")
             return false;
         });
 

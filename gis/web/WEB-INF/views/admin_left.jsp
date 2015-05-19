@@ -11,6 +11,8 @@
 <head>
     <meta charset="utf-8">
     <title>校园地图后台管理</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
+
     <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){

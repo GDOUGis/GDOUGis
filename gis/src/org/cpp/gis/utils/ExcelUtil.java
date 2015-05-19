@@ -24,7 +24,7 @@ public class ExcelUtil {
         Date date = new Date();
         try {
             // 创建可写入的excel.
-            String filePath = basePath +"\\"+date.getTime()+".xls";
+            String filePath = date.getTime()+".xls";
             System.out.println("filePath="+filePath);
             File file = new File(filePath);
             if(!file.exists()) {
@@ -39,6 +39,9 @@ public class ExcelUtil {
 
             // 查询数据库中所有的数据
             List<Modify> list = modifyService.getModifyPageData(1, 10);
+            if(list.isEmpty()){
+                return null;
+            }
             // 要插入到的Excel表格的行号，默认从0开始
             Label labelId = new Label(0, 0, "编号(id)");
             Label labelName = new Label(1, 0, "拟改名");
@@ -58,6 +61,7 @@ public class ExcelUtil {
             for(int i = 0; i < list.size(); i++) {
                 Label labelId_i = new Label(0, i+1, list.get(i).getId()+"");
                 Label labelName_i = new Label(1, i+1, list.get(i).getName()+"");
+                System.out.println(list.get(i).getName()+"====================================");
                 Label labelDesc_i = new Label(2, i+1, list.get(i).getDescription() + "");
                 Label labelPeople_i = new Label(3, i+1, list.get(i).getPeople() + "");
                 Label labelCollege_i = new Label(4, i+1, list.get(i).getCollege() + "");

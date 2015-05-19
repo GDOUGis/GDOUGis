@@ -11,6 +11,8 @@
 <head>
     <title>校园地图后台管理</title>
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
+
 </head>
 <body style="font-family: 微软雅黑">
 <div style="font-size: 22px;">

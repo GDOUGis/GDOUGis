@@ -7,7 +7,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <title>校园地图管理员登录</title>
- <link rel="shortcut icon" href="${pageContext.request.contextPath }/browser/img/common/1.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
+
+<%--<link rel="shortcut icon" href="${pageContext.request.contextPath }/browser/img/common/1.ico" type="image/x-icon"/>--%>
 <!-- CSS -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/adminLogin/style.css"

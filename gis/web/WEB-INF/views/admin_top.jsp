@@ -5,6 +5,7 @@
 <head>
     <title>校园地图后台管理</title>
     <link href="${pageContext.request.contextPath}/css/gisMap.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 
 </head>
 
