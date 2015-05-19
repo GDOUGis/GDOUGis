@@ -1302,7 +1302,7 @@ public class MapServlet extends HttpServlet {
                                 fp.setY(screenPoint.y);
 
                             //存到数据库，工程师执行，一次就够了
-                            //fpService.addFeaturePoint(fp);
+//                            fpService.addFeaturePoint(fp);
 
                                 list.add(fp);
                                 id++;

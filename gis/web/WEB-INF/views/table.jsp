@@ -14,16 +14,14 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 </head>
 <body style="font-family: 微软雅黑">
-    <table class="table table-striped">
+    <table class="table table-striped" style="margin-top:20px;">
         <tr>
-            <td>编号</td>
-            <td>特征点名称</td>
-            <td>修改名数（个）</td>
+            <td>物点名称</td>
+            <td>修改次数</td>
             <td>操作</td>
         </tr>
         <c:forEach items="${result.list}" var="modify">
             <tr>
-                <td>${modify.feature_id}</td>
                 <td>${modify.name}</td>
                 <td>${modify.times}</td>
                 <td><a href='${pageContext.request.contextPath}/servlet/ModifyServlet?method=showModifiedFPDetail&feature_id=${modify.feature_id}'>查看详情</a></td>

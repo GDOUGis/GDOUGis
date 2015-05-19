@@ -153,4 +153,13 @@ public class ModifyServiceImpl {
            throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 根据物点ID查找出拟用名.
+     * @param id
+     * @return
+     */
+    public String getPrepareNameByFPId(int id) {
+        return modifyDao.readPrepareNameByFPId(id);
+    }
 }
