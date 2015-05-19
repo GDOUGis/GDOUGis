@@ -612,19 +612,21 @@ public class MapServlet extends HttpServlet {
      */
     private void addModifyName(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入addModifyName方法=====================>>");
+        PrintWriter out = null;
+        try {
         /* 获取参数 */
         int fpId = Integer.parseInt(request.getParameter("fpId"));
         System.out.println(fpId);
-        String currentName = request.getParameter("currentName");
-        String modifyName = request.getParameter("modifyName");
-        String modifyDesc = request.getParameter("modifyDesc");
-        String modifyPeople = request.getParameter("modifyPeople");
-        String modifyCollege = request.getParameter("modifyCollege");
-        String modifyPhone = request.getParameter("modifyPhone");
-        String modifyIdentification = request.getParameter("identification");
+        String currentName = URLDecoder.decode(request.getParameter("currentName"), "UTF-8");
+        String modifyName = URLDecoder.decode(request.getParameter("modifyName"), "UTF-8");
+        String modifyDesc = URLDecoder.decode(request.getParameter("modifyDesc"), "UTF-8");
+        String modifyPeople = URLDecoder.decode(request.getParameter("modifyPeople"), "UTF-8");
+        String modifyCollege = URLDecoder.decode(request.getParameter("modifyCollege"), "UTF-8");
+        String modifyPhone = URLDecoder.decode(request.getParameter("modifyPhone"), "UTF-8");
+        String modifyIdentification = URLDecoder.decode(request.getParameter("identification"), "UTF-8");
         response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = null;
-        try {
+
+
             out = response.getWriter();
 
             /* 校验 */
