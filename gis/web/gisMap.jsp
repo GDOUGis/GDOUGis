@@ -43,7 +43,7 @@
                     <input type="hidden" name="id" id="fpId">
                     <label class="control-label">修改名：</label>
                     <div style="margin-left: 10px;" class="form-group">
-                        <input id="cAlias" type="text" name="alias" class="form-control" placeholder="心中的名字">
+                        <input id="cAlias" type="text" name="alias" class="form-control" placeholder="请输入修改后的名字">
                     </div>
                     <label class="control-label">说 &nbsp; &nbsp;明：</label>
                     <div style="margin-left: 8px;" class="form-group">
@@ -217,13 +217,13 @@
             var url = "servlet/MapServlet?rqutype=addModifyName"
             var params = {
                 fpId:id,
-                currentName:currentName,
-                modifyName:name,
-                modifyDesc:modifyDesc,
-                modifyPeople:modifyPeople,
-                modifyCollege:modifyCollege,
-                modifyPhone:modifyPhone,
-                identification:identification
+                currentName:encodeURI(currentName),
+                modifyName:encodeURI(name),
+                modifyDesc:encodeURI(modifyDesc),
+                modifyPeople:encodeURI(modifyPeople),
+                modifyCollege:encodeURI(modifyCollege),
+                modifyPhone:encodeURI(modifyPhone),
+                identification:encodeURI(identification)
             };
             console.log(params);
             console.log("Before addModifyName的getJSON方法");

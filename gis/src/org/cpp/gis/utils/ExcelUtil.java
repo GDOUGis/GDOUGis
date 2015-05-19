@@ -38,7 +38,7 @@ public class ExcelUtil {
             WritableSheet ws = wwb.createSheet("Test sheet 1", 0);
 
             // 查询数据库中所有的数据
-            List<Modify> list = modifyService.getModifyPageData(1, 10);
+            List<Modify> list = modifyService.getAll();
             if(list.isEmpty()){
                 return null;
             }
@@ -65,7 +65,7 @@ public class ExcelUtil {
                 Label labelDesc_i = new Label(2, i+1, list.get(i).getDescription() + "");
                 Label labelPeople_i = new Label(3, i+1, list.get(i).getPeople() + "");
                 Label labelCollege_i = new Label(4, i+1, list.get(i).getCollege() + "");
-                Label labelPhone_i = new Label(5, i+1, list.get(i).getPeople() + "");
+                Label labelPhone_i = new Label(5, i+1, list.get(i).getPhone() + "");
                 Label labelFeature_id_i = new Label(6, i+1, list.get(i).getFeature_id()+"");
                 ws.addCell(labelId_i);
                 ws.addCell(labelName_i);

@@ -171,4 +171,20 @@ public class ModifyDaoImpl {
             throw new  RuntimeException(e);
         }
     }
+
+    /**
+     * 获取所有.
+     * @return
+     */
+    public List<Modify> getall() {
+        try {
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "SELECT * FROM tb_modify";
+            List<Modify> list = (List<Modify>)qr.query(sql,new BeanListHandler(Modify.class));
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new  RuntimeException(e);
+        }
+    }
 }
