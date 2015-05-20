@@ -50,64 +50,64 @@ public class MapServlet extends HttpServlet {
 
 
     // 包含地图文件的路径
-	private String m_mapPath = "";
+    private String m_mapPath = "";
 
-	// 地图定义文件的完整路径
-	private String m_fileToLoad = "";
+    // 地图定义文件的完整路径
+    private String m_fileToLoad = "";
 
-	private boolean errflag = false;
+    private boolean errflag = false;
 
-	private String errmessage = null;
+    private String errmessage = null;
 
-	// mapxtremeservlet地图服务器url
+    // mapxtremeservlet地图服务器url
 
-	private String mapxtremeurl = "http://localhost:8080/mapxtreme";
+    private String mapxtremeurl = "http://localhost:8080/mapxtreme";
 
-	private String imgtype = "jpeg";
+    private String imgtype = "jpeg";
 
-	private int imgsizex = 960;
+    private int imgsizex = 960;
 
-	private int imgsizey = 620;
+    private int imgsizey = 620;
 
-	private int smallimgsizex = 300;
+    private int smallimgsizex = 300;
 
-	private int smallimgsizey = 200;
+    private int smallimgsizey = 200;
 
-	private Color imgbgcolor = Color.white;
+    private Color imgbgcolor = Color.white;
 
-	static DoublePoint resetpoint = null;
+    static DoublePoint resetpoint = null;
 
-	static double resetzoom = 0.0D;
+    static double resetzoom = 0.0D;
 
     private boolean hightLight = false;
 
 
-	public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) throws ServletException {
 
-		super.init(config);
+        super.init(config);
 
-		String strParam = "";
-		URL url = this.getClass().getResource("/../..");
-		strParam = getInitParameter("mapPath");
-		if (strParam != null) {
-			//也可以直接在web.xml 配置绝对路径 那么下面这一句就可以不要了
-			strParam = url.getPath().substring(1).replaceAll("%20", " ")+strParam;
+        String strParam = "";
+        URL url = this.getClass().getResource("/../..");
+        strParam = getInitParameter("mapPath");
+        if (strParam != null) {
+            //也可以直接在web.xml 配置绝对路径 那么下面这一句就可以不要了
+            strParam = url.getPath().substring(1).replaceAll("%20", " ")+strParam;
 
-			m_mapPath = strParam;
-		}
-		strParam = getInitParameter("fileToLoad");
-		if (strParam != null) {
-		//也可以直接在web.xml 配置绝对路径 那么下面这一句就可以不要了
-			strParam = url.getPath().substring(1).replaceAll("%20", " ")+strParam;
-			m_fileToLoad = strParam;
-		}
+            m_mapPath = strParam;
+        }
+        strParam = getInitParameter("fileToLoad");
+        if (strParam != null) {
+            //也可以直接在web.xml 配置绝对路径 那么下面这一句就可以不要了
+            strParam = url.getPath().substring(1).replaceAll("%20", " ")+strParam;
+            m_fileToLoad = strParam;
+        }
 
-		strParam = getInitParameter("mapxtremeURL");
-		if (strParam != null && strParam.length() > 0) {
-			mapxtremeurl = strParam;
-		}
+        strParam = getInitParameter("mapxtremeURL");
+        if (strParam != null && strParam.length() > 0) {
+            mapxtremeurl = strParam;
+        }
 
-	}
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -253,218 +253,218 @@ public class MapServlet extends HttpServlet {
 
 
     /**
-	 * *@加载地图
-	 */
-	public MapJ initMapJ() throws Exception {
-		MapJ myMap = new MapJ();
+     * *@加载地图
+     */
+    public MapJ initMapJ() throws Exception {
+        MapJ myMap = new MapJ();
 
-		try {
-			//加载.gst 格式的地图文件
-			if (m_fileToLoad.endsWith(".gst")) {
-				myMap.loadGeoset(m_fileToLoad, m_mapPath, null);
+        try {
+            //加载.gst 格式的地图文件
+            if (m_fileToLoad.endsWith(".gst")) {
+                myMap.loadGeoset(m_fileToLoad, m_mapPath, null);
 //				myMap.loadGeoset(m_fileToLoad, m_mapPath, mapxtremeurl);
-			} else { //加载.mdf 格式的地图文件
-				myMap.loadMapDefinition(m_fileToLoad);
-			}
-		} catch (Exception e) {
-			System.out.println("Can't load geoset: " + m_fileToLoad + "\n");
-			System.out.println(e.getMessage());
-			throw e;
-		}
-		return myMap;
-	}
+            } else { //加载.mdf 格式的地图文件
+                myMap.loadMapDefinition(m_fileToLoad);
+            }
+        } catch (Exception e) {
+            System.out.println("Can't load geoset: " + m_fileToLoad + "\n");
+            System.out.println(e.getMessage());
+            throw e;
+        }
+        return myMap;
+    }
 
-	/**
-	 * @初始化地图
-	 */
-	private MapJ initmap(HttpServletRequest request) {
-		MapJ mymap = null;
-		mymap = (MapJ) request.getSession().getAttribute("mapj");
-		if (mymap == null) {
-			try {
-				mymap = initMapJ();
+    /**
+     * @初始化地图
+     */
+    private MapJ initmap(HttpServletRequest request) {
+        MapJ mymap = null;
+        mymap = (MapJ) request.getSession().getAttribute("mapj");
+        if (mymap == null) {
+            try {
+                mymap = initMapJ();
 
-				// 加载地图
-				if ((request.getParameter("oldx") != null)
-						&& (request.getParameter("oldy") != null)) {
-					Double oldx = new Double(request.getParameter("oldx"));
-					Double oldy = new Double(request.getParameter("oldy"));
-					DoublePoint mappoint = new DoublePoint(oldx.doubleValue(),
-							oldy.doubleValue());
-					Double oldzoom = new Double(request.getParameter("oldzoom"));
+                // 加载地图
+                if ((request.getParameter("oldx") != null)
+                        && (request.getParameter("oldy") != null)) {
+                    Double oldx = new Double(request.getParameter("oldx"));
+                    Double oldy = new Double(request.getParameter("oldy"));
+                    DoublePoint mappoint = new DoublePoint(oldx.doubleValue(),
+                            oldy.doubleValue());
+                    Double oldzoom = new Double(request.getParameter("oldzoom"));
                     mymap.setCenter(mappoint);
-					mymap.setZoom(oldzoom.doubleValue());
-				}
+                    mymap.setZoom(oldzoom.doubleValue());
+                }
 
                 mymap.setZoom(2140);
                 //将地图放到session里面
-				request.getSession().setAttribute("mapj", mymap);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return mymap;
-	}
+                request.getSession().setAttribute("mapj", mymap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return mymap;
+    }
 
-	/**
-	 * @鹰眼地图初始化
-	 */
-	private MapJ initboundmap(HttpServletRequest request) {
+    /**
+     * @鹰眼地图初始化
+     */
+    private MapJ initboundmap(HttpServletRequest request) {
         System.out.println("===============================bound========================================");
         MapJ boundmap = null;
-		boundmap = (MapJ) request.getSession().getAttribute("boundmap");
-		if (boundmap == null) {
-			try {
-				boundmap = initMapJ();
+        boundmap = (MapJ) request.getSession().getAttribute("boundmap");
+        if (boundmap == null) {
+            try {
+                boundmap = initMapJ();
                 boundmap.setZoom(2140*1.5D);//针对于本地图写死数据
-				// 加载地图
-				/**
-				 * @添加图层的步骤
-				 * @1--创建TableDescHelper
-				 * @2--创建DataProviderHelper
-				 * @3--创建DataProviderRef
-				 * @4--创建layers.insert
-				 */
-				AnnotationTableDescHelper antable = new AnnotationTableDescHelper(
-						"anlayer");
-				AnnotationDataProviderHelper andata = new AnnotationDataProviderHelper();
-				LocalDataProviderRef andataref = new LocalDataProviderRef(
-						andata);
-				boundmap.getLayers().insert(andataref, antable, 0, "anlayer");
-				request.getSession().setAttribute("boundmap", boundmap);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return boundmap;
-	}
+                // 加载地图
+                /**
+                 * @添加图层的步骤
+                 * @1--创建TableDescHelper
+                 * @2--创建DataProviderHelper
+                 * @3--创建DataProviderRef
+                 * @4--创建layers.insert
+                 */
+                AnnotationTableDescHelper antable = new AnnotationTableDescHelper(
+                        "anlayer");
+                AnnotationDataProviderHelper andata = new AnnotationDataProviderHelper();
+                LocalDataProviderRef andataref = new LocalDataProviderRef(
+                        andata);
+                boundmap.getLayers().insert(andataref, antable, 0, "anlayer");
+                request.getSession().setAttribute("boundmap", boundmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return boundmap;
+    }
 
-	/**
-	 * @应该与缩放有关
-	 */
-	private void chgmapview(MapJ mymap, HttpServletRequest request) {
-		try {
-			double oldzoom = mymap.getZoom();
-			// 原来的地图范围
-			Double newzoomopr = new Double(request.getParameter("newzoom"));
-			double newzoom = oldzoom * newzoomopr.doubleValue();
-			// 新的地图范围
-			Double centerx = new Double(request.getParameter("centerx"));
-			Double centery = new Double(request.getParameter("centery"));
-			// 取得鼠标坐标
-			DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
-					centery.doubleValue());
-			DoublePoint mappoint = mymap.transformScreenToNumeric(screenpoint);
-			mymap.setCenter(mappoint);
-			mymap.setZoom(newzoom);
-			// 设定点和地图的范围
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @地图移动方法
-	 */
-	private void panmap(MapJ mymap, HttpServletRequest request) {
-		try {
+    /**
+     * @应该与缩放有关
+     */
+    private void chgmapview(MapJ mymap, HttpServletRequest request) {
+        try {
+            double oldzoom = mymap.getZoom();
+            // 原来的地图范围
+            Double newzoomopr = new Double(request.getParameter("newzoom"));
+            double newzoom = oldzoom * newzoomopr.doubleValue();
+            // 新的地图范围
             Double centerx = new Double(request.getParameter("centerx"));
-			// 从前台取得鼠标坐标 X ；
-			Double centery = new Double(request.getParameter("centery"));
-			// 从前台取得鼠标坐标 Y ；
-			DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
-					centery.doubleValue());
-			// 创建一个新的点
-			DoublePoint mappoint = mymap.transformScreenToNumeric(screenpoint);
-			// 转换坐标1
-			mymap.setCenter(mappoint);
-			// 设定中心
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            Double centery = new Double(request.getParameter("centery"));
+            // 取得鼠标坐标
+            DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
+                    centery.doubleValue());
+            DoublePoint mappoint = mymap.transformScreenToNumeric(screenpoint);
+            mymap.setCenter(mappoint);
+            mymap.setZoom(newzoom);
+            // 设定点和地图的范围
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * @地图还原方法
-	 */
-	private void resetmap(MapJ mymap, HttpServletRequest request) {
-		try {
-			//System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
+    /**
+     * @地图移动方法
+     */
+    private void panmap(MapJ mymap, HttpServletRequest request) {
+        try {
+            Double centerx = new Double(request.getParameter("centerx"));
+            // 从前台取得鼠标坐标 X ；
+            Double centery = new Double(request.getParameter("centery"));
+            // 从前台取得鼠标坐标 Y ；
+            DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
+                    centery.doubleValue());
+            // 创建一个新的点
+            DoublePoint mappoint = mymap.transformScreenToNumeric(screenpoint);
+            // 转换坐标1
+            mymap.setCenter(mappoint);
+            // 设定中心
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @地图还原方法
+     */
+    private void resetmap(MapJ mymap, HttpServletRequest request) {
+        try {
+            //System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
 //			mymap.setZoom(resetzoom);
             mymap.setZoom(2140.0);
-			// 设定地图范围为最初的范围
+            // 设定地图范围为最初的范围
             resetpoint = new DoublePoint(Double.parseDouble(request.getSession().getAttribute("oldx").toString()),Double.parseDouble(request.getSession().getAttribute("oldy").toString()));
-			mymap.setCenter(resetpoint);
-			// 设定地图中心为最初的中心点
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+            mymap.setCenter(resetpoint);
+            // 设定地图中心为最初的中心点
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * @地图渲染
-	 */
-	private void responseimg(MapJ mymap, HttpServletResponse response){
-		ServletOutputStream sout = null;
-		mymap.setDeviceBounds(new DoubleRect(0.0D, 0.0D, this.imgsizex,
-				this.imgsizey));
-		// 设定地图的大小
-		response.setContentType("image/jpeg");
-		try {
-			sout = response.getOutputStream();
-			ImageRequestComposer irc = ImageRequestComposer.create(mymap,
-					65535, Color.white, "image/jpeg");
-			// 创建输出地图的属性---显示的像素，背景颜色，地图格式
-			MapXtremeImageRenderer renderer = new MapXtremeImageRenderer(
-					this.mapxtremeurl);
-			// 加载mapxtreme的servlet
-			renderer.render(irc);
-			// 渲染
-			renderer.toStream(sout);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			if (sout != null)
+    /**
+     * @地图渲染
+     */
+    private void responseimg(MapJ mymap, HttpServletResponse response){
+        ServletOutputStream sout = null;
+        mymap.setDeviceBounds(new DoubleRect(0.0D, 0.0D, this.imgsizex,
+                this.imgsizey));
+        // 设定地图的大小
+        response.setContentType("image/jpeg");
+        try {
+            sout = response.getOutputStream();
+            ImageRequestComposer irc = ImageRequestComposer.create(mymap,
+                    65535, Color.white, "image/jpeg");
+            // 创建输出地图的属性---显示的像素，背景颜色，地图格式
+            MapXtremeImageRenderer renderer = new MapXtremeImageRenderer(
+                    this.mapxtremeurl);
+            // 加载mapxtreme的servlet
+            renderer.render(irc);
+            // 渲染
+            renderer.toStream(sout);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            if (sout != null)
                 sout.flush();
-				sout.close();
-		} catch (Exception localException1) {
+            sout.close();
+        } catch (Exception localException1) {
             localException1.printStackTrace();
-		}
-	}
+        }
+    }
 
-	private void responsetext(MapJ mymap, HttpServletRequest request,HttpServletResponse response,
-			String flag) {
-		try {
-			PrintWriter out = response.getWriter();
-			response.setContentType("text/html; charset=UTF-8");
-			if (flag.equals("centerpoint")) {
-				DoublePoint centerpoint = mymap.getCenter();
+    private void responsetext(MapJ mymap, HttpServletRequest request,HttpServletResponse response,
+                              String flag) {
+        try {
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html; charset=UTF-8");
+            if (flag.equals("centerpoint")) {
+                DoublePoint centerpoint = mymap.getCenter();
                 request.getSession().setAttribute("oldx",centerpoint.x);
                 request.getSession().setAttribute("oldy",centerpoint.y);
-                         out
-                                 .print(String
-                                         .valueOf(String
-                                                 .valueOf(new StringBuffer(
-                                                         "<body onload=\"setxy()\"><input name=centerx type=hidden value=")
-                                                         .append(centerpoint.x)
-                                                         .append(">")
-                                                         .append(
-                                                                 "<input name=centery type=hidden value=")
-                                                         .append(centerpoint.y)
-                                                         .append(">")
-                                                         .append("</body>")
-                                                         .append(
-                                                                 "<script language=\"JavaScript\">")
-                                                         .append("function setxy(){")
-                                                         .append(
-                                                                 "parent.document.all.oldx.value=document.all.centerx.value;")
-                                                         .append(
-                                                                 "parent.document.all.oldy.value=document.all.centery.value")
-                                                         .append("}")
-                                                         .append("</script>"))));
-			} else {
+                out
+                        .print(String
+                                .valueOf(String
+                                        .valueOf(new StringBuffer(
+                                                "<body onload=\"setxy()\"><input name=centerx type=hidden value=")
+                                                .append(centerpoint.x)
+                                                .append(">")
+                                                .append(
+                                                        "<input name=centery type=hidden value=")
+                                                .append(centerpoint.y)
+                                                .append(">")
+                                                .append("</body>")
+                                                .append(
+                                                        "<script language=\"JavaScript\">")
+                                                .append("function setxy(){")
+                                                .append(
+                                                        "parent.document.all.oldx.value=document.all.centerx.value;")
+                                                .append(
+                                                        "parent.document.all.oldy.value=document.all.centery.value")
+                                                .append("}")
+                                                .append("</script>"))));
+            } else {
                 request.getSession().setAttribute("oldzoom",mymap.getZoom());
                 out
                         .print(String
@@ -481,76 +481,76 @@ public class MapServlet extends HttpServlet {
                                                         "parent.document.all.oldzoom.value=document.all.zoom.value;")
                                                 .append("}")
                                                 .append("</script>"))));
-			}
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * @鹰眼功能
-	 */
+    /**
+     * @鹰眼功能
+     */
 
-	private void responsebound(MapJ mymap, MapJ boundmap,
-			HttpServletResponse response) {
-		ServletOutputStream sout = null;
-		try {
-			Layer anlayer = boundmap.getLayers().elementAt(0);
-			// 取得一个图层 （鹰眼地图所有层的第一层）
-			FeatureFactory ff = boundmap.getFeatureFactory();
-			// 取得一个图元工厂类，可以用来创建图元---点、线、面
-			PrimaryKey pk = new PrimaryKey(new Attribute(101));
-			// 创建一个主键 具体是什么意思呢？？？
-			Rendition rend = RenditionImpl.getDefaultRendition();
-			// 创建一个样式的对象
-			rend.setValue(Rendition.STROKE, Color.red);
-			// 设置线的颜色为红色
-			rend.setValue(Rendition.STROKE_WIDTH, 2);
-			// 设置线的宽度
-			rend.setValue(Rendition.FILL_OPACITY, new Float(0.0D));
+    private void responsebound(MapJ mymap, MapJ boundmap,
+                               HttpServletResponse response) {
+        ServletOutputStream sout = null;
+        try {
+            Layer anlayer = boundmap.getLayers().elementAt(0);
+            // 取得一个图层 （鹰眼地图所有层的第一层）
+            FeatureFactory ff = boundmap.getFeatureFactory();
+            // 取得一个图元工厂类，可以用来创建图元---点、线、面
+            PrimaryKey pk = new PrimaryKey(new Attribute(101));
+            // 创建一个主键 具体是什么意思呢？？？
+            Rendition rend = RenditionImpl.getDefaultRendition();
+            // 创建一个样式的对象
+            rend.setValue(Rendition.STROKE, Color.red);
+            // 设置线的颜色为红色
+            rend.setValue(Rendition.STROKE_WIDTH, 2);
+            // 设置线的宽度
+            rend.setValue(Rendition.FILL_OPACITY, new Float(0.0D));
 
-			DoublePoint p1 = new DoublePoint(0.0D, 0.0D);
-			DoublePoint p2 = new DoublePoint(this.imgsizex, 0.0D);
-			DoublePoint p3 = new DoublePoint(this.imgsizex, this.imgsizey);
-			DoublePoint p4 = new DoublePoint(0.0D, this.imgsizey);
-			// 取得一个矩形的四个点
-			DoublePoint mp1 = mymap.transformScreenToNumeric(p1);
-			DoublePoint mp2 = mymap.transformScreenToNumeric(p2);
-			DoublePoint mp3 = mymap.transformScreenToNumeric(p3);
-			DoublePoint mp4 = mymap.transformScreenToNumeric(p4);
-			double[] p = new double[10];
-			p[0] = mp1.x;
-			p[1] = mp1.y;
-			p[2] = mp2.x;
-			p[3] = mp2.y;
-			p[4] = mp3.x;
-			p[5] = mp3.y;
-			p[6] = mp4.x;
-			p[7] = mp4.y;
-			p[8] = mp1.x;
-			p[9] = mp1.y;
+            DoublePoint p1 = new DoublePoint(0.0D, 0.0D);
+            DoublePoint p2 = new DoublePoint(this.imgsizex, 0.0D);
+            DoublePoint p3 = new DoublePoint(this.imgsizex, this.imgsizey);
+            DoublePoint p4 = new DoublePoint(0.0D, this.imgsizey);
+            // 取得一个矩形的四个点
+            DoublePoint mp1 = mymap.transformScreenToNumeric(p1);
+            DoublePoint mp2 = mymap.transformScreenToNumeric(p2);
+            DoublePoint mp3 = mymap.transformScreenToNumeric(p3);
+            DoublePoint mp4 = mymap.transformScreenToNumeric(p4);
+            double[] p = new double[10];
+            p[0] = mp1.x;
+            p[1] = mp1.y;
+            p[2] = mp2.x;
+            p[3] = mp2.y;
+            p[4] = mp3.x;
+            p[5] = mp3.y;
+            p[6] = mp4.x;
+            p[7] = mp4.y;
+            p[8] = mp1.x;
+            p[9] = mp1.y;
 
-			Feature ft = ff.createRegion(p, rend, null, null, pk);
-			/**
-			 * @创建一个图元（通过featurefactory 创建---region是区域的意思）
-			 * @第一个参数 p double[] ---thePoints
-			 * @第二个参数 样式
-			 * @第三个参数 lableRend
-			 * @第四个参数 attrs
-			 * @第五个参数 主键值
-			 */
-			PrimaryKey[] spk = { new PrimaryKey(new Attribute(101)) };
-			Vector col = new Vector();
-			FeatureSet ftset = anlayer.searchByPrimaryKey(col, spk, null);
-			if (ftset == null) {
-				PrimaryKey localPrimaryKey1 = anlayer.addFeature(ft);
-			} else {
-				anlayer.replaceFeature(pk, ft);
-			}
-			boundmap.setDeviceBounds(new DoubleRect(0.0D, 0.0D,
-					this.smallimgsizex, this.smallimgsizey));
-			boundmap.setDistanceUnits(mymap.getDistanceUnits());
+            Feature ft = ff.createRegion(p, rend, null, null, pk);
+            /**
+             * @创建一个图元（通过featurefactory 创建---region是区域的意思）
+             * @第一个参数 p double[] ---thePoints
+             * @第二个参数 样式
+             * @第三个参数 lableRend
+             * @第四个参数 attrs
+             * @第五个参数 主键值
+             */
+            PrimaryKey[] spk = { new PrimaryKey(new Attribute(101)) };
+            Vector col = new Vector();
+            FeatureSet ftset = anlayer.searchByPrimaryKey(col, spk, null);
+            if (ftset == null) {
+                PrimaryKey localPrimaryKey1 = anlayer.addFeature(ft);
+            } else {
+                anlayer.replaceFeature(pk, ft);
+            }
+            boundmap.setDeviceBounds(new DoubleRect(0.0D, 0.0D,
+                    this.smallimgsizex, this.smallimgsizey));
+            boundmap.setDistanceUnits(mymap.getDistanceUnits());
 
 
            /* if (mymap.getZoom() / boundmap.getZoom() >= 0.8D) {
@@ -562,48 +562,48 @@ public class MapServlet extends HttpServlet {
                 System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
             }*/
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		response.setContentType("image/jpeg");
-		try {
-			sout = response.getOutputStream();
-			ImageRequestComposer irc = ImageRequestComposer.create(boundmap,
-					65535, Color.white, "image/jpeg");
-			MapXtremeImageRenderer renderer = new MapXtremeImageRenderer(
-					this.mapxtremeurl);
-			renderer.render(irc);
-			renderer.toStream(sout);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			if (sout != null)
-				sout.close();
-		} catch (Exception localException1) {
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        response.setContentType("image/jpeg");
+        try {
+            sout = response.getOutputStream();
+            ImageRequestComposer irc = ImageRequestComposer.create(boundmap,
+                    65535, Color.white, "image/jpeg");
+            MapXtremeImageRenderer renderer = new MapXtremeImageRenderer(
+                    this.mapxtremeurl);
+            renderer.render(irc);
+            renderer.toStream(sout);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            if (sout != null)
+                sout.close();
+        } catch (Exception localException1) {
+        }
+    }
 
-	/**
-	 * @通过鹰眼移动地图
-	 */
-	private void resetbybound(MapJ mymap, MapJ boundmap,
-			HttpServletRequest request) {
-		try {
-			Double centerx = new Double(request.getParameter("centerx"));
-			// 取得x点
-			Double centery = new Double(request.getParameter("centery"));
-			// 取得Y点
-			DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
-					centery.doubleValue());
-			DoublePoint mappoint = boundmap
-					.transformScreenToNumeric(screenpoint);
-			mymap.setCenter(mappoint);
-			// 主地图中点变化
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * @通过鹰眼移动地图
+     */
+    private void resetbybound(MapJ mymap, MapJ boundmap,
+                              HttpServletRequest request) {
+        try {
+            Double centerx = new Double(request.getParameter("centerx"));
+            // 取得x点
+            Double centery = new Double(request.getParameter("centery"));
+            // 取得Y点
+            DoublePoint screenpoint = new DoublePoint(centerx.doubleValue(),
+                    centery.doubleValue());
+            DoublePoint mappoint = boundmap
+                    .transformScreenToNumeric(screenpoint);
+            mymap.setCenter(mappoint);
+            // 主地图中点变化
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 添加修改名.
@@ -615,16 +615,16 @@ public class MapServlet extends HttpServlet {
         PrintWriter out = null;
         try {
         /* 获取参数 */
-        int fpId = Integer.parseInt(request.getParameter("fpId"));
-        System.out.println(fpId);
-        String currentName = URLDecoder.decode(request.getParameter("currentName"), "UTF-8");
-        String modifyName = URLDecoder.decode(request.getParameter("modifyName"), "UTF-8");
-        String modifyDesc = URLDecoder.decode(request.getParameter("modifyDesc"), "UTF-8");
-        String modifyPeople = URLDecoder.decode(request.getParameter("modifyPeople"), "UTF-8");
-        String modifyCollege = URLDecoder.decode(request.getParameter("modifyCollege"), "UTF-8");
-        String modifyPhone = URLDecoder.decode(request.getParameter("modifyPhone"), "UTF-8");
-        String modifyIdentification = URLDecoder.decode(request.getParameter("identification"), "UTF-8");
-        response.setContentType("text/html;charset=utf-8");
+            int fpId = Integer.parseInt(request.getParameter("fpId"));
+            System.out.println(fpId);
+            String currentName = URLDecoder.decode(request.getParameter("currentName"), "UTF-8");
+            String modifyName = URLDecoder.decode(request.getParameter("modifyName"), "UTF-8");
+            String modifyDesc = URLDecoder.decode(request.getParameter("modifyDesc"), "UTF-8");
+            String modifyPeople = URLDecoder.decode(request.getParameter("modifyPeople"), "UTF-8");
+            String modifyCollege = URLDecoder.decode(request.getParameter("modifyCollege"), "UTF-8");
+            String modifyPhone = URLDecoder.decode(request.getParameter("modifyPhone"), "UTF-8");
+            String modifyIdentification = URLDecoder.decode(request.getParameter("identification"), "UTF-8");
+            response.setContentType("text/html;charset=utf-8");
 
 
             out = response.getWriter();
@@ -742,105 +742,105 @@ public class MapServlet extends HttpServlet {
     }
 
 
-	/**
-	 * @指定查找一个图元
-	 * @第一个参数 mymap ---Mapj
-	 * @第二个参数 layernames 图层名称
-	 * @第三个参数 selectnames 图元名称
-	 * @第四个参数 Response
-	 */
-	private void selectF(MapJ mymap, String layernames, String selectnames,
-			HttpServletResponse res) throws Exception {
+    /**
+     * @指定查找一个图元
+     * @第一个参数 mymap ---Mapj
+     * @第二个参数 layernames 图层名称
+     * @第三个参数 selectnames 图元名称
+     * @第四个参数 Response
+     */
+    private void selectF(MapJ mymap, String layernames, String selectnames,
+                         HttpServletResponse res) throws Exception {
 
-		if (mymap == null) {
-			mymap = initMapJ();
-		}
+        if (mymap == null) {
+            mymap = initMapJ();
+        }
 
-		// 以下是进行图元的查找和渲染
-		Layer m_Layer = mymap.getLayers().getLayer(layernames);
+        // 以下是进行图元的查找和渲染
+        Layer m_Layer = mymap.getLayers().getLayer(layernames);
 
-		if (m_Layer == null) {
-			System.out.println("没有[" + layernames + "]这个图层");
-			responseimg(mymap, res);
-			return;
-		}
+        if (m_Layer == null) {
+            System.out.println("没有[" + layernames + "]这个图层");
+            responseimg(mymap, res);
+            return;
+        }
 
-		// 删除以上操作已经添加的theme列表
-		m_Layer.getThemeList().removeAll(true);
+        // 删除以上操作已经添加的theme列表
+        m_Layer.getThemeList().removeAll(true);
 
-		List columnNames = new ArrayList();
-		Feature ftr;
+        List columnNames = new ArrayList();
+        Feature ftr;
 
-		TableInfo tabInfo = m_Layer.getTableInfo();
-		// fill vector with Column names
-		for (int i = 0; i < tabInfo.getColumnCount(); i++) {
-			columnNames.add(tabInfo.getColumnName(i));
-			System.out.println(tabInfo.getColumnName(i) + "  --  ");
-		}
-		// Perform a search to get the Features(records)from the layer
-		RewindableFeatureSet rFtrSet;
-		rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
+        TableInfo tabInfo = m_Layer.getTableInfo();
+        // fill vector with Column names
+        for (int i = 0; i < tabInfo.getColumnCount(); i++) {
+            columnNames.add(tabInfo.getColumnName(i));
+            System.out.println(tabInfo.getColumnName(i) + "  --  ");
+        }
+        // Perform a search to get the Features(records)from the layer
+        RewindableFeatureSet rFtrSet;
+        rFtrSet = new RewindableFeatureSet(m_Layer.searchAll(columnNames, null));
 
-		// FeatureSet fs = m_Layer.searchAll(columnNames,
-		// QueryParams.ALL_PARAMS);
-		ftr = rFtrSet.getNextFeature();
+        // FeatureSet fs = m_Layer.searchAll(columnNames,
+        // QueryParams.ALL_PARAMS);
+        ftr = rFtrSet.getNextFeature();
 
-		while (ftr != null) {
-			if (ftr.getAttribute(0).toString().equals(selectnames)) {
-				// 定位点
-				if (ftr.getGeometry().getType() == Geometry.TYPE_POINT) {
-					double newZoomValue;
-					double currentZoom = mymap.getZoom();
-					if (m_Layer.isZoomLayer()
-							&& (currentZoom > m_Layer.getZoomMax() || currentZoom < m_Layer
-									.getZoomMin())) {
-						newZoomValue = m_Layer.getZoomMax() / 2;
-						mymap.setZoom(newZoomValue);
-					}
+        while (ftr != null) {
+            if (ftr.getAttribute(0).toString().equals(selectnames)) {
+                // 定位点
+                if (ftr.getGeometry().getType() == Geometry.TYPE_POINT) {
+                    double newZoomValue;
+                    double currentZoom = mymap.getZoom();
+                    if (m_Layer.isZoomLayer()
+                            && (currentZoom > m_Layer.getZoomMax() || currentZoom < m_Layer
+                            .getZoomMin())) {
+                        newZoomValue = m_Layer.getZoomMax() / 2;
+                        mymap.setZoom(newZoomValue);
+                    }
 
-					mymap.setCenter(ftr.getGeometry().getBounds().center());
-				}
-				// 定位线、面
-				if (ftr.getGeometry().getType() == Geometry.TYPE_LINE
-						|| ftr.getGeometry().getType() == Geometry.TYPE_REGION) {
+                    mymap.setCenter(ftr.getGeometry().getBounds().center());
+                }
+                // 定位线、面
+                if (ftr.getGeometry().getType() == Geometry.TYPE_LINE
+                        || ftr.getGeometry().getType() == Geometry.TYPE_REGION) {
 
-					if (ftr.getGeometry().getBounds().width() > 0
-							&& ftr.getGeometry().getBounds().height() > 0) {
-						mymap.setBounds(ftr.getGeometry().getBounds());
-						mymap.setZoom(mymap.getZoom() * 1.1);
-					}
-				}
-				break;
-			}
-			ftr = rFtrSet.getNextFeature();
-		}
-		rFtrSet.rewind();
+                    if (ftr.getGeometry().getBounds().width() > 0
+                            && ftr.getGeometry().getBounds().height() > 0) {
+                        mymap.setBounds(ftr.getGeometry().getBounds());
+                        mymap.setZoom(mymap.getZoom() * 1.1);
+                    }
+                }
+                break;
+            }
+            ftr = rFtrSet.getNextFeature();
+        }
+        rFtrSet.rewind();
 
 
 
-		// 高亮显示
+        // 高亮显示
 
-		// 创建一个 SelectionTheme
-		SelectionTheme selTheme = new SelectionTheme("LocateFeature");
-		// 创建一个Selection对象并且把选择的图元加入
-		Selection sel = new Selection();
-		sel.add(ftr);
+        // 创建一个 SelectionTheme
+        SelectionTheme selTheme = new SelectionTheme("LocateFeature");
+        // 创建一个Selection对象并且把选择的图元加入
+        Selection sel = new Selection();
+        sel.add(ftr);
 
-		// 把Selection对象加入到SelectionTheme
-		selTheme.setSelection(sel);
+        // 把Selection对象加入到SelectionTheme
+        selTheme.setSelection(sel);
 
-		// 设置SelectionTheme的显示渲染的样式
-		Rendition rend = RenditionImpl.getDefaultRendition();
-		rend.setValue(Rendition.FILL, Color.red);
-		selTheme.setRendition(rend);
+        // 设置SelectionTheme的显示渲染的样式
+        Rendition rend = RenditionImpl.getDefaultRendition();
+        rend.setValue(Rendition.FILL, Color.red);
+        selTheme.setRendition(rend);
 
-		// 添加SelectionTheme到指定layer的theme列表中
-		m_Layer.getThemeList().add(selTheme);
-		// m_Layer.getThemeList().insert(selTheme, 0);
+        // 添加SelectionTheme到指定layer的theme列表中
+        m_Layer.getThemeList().add(selTheme);
+        // m_Layer.getThemeList().insert(selTheme, 0);
 
-		responseimg(mymap, res);
+        responseimg(mymap, res);
 
-	}
+    }
 
     /**
      * 模糊查询.
@@ -884,6 +884,12 @@ public class MapServlet extends HttpServlet {
                     continue;
                 }
                 if(m_Layer.getName().equals("名字")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("无信息1")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("无标题2")){
                     continue;
                 }
                 // 删除以上操作已经添加的theme列表
@@ -1246,6 +1252,12 @@ public class MapServlet extends HttpServlet {
                 if(m_Layer.getName().equals("名字")){
                     continue;
                 }
+                if(m_Layer.getName().equals("无信息1")){
+                    continue;
+                }
+                if(m_Layer.getName().equals("无标题2")){
+                    continue;
+                }
                 // 删除以上操作已经添加的theme列表
                 m_Layer.getThemeList().removeAll(true);
                 List columnNames = new ArrayList();
@@ -1254,7 +1266,7 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                   // System.out.println(tabInfo.getColumnName(j) + "  --  ");
+                    // System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
                 // Perform a search to get the Features(records)from the layer
                 //获得当前图层的所有图元
@@ -1303,8 +1315,8 @@ public class MapServlet extends HttpServlet {
                                 fp.setX(screenPoint.x);
                                 fp.setY(screenPoint.y);
 
-                            //存到数据库，工程师执行，一次就够了
-                            //fpService.addFeaturePoint(fp);
+                                //存到数据库，工程师执行，一次就够了
+                                //fpService.addFeaturePoint(fp);
 
                                 list.add(fp);
                                 id++;
