@@ -404,7 +404,7 @@ public class MapServlet extends HttpServlet {
 	/**
 	 * @地图渲染
 	 */
-	private void responseimg(MapJ mymap, HttpServletResponse response) {
+	private void responseimg(MapJ mymap, HttpServletResponse response){
 		ServletOutputStream sout = null;
 		mymap.setDeviceBounds(new DoubleRect(0.0D, 0.0D, this.imgsizex,
 				this.imgsizey));

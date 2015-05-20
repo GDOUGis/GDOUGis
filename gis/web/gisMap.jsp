@@ -175,7 +175,7 @@
 </div>
 
 <div id="footer">
-    Copyright &copy; 2015.CPP Studio All rights reserved.
+    Copyright &copy; 2015.CPP Studio All rights reserved（推荐使用分辨率1366*768以上的显示器）.
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
