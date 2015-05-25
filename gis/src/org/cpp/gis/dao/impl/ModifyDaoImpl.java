@@ -4,6 +4,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.cpp.gis.entities.FeaturePoint;
 import org.cpp.gis.entities.Modify;
 import org.cpp.gis.utils.JDBCUtil;
 
@@ -173,18 +174,19 @@ public class ModifyDaoImpl {
     }
 
     /**
-     * 获取所有.
+     * 根据物点ID查找出拟用名
+     * @param id
      * @return
      */
-    public List<Modify> getall() {
+    public String readPrepareNameByFPId(int id) {
         try {
             QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "SELECT * FROM tb_modify";
-            List<Modify> list = (List<Modify>)qr.query(sql,new BeanListHandler(Modify.class));
-            return list;
-        }catch (Exception e){
+            String sql = "SELECT * FROM tb_features WHERE id = ?";
+            FeaturePoint fp = (FeaturePoint) qr.query(sql, id, new BeanHandler(FeaturePoint.class));
+            return fp.getPrepareName();
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new  RuntimeException(e);
         }
+        return null;
     }
 }

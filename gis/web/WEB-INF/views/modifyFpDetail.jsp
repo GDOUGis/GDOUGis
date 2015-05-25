@@ -15,22 +15,21 @@
 
 </head>
 <body style="font-family: 微软雅黑">
-<div style="font-size: 22px;">
-    对&nbsp;<span style="color: blue">${featurePointName}</span>&nbsp;的修改情况如下:
+<hr>
+<div style="font-style: italic; margin-top:10px; font-size: 16px;">
+    对&nbsp;<span style="color: #FF4E14">${featurePointName}</span>&nbsp;的修改情况如下:
 </div>
 <table class="table table-striped">
     <tr>
-        <td>编号</td>
         <td>修改名</td>
         <td>描述</td>
         <td>修改人</td>
         <td>身份</td>
-        <td>所在学院</td>
+        <td>所在单位</td>
         <td>联系电话</td>
     </tr>
     <c:forEach items="${result.list}" var="modify">
         <tr>
-            <td>${modify.id}</td>
             <td>${modify.name}</td>
             <td>${modify.description}</td>
             <td>${modify.people}</td>

@@ -133,19 +133,6 @@ public class ModifyServiceImpl {
         return null;
     }
 
-    /**
-     * 获取所有.
-     * @return
-     */
-    public List<Modify> getAll(){
-        try{
-            List<Modify> list = modifyDao.getall();
-            return list;
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * 获取被修改过的特征点详情.
@@ -167,4 +154,12 @@ public class ModifyServiceImpl {
         }
     }
 
+    /**
+     * 根据物点ID查找出拟用名.
+     * @param id
+     * @return
+     */
+    public String getPrepareNameByFPId(int id) {
+        return modifyDao.readPrepareNameByFPId(id);
+    }
 }
