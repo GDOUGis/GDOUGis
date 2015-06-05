@@ -35,7 +35,7 @@
 </c:if>
 <div class="container">
     <div class="col-lg-offset-2" style="margin-top: 80px;">
-        <form action="${pageContext.request.contextPath}/servlet/UserServlet?method=updatePwd" method="post" onsubmit="return check()">
+        <form style="width: 40%" action="${pageContext.request.contextPath}/servlet/UserServlet?method=updatePwd" method="post" onsubmit="return check()">
             <div class="form-group">
                 <label for="password">新密码:</label>
                 <input type="password" name="password" class="password form-control" id="password" placeholder="输入密码">
@@ -44,7 +44,7 @@
                 <label for="repassword">再次输入密码:</label>
                 <input type="password" name="repassword" class="repassword form-control" id="repassword" placeholder="再次输入密码">
             </div>
-            <input type="submit" class="btn btn-primary" value="提交">
+            <input type="submit" class="btn btn-primary col-md-offset-5" value="提交">
         </form>
     </div>
 </div>

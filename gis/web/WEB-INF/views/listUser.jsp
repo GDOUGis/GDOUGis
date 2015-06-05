@@ -19,7 +19,7 @@
             <td>${user.id}</td>
             <td>${user.username}</td>
             <td>
-                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${user.id}'>删除</a>
+                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${user.id}' onclick="confirm('是否将该用户删除')">删除</a>
                 &nbsp;
                 <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=reset&id=${user.id}' onclick="confirm('是否将该用户密码重置为123456')">重置密码</a>
             </td>

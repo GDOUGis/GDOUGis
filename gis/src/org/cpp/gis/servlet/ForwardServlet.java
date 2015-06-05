@@ -20,7 +20,6 @@ public class ForwardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
                 String resource = request.getParameter("resource");
-
             if("admin_left".equals(resource)){
                 request.getRequestDispatcher("/WEB-INF/views/admin_left.jsp").forward(request,response);
             }else if("admin_top".equals(resource)){
@@ -33,6 +32,8 @@ public class ForwardServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/updatePwdUI.jsp").forward(request,response);
             }else if("admin_bottom".equals(resource)){
                 request.getRequestDispatcher("/WEB-INF/views/admin_bottom.jsp").forward(request,response);
+            }else if("oi_admin".equals(resource)){
+                request.getRequestDispatcher("/WEB-INF/views/oi_admin.jsp").forward(request,response);
             }
 
         }catch (Exception e){

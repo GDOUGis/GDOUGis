@@ -27,15 +27,17 @@
         <td>身份</td>
         <td>所在单位</td>
         <td>联系电话</td>
+        <td>提交时间</td>
     </tr>
     <c:forEach items="${result.list}" var="modify">
         <tr>
             <td>${modify.name}</td>
             <td>${modify.description}</td>
             <td>${modify.people}</td>
-            <td>${modify.identification == 0?'学生':'教师'}</td>
+            <td>${modify.identification}</td>
             <td>${modify.college}</td>
             <td>${modify.phone}</td>
+            <td>${modify.date}</td>
         </tr>
     </c:forEach>
 </table>

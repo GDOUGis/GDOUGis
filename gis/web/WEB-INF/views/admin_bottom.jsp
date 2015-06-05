@@ -40,7 +40,7 @@
 </head>
 <body>
 <div id="footer">
-    Copyright &copy; 2015.CPP Studio All rights reserved.
+    Copyright &copy; 2015.广东海洋大学 All rights reserved.
 </div>
 </body>
 </html>

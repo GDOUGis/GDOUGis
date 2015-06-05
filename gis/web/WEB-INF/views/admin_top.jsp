@@ -21,7 +21,7 @@
                     <img src="${pageContext.request.contextPath}/images/logo.gif" height="60px">
                 </a>
             </div>
-            <div style="float: left;margin-top: 10px;margin-left: 10px;"><span style="font-size: 24px;font-family: '微软雅黑';">校园地图后台管理</span></div>
+            <div style="float: left;margin-top: 10px;margin-left: 10px;"><span style="font-size: 24px;font-family: '微软雅黑';">校园地图系统管理</span></div>
             <div style="float: right;margin-right: 150px;margin-top:10px;font-family: 微软雅黑">
                 <label>欢迎&nbsp;${user.username}&nbsp;使用本系统</label>
                 &nbsp;

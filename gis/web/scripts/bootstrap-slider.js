@@ -304,9 +304,13 @@
 
 		function createNewSlider(element, options) {
 
+            console.log(element);
+            var e = window.event;
+            //alert(e);
+            /*var trg = e.target;*/
 			if(typeof element === "string") {
 				this.element = document.querySelector(element);
-			} else if(element instanceof HTMLElement) {
+			} else if(element instanceof Element || e.nodeType === 1) {
 				this.element = element;
 			}
 
@@ -377,6 +381,7 @@
 
 				sliderTrackSelection = document.createElement("div");
 				sliderTrackSelection.className = "slider-selection";
+
 
 				sliderTrackHigh = document.createElement("div");
 				sliderTrackHigh.className = "slider-track-high";
@@ -621,17 +626,33 @@
 
 			// Bind keyboard handlers
 			this.handle1Keydown = this._keydown.bind(this, 0);
-			this.handle1.addEventListener("keydown", this.handle1Keydown, false);
+			if(document.all){
+                this.handle1.attachEvent("keydown", this.handle1Keydown, false);
+            }else{
+                this.handle1.addEventListener("keydown", this.handle1Keydown, false);
+            }
 
 			this.handle2Keydown = this._keydown.bind(this, 1);
-			this.handle2.addEventListener("keydown", this.handle2Keydown, false);
+            if(document.all){
+                this.handle2.attachEvent("keydown", this.handle2Keydown, false);
+            }else{
+			    this.handle2.addEventListener("keydown", this.handle2Keydown, false);
+            }
 
 			this.mousedown = this._mousedown.bind(this);
 			if (this.touchCapable) {
 				// Bind touch handlers
-				this.sliderElem.addEventListener("touchstart", this.mousedown, false);
+                if(document.all){
+                    this.sliderElem.attachEvent("touchstart", this.mousedown, false);
+                }else{
+				    this.sliderElem.addEventListener("touchstart", this.mousedown, false);
+                }
 			}
-			this.sliderElem.addEventListener("mousedown", this.mousedown, false);
+            if(document.all){
+			    this.sliderElem.attachEvent("mousedown", this.mousedown, false);
+            }else{
+			    this.sliderElem.addEventListener("mousedown", this.mousedown, false);
+            }
 
 
 			// Bind tooltip-related handlers
@@ -645,15 +666,26 @@
 			} else {
 				this.showTooltip = this._showTooltip.bind(this);
 				this.hideTooltip = this._hideTooltip.bind(this);
+                if(document.all){
+                    this.sliderElem.attachEvent("mouseenter", this.showTooltip, false);
+                    this.sliderElem.attachEvent("mouseleave", this.hideTooltip, false);
 
-				this.sliderElem.addEventListener("mouseenter", this.showTooltip, false);
-				this.sliderElem.addEventListener("mouseleave", this.hideTooltip, false);
+                    this.handle1.attachEvent("focus", this.showTooltip, false);
+                    this.handle1.attachEvent("blur", this.hideTooltip, false);
 
-				this.handle1.addEventListener("focus", this.showTooltip, false);
-				this.handle1.addEventListener("blur", this.hideTooltip, false);
+                    this.handle2.attachEvent("focus", this.showTooltip, false);
+                    this.handle2.attachEvent("blur", this.hideTooltip, false);
+                }else{
+                    this.sliderElem.addEventListener("mouseenter", this.showTooltip, false);
+                    this.sliderElem.addEventListener("mouseleave", this.hideTooltip, false);
 
-				this.handle2.addEventListener("focus", this.showTooltip, false);
-				this.handle2.addEventListener("blur", this.hideTooltip, false);
+                    this.handle1.addEventListener("focus", this.showTooltip, false);
+                    this.handle1.addEventListener("blur", this.hideTooltip, false);
+
+                    this.handle2.addEventListener("focus", this.showTooltip, false);
+                    this.handle2.addEventListener("blur", this.hideTooltip, false);
+                }
+
 			}
 
 			if(this.options.enabled) {

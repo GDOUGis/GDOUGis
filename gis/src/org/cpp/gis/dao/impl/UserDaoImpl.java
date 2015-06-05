@@ -86,7 +86,7 @@ public class UserDaoImpl {
     public List<User> getUserPageDate(int beginIndex, int pageSize){
         try {
             QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "select * from tb_user limit ?,?";
+            String sql = "select * from tb_user where is_su='0' limit ?,? ";
             Object[] params = {beginIndex, pageSize};
             return (List<User>) qr.query(sql, params, new BeanListHandler(User.class));
         }catch (Exception e){

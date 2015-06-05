@@ -10,13 +10,10 @@ mousestate ="";//鼠标是否按下的状态
 selectedname = null;
 myslider = null;
 mysliderState = null;
+moveState = false;//鼠标是否移动
+ftrName = null;//用于弹出修改框
 
-/*document.onmousedown=mapmousedown;
-document.onmousemove=mapmousemove;
-document.onmouseup=mapmouseup;*/
-document.all.imgmap.onreadystatechange=downloadstate;
-document.all.boundmap.onreadystatechange=bounddownloadstate;
-//document.all.seltable.onmousemove=tablemove;
+
 window.name="mapwindow";
 //在此加载地图;
 document.all.imgmap.src=mapserviceurl+"?rqutype=initmap";

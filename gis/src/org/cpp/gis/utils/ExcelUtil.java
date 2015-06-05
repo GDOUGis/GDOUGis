@@ -1,10 +1,7 @@
 package org.cpp.gis.utils;
 
 import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
-import jxl.write.WriteException;
+import jxl.write.*;
 import org.cpp.gis.entities.Modify;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
 
@@ -79,19 +76,30 @@ public class ExcelUtil {
 //            // 写进文档
 //            wwb.write();
             // 外层循环遍历所有特征点，并将同名数据合并到一个单元格
-            Result result = modifyService.getFPModifyPD("1", "1000");
-            List<Modify> resultList = result.getList();                      // 这并不是FeaturePoint实体，而是Modify实体，借用了。
+            //Result result = modifyService.getFPModifyPD("1", "1000");
+            List<Modify> resultList = modifyService.getAllFPModify();                      // 这并不是FeaturePoint实体，而是Modify实体，借用了。
+
+
+            //控制对齐
+            WritableFont font1= new  WritableFont(WritableFont.TIMES,11,WritableFont.BOLD);
+            WritableCellFormat format1=new WritableCellFormat(font1);
+            //把水平对齐方式指定为居中
+            format1.setAlignment(jxl.format.Alignment.CENTRE);
+            //把垂直对齐方式指定为居中
+            format1.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
 
             // 物点列
-            Label labelCurName = new Label(0, 0, "物点（现用名）");
+            Label labelCurName = new Label(0, 0, "物点（现用名）",format1);
             // 拟用名列
-            Label labelPrepareName = new Label(1, 0, "拟用名");
+            Label labelPrepareName = new Label(1, 0, "拟用名",format1);
             // 修改信息列
-            Label labelModifyName = new Label(2, 0, "修改名");
-            Label labelDesc = new Label(3, 0, "描述");
-            Label labelPeople = new Label(4, 0, "修改人");
-            Label labelCollege = new Label(5, 0, "所在学院");
-            Label labelPhone = new Label(6, 0, "联系电话");
+            Label labelModifyName = new Label(2, 0, "修改名",format1);
+            Label labelDesc = new Label(3, 0, "描述",format1);
+            Label labelPeople = new Label(4, 0, "修改人",format1);
+            Label labelCollege = new Label(5, 0, "所在单位",format1);
+            Label labelIdentification = new Label(6, 0, "身份",format1);
+            Label labelPhone = new Label(7, 0, "联系电话",format1);
+            Label labelDate= new Label(8, 0, "提交日期",format1);
 
             // 添加一行数据（标题）
             ws.addCell(labelCurName);
@@ -100,10 +108,33 @@ public class ExcelUtil {
             ws.addCell(labelDesc);
             ws.addCell(labelPeople);
             ws.addCell(labelCollege);
+            ws.addCell(labelIdentification);
             ws.addCell(labelPhone);
+            ws.addCell(labelDate);
+
+            //设置格式
+            ws.setColumnView(0,20);
+            ws.setColumnView(1,20);
+            ws.setColumnView(2,20);
+            ws.setColumnView(3,30);
+            ws.setColumnView(4,15);
+            ws.setColumnView(5,15);
+            ws.setColumnView(6,20);
+            ws.setColumnView(7,20);
+            ws.setColumnView(8,20);
+
+
 
             int j = 0;
             int lastRow = 0;                                            // 记录上一行位置
+
+            //控制对齐
+            WritableFont font2= new  WritableFont(WritableFont.TIMES,10,WritableFont.NO_BOLD);
+            WritableCellFormat format2=new WritableCellFormat(font2);
+            //把水平对齐方式指定为居中
+            format2.setAlignment(jxl.format.Alignment.CENTRE);
+            //把垂直对齐方式指定为居中
+            format2.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);
 
             for(int i = 0; i < resultList.size(); i++) {
                 int id = resultList.get(i).getFeature_id();             // 物点ID
@@ -116,28 +147,32 @@ public class ExcelUtil {
                 List<Modify> modifyList = modifyService.getModifyDetail(id, "1", "100").getList();   // 根据物点ID找出修改详情（修改的列表）
                 int k = 0;
                 for(; k < resultList.get(i).getTimes(); j++) {          // 该物点被修改多少次就循环多少次
-                    Label labelName_i = new Label(2, j+1, modifyList.get(k).getName()+"");
-                    Label labelDesc_i = new Label(3, j+1, modifyList.get(k).getDescription() + "");
-                    Label labelPeople_i = new Label(4, j+1, modifyList.get(k).getPeople() + "");
-                    Label labelCollege_i = new Label(5, j+1, modifyList.get(k).getCollege() + "");
-                    Label labelPhone_i = new Label(6, j+1, modifyList.get(k).getPhone() + "");
+                    Label labelName_i = new Label(2, j+1, modifyList.get(k).getName()+"",format2);
+                    Label labelDesc_i = new Label(3, j+1, modifyList.get(k).getDescription() + "",format2);
+                    Label labelPeople_i = new Label(4, j+1, modifyList.get(k).getPeople() + "",format2);
+                    Label labelCollege_i = new Label(5, j+1, modifyList.get(k).getCollege() + "",format2);
+                    Label labelIdentification_i = new Label(6, j+1, modifyList.get(k).getIdentification() + "",format2);
+                    Label labelPhone_i = new Label(7, j+1, modifyList.get(k).getPhone() + "",format2);
+                    Label labelDate_i = new Label(8, j+1, modifyList.get(k).getDate() + "",format2);
                     ws.addCell(labelName_i);
                     ws.addCell(labelDesc_i);
                     ws.addCell(labelPeople_i);
                     ws.addCell(labelCollege_i);
+                    ws.addCell(labelIdentification_i);
                     ws.addCell(labelPhone_i);
+                    ws.addCell(labelDate_i);
                     k++;
                 }
                 if(i == 0) {
-                    ws.addCell(new Label(0, lastRow + 1, fpName));
-                    ws.addCell(new Label(1, lastRow + 1, prepareName));
+                    ws.addCell(new Label(0, lastRow + 1, fpName,format2));
+                    ws.addCell(new Label(1, lastRow + 1, prepareName,format2));
                     ws.mergeCells(0, 1, 0, tmp);               // 合并单元格
                     ws.mergeCells(1,1, 1, tmp);               // 合并单元格
                     System.out.println("i==0: tmp =>" + tmp);
                     lastRow += tmp;
                 } else {
-                    ws.addCell(new Label(0, lastRow + 1, fpName));
-                    ws.addCell(new Label(1, lastRow + 1, prepareName));
+                    ws.addCell(new Label(0, lastRow + 1, fpName,format2));
+                    ws.addCell(new Label(1, lastRow + 1, prepareName,format2));
                     System.out.println("i!=0: lastRow =>" + lastRow + ", tmp => " + tmp);
                     ws.mergeCells(0, lastRow + 1, 0, lastRow + tmp);
                     ws.mergeCells(1, lastRow + 1, 1, lastRow + tmp);

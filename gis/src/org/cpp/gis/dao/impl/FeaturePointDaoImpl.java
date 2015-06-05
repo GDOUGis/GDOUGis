@@ -18,11 +18,15 @@ public class FeaturePointDaoImpl implements FeaturePointDao{
     @Override
     public void create(FeaturePoint featurePoint) {
         try {
-            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
-            String sql = "INSERT INTO tb_features(id, name, description, prepareName) VALUES(?, ?, ?, ?)";
-            Object params[] = {featurePoint.getId(), featurePoint.getName(), featurePoint.getDescription(),
-                featurePoint.getPrepareName()};
-            qr.update(sql, params);
+            if(readByName(featurePoint.getName())!=null){
+                return;
+            }else{
+                QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+                String sql = "INSERT INTO tb_features(id, name, description, prepareName,prepareDescription) VALUES(?, ?, ?, ?,?)";
+                Object params[] = {featurePoint.getId(), featurePoint.getName(), featurePoint.getDescription(),
+                        featurePoint.getPrepareName(),featurePoint.getPrepareDescription()};
+                qr.update(sql, params);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

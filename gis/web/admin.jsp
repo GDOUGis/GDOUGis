@@ -52,22 +52,22 @@
 		<%--<form action="${pageContext.request.contextPath }/servlet/UserServlet?method=login"
 			method="post" onsubmit="return validate()">--%><form action="${pageContext.request.contextPath }/servlet/UserServlet?method=login"
 			method="post">
-			<div class="login">后台登录</div>
+			<div class="login">系统管理登录</div>
 			<div class="username-text">用户名:</div>
 			<div class="password-text">密码:</div>
 			<div class="username-field">
 				<input type="text" name="username" id="username"
-					placeholder="请输入用户名" value="admin" />
+					placeholder="请输入用户名" value="" />
 			</div>
 			<div class="password-field">
 				<input type="password" name="password" id="password"
-					placeholder="请输入密码"  value="admin"/>
+					placeholder="请输入密码"  value=""/>
 			</div>
 			<input type="submit" name="submit" value="GO" />
 		</form>
 	</div>
 	<div id="footer">
-		Copyright &copy; 2015.CPP Studio All rights reserved.
+		Copyright &copy; 2015.广东海洋大学 All rights reserved.
 	</div>
 </body>
 </html>

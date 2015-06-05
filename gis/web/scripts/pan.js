@@ -12,14 +12,17 @@ var dobj;
 function movemouse(e)
 
 {
+    //console.log("移动了");
+    var evn= window.event||e;
 
     if (isdrag)
 
     {
+        moveState = true;//鼠标移动了
 
-        dobj.style.left = nn6 ? tx + e.clientX - x : tx + event.clientX - x;
+        dobj.style.left = (nn6 ? tx + e.clientX - x : tx + event.clientX - x) + 'px';
 
-        dobj.style.top  = nn6 ? ty + e.clientY - y : ty + event.clientY - y;
+        dobj.style.top  = (nn6 ? ty + e.clientY - y : ty + event.clientY - y)  + 'px';
 
         return false;
 
@@ -30,8 +33,10 @@ function movemouse(e)
 function selectmouse(e)
 
 {
-    startx = e.clientX;
-    starty = e.clientY;
+    var evn= window.event||e;
+
+    startx = evn.clientX;
+    starty = evn.clientY;
 
     var fobj = nn6 ? e.target : event.srcElement;
 
@@ -72,10 +77,9 @@ function selectmouse(e)
 document.onmousedown=selectmouse;
 
 document.onmouseup=function(e){
+
     //alert("123");
     var evn= window.event||e;
-
-
 
     var fobj = nn6 ? e.target : event.srcElement;
 
@@ -89,26 +93,45 @@ document.onmouseup=function(e){
 
     }
 
+    var x = evn.clientX-startx;
+    var y = evn.clientY-starty;
+
     if (fobj.className=="imgdiv") {
-
         isdrag = false;
+        if(x==0 & y==0) {
 
-        var x = evn.clientX-startx;
-        var y = evn.clientY-starty;
-        //原来图片的中心点
-        var oldcenterx=parseInt(document.all.imgmap.width)/2;
-        var oldcentery=parseInt(document.all.imgmap.height)/2;
-        //alert(oldcenterx);
-        //新的图片中心点
-        var centerx = oldcenterx-x;
-        var centery = oldcentery-y;
+            //alert("点击边框");
+            //鼠标xy
+            var x = evn.clientX;
+            var y = evn.clientY;
+            //图片所在div距离屏幕边界的xy
+            var imgx = document.all.mapframe.style.left;
+            var imgy = document.all.mapframe.style.top;
+            //计算得出相对于图片的xy
+            var scrollX = $(document).scrollLeft();
+            x = parseInt(x) - parseInt(imgx)+ scrollX;
+            var scrollY = $(document).scrollTop();
+            y = parseInt(y) - parseInt(imgy)+scrollY;
+            var date = new Date();
+            var url = mapserviceurl + "?rqutype=findByPoint&x="+x+"&y="+y+"&date="+date;
 
-        chgmapsrc("rqutype=panmap&centerx=" + centerx + "&centery=" + centery);
+            $("#imgmap").attr("src",encodeURI(encodeURI(url)));
 
+        }else{
+            //原来图片的中心点
+            var oldcenterx=parseInt(document.all.imgmap.width)/2;
+            var oldcentery=parseInt(document.all.imgmap.height)/2;
+            //alert(oldcenterx);
+            //新的图片中心点
+            var centerx = oldcenterx-x;
+            var centery = oldcentery-y;
+
+            chgmapsrc("rqutype=panmap&centerx=" + centerx + "&centery=" + centery);
+        }
 
     }
 
-
-
+    //去除提示
+    $(".FeatureName").remove();
 };
 

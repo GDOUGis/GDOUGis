@@ -76,8 +76,10 @@ public class ModifyServlet extends HttpServlet {
             e.printStackTrace();
         } finally {
             try {
-                buf.close();
-                out.close();
+               if(out!=null){
+                   buf.close();
+                   out.close();
+               }
             } catch (IOException e) {
                 e.printStackTrace();
             }

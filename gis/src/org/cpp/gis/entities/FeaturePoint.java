@@ -14,9 +14,21 @@ public class FeaturePoint {
      */
     private String prepareName;
     /**
-     * 拟改说明.
+     * 备注
      */
     private String description;
+    /**
+     * 拟改说明.
+     */
+    private String prepareDescription;
+
+    public String getPrepareDescription() {
+        return prepareDescription;
+    }
+
+    public void setPrepareDescription(String prepareDescription) {
+        this.prepareDescription = prepareDescription;
+    }
 
     public String getDescription() {
         return description;

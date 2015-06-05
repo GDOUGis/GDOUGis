@@ -31,21 +31,24 @@
 
 <body style="font-family: '微软雅黑'">
     <div class="container">
-        <div class="col-lg-offset-2" style="margin-top: 80px;">
-            <form action="${pageContext.request.contextPath}/servlet/UserServlet?method=add" method="post" onsubmit="return check()">
+        <div style="margin-top: 80px;">
+            <form  style="width:40%" action="${pageContext.request.contextPath}/servlet/UserServlet?method=add" method="post" onsubmit="return check()">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">用户名</label>
-                    <input type="text" name="username" class="username form-control" id="exampleInputEmail1" placeholder="请输入用户名">
+                    <label for="username">用户名:</label>
+                    <input type="text"  name="username" class="username form-control" id="username" placeholder="请输入用户名">
                 </div>
+
                 <div class="form-group">
                     <label for="password">密码:</label>
                     <input type="password" name="password" class="password form-control" id="password" placeholder="输入密码">
                 </div>
+
                 <div class="form-group">
                     <label for="repassword">再次输入密码:</label>
                     <input type="password" name="repassword" class="repassword form-control" id="repassword" placeholder="再次输入密码">
                 </div>
-                <input type="submit" class="btn btn-primary" value="提交">
+
+                <input type="submit" class="btn btn-primary col-md-offset-5" value="提交">
             </form>
         </div>
     </div>

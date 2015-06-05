@@ -27,7 +27,7 @@ public class TestModifyDao {
         modify.setName("哈哈");
         modify.setCollege("Infomation college");
         modify.setDescription("none");
-        modify.setIdentification(1);
+        modify.setIdentification("其他");
         modify.setPeople("Rose");
         modify.setPhone("13132165487");
         modify.setFeature_id(1);

@@ -1,5 +1,7 @@
 package org.cpp.gis.entities;
 
+import java.util.Date;
+
 /**
  * 修改信息类.
  * Created by Rose on 2015/5/8.
@@ -9,10 +11,11 @@ public class Modify {
     private String name;
     private String description;
     private String people;
-    private Integer identification;
+    private String identification;
     private String college;
     private String phone;
     private Integer times;
+    private Date date;
 
     private Integer feature_id;
 
@@ -71,11 +74,11 @@ public class Modify {
         this.people = people;
     }
 
-    public Integer getIdentification() {
+    public String getIdentification() {
         return identification;
     }
 
-    public void setIdentification(Integer identification) {
+    public void setIdentification(String identification) {
         this.identification = identification;
     }
 
@@ -101,5 +104,13 @@ public class Modify {
 
     public void setTimes(Integer times) {
         this.times = times;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

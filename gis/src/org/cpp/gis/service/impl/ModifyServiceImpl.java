@@ -9,6 +9,7 @@ import org.cpp.gis.utils.Page;
 import org.cpp.gis.utils.PageUtil;
 import org.cpp.gis.utils.Result;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,10 +33,11 @@ public class ModifyServiceImpl {
             modify.setName(modifyName);
             modify.setCollege(modifyCollege);
             modify.setDescription(modifyDesc);
-            modify.setIdentification(Integer.parseInt(modifyIdentification));
+            modify.setIdentification(modifyIdentification);
             modify.setPeople(modifyPeople);
             modify.setPhone(modifyPhone);
             modify.setFeature_id(fpId);
+            modify.setDate(new Date());
 
             System.out.println(modify.toString());
             modifyDao.create(modify);
@@ -131,6 +133,21 @@ public class ModifyServiceImpl {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 加载被修改过的特征点的所有统计数据.
+     * @return
+     */
+    public List<Modify> getAllFPModify(){
+        List<Modify> list = null;
+        try {
+            list =modifyDao.getAllFPModify();
+            return  list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new RuntimeException(e);
+        }
     }
 
 

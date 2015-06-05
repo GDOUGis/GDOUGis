@@ -83,12 +83,12 @@
         <init-param>
             <!--地图存放路径配置-->
             <param-name>mapPath</param-name>
-            <param-value>test1</param-value>
+            <param-value>map</param-value>
         </init-param>
         <init-param>
             <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
             <param-name>fileToLoad</param-name>
-            <param-value>test1/map.gst</param-value>
+            <param-value>map/map.gst</param-value>
         </init-param>
         <init-param>
             <!-- 地图服务器的引用路径配置 -->
@@ -110,12 +110,12 @@
         <init-param>
             <!--地图存放路径配置-->
             <param-name>mapPath</param-name>
-            <param-value>test1</param-value>
+            <param-value>map</param-value>
         </init-param>
         <init-param>
             <!--地图集合文件完整路径，需要和地图存放路径保持同步-->
             <param-name>fileToLoad</param-name>
-            <param-value>test1/map.gst</param-value>
+            <param-value>map/map.gst</param-value>
         </init-param>
         <init-param>
             <!-- 地图服务器的引用路径配置 -->

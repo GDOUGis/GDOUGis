@@ -58,7 +58,12 @@
                 <li><a href="${pageContext.request.contextPath }/servlet/ForwardServlet?resource=updatePwdUI" target="main">修改密码</a></li>
             </ul>
         </div>
-    </div>
+        <div class="div2"><div class="zxcp"></div>操作说明</div>
+        <div class="div3">
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=oi_admin" TARGET="main">查看说明</a></li>
+            </ul>
+        </div>
 </div>
 
 </body>

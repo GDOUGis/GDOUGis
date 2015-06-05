@@ -5,12 +5,12 @@
 Definition Table
   Type NATIVE Charset "WindowsSimpChinese"
   Fields 4
-    Type Integer ;
-    Str Char (200) ;
-    X Float ;
-    Y Float ;
+    名字 Char (30) ;
+    备注 Char (200) ;
+    拟用名 Char (30) ;
+    拟用名说明 Char (200) ;
 begin_metadata
 "\IsReadOnly" = "FALSE"
 "\MapInfo" = ""
-"\MapInfo\TableID" = "b4c9618b-d9af-44a2-a28e-3fb961a1b832"
+"\MapInfo\TableID" = "9a896b82-cf89-49a3-b8cc-1b3ba31a99bc"
 end_metadata

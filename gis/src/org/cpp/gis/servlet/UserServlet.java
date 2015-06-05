@@ -146,7 +146,6 @@ public class UserServlet extends HttpServlet {
         System.out.println("==> login");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        System.out.println("un:"+username+", pw:"+password);
         try {
              /*判空*/
             if(username == null || password == null ||
