@@ -17,10 +17,10 @@ body{
 }
 
 .modal-dialog{
-    margin-right:80px;
-    margin-top:30px;
+    margin-right:5%;
+    margin-top:3%;
     width:380px;
-    height:620px;;
+    height:65%;
 }
 
 #cInput {

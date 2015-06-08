@@ -11,8 +11,8 @@
     </default-config>
 
     <named-config name="rose">
-        <property name="user">cppstudio</property>
-        <property name="password">hdcpptd123456</property>
+        <property name="user">root</property>
+        <property name="password">root</property>
         <property name="driverClass">com.mysql.jdbc.Driver</property>
         <property name="jdbcUrl">jdbc:mysql://localhost:3306/db_gdou_gis?useUnicode=true&amp;characterEncoding=UTF8</property>
 

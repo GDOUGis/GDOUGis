@@ -94,8 +94,6 @@
                         <input id="modifyPeople" type="text" class="form-control" placeholder="请输入您的姓名">
                     </div>
                     <label class="control-label">身 &nbsp; &nbsp;份：</label>
-                    <%--<input type="radio" id="identification0" name="identification" /> 教师 &nbsp; &nbsp;
-                    <input type="radio" id="identification1" checked="checked" name="identification" />学生<br>--%>
                     <select name="identification" id="identification" class="form-control" style="margin-left: 8px;font-size: 13px;">
                         <option>校内教职工</option>
                         <option>校内在读学生</option>
@@ -215,12 +213,6 @@
     </div>
 </div>
 
-
-<%--<!--div缩略图边框，img为缩略图,初始化为隐藏的-->
-<div id="mapboundframe" style=" position: absolute;left: 10px;top: 70px;height: 182px;width: 242px;background-color: #fff;layer-background-color: #99FFFF;border: 1px #339933 solid;float:left;display: block;z-index: 9999;border-radius: 5px;">
-    <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
-            style=" position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;">
-</div>--%>
 <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
 <div id="mapboundframe" style="position: absolute;top: 70px;left: 980px;height: 183px;width: 243px; display: block;border: 1px solid #000000;">
     <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
@@ -330,19 +322,10 @@
             var name = $("#cAlias").val();  // 修改名
             var modifyDesc = $("#modifyDesc").val();   // 修改说明
             var modifyPeople = $("#modifyPeople").val();  // 修改人名字
-          /*  var identification0 = $("#identification0").attr("checked");    // 教师
-            var identification1 = $("#identification1").attr("checked");    // 学生
-            var identification;
-            if("checked" == identification0) {
-                identification = 0;
-            } else {
-                identification = 1;
-            }*/
+
             var identification = $("#identification").val();
             var modifyCollege = $("#modifyCollege").val();        // 所在学院
             var modifyPhone = $("#modifyPhone").val();            // 修改人手机
-            alert(identification);
-            alert(modifyCollege);
 
             //主要字段校验
             if(name==""||name==null){
@@ -378,9 +361,7 @@
                  } else {
                      alert("服务器正忙..")
                  }
-                 //alert("退出addModifyName的getJSON方法")
                  });
-            //alert("After addModifyName的getJSON方法")
             return false;
         });
 
