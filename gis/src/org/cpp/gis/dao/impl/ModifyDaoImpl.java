@@ -220,4 +220,19 @@ public class ModifyDaoImpl {
         }
         return null;
     }
+
+    /**
+     * 删除.
+     * @param id
+     */
+    public void deleteById(int id){
+        try{
+            QueryRunner qr = new QueryRunner(JDBCUtil.getDataSource());
+            String sql = "delete FROM tb_modify WHERE id = ?";
+            qr.update(sql,id);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

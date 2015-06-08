@@ -28,6 +28,7 @@
         <td>所在单位</td>
         <td>联系电话</td>
         <td>提交时间</td>
+        <td>操作</td>
     </tr>
     <c:forEach items="${result.list}" var="modify">
         <tr>
@@ -38,6 +39,7 @@
             <td>${modify.college}</td>
             <td>${modify.phone}</td>
             <td>${modify.date}</td>
+            <td><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=delete&modifyId=${modify.id}&feature_id=${modify.feature_id}" onclick="confirm('确认要删除吗？')">删除</a></td>
         </tr>
     </c:forEach>
 </table>
@@ -60,7 +62,7 @@
 
 </div>
     <div style="text-align: right;margin-right: 150px;">
-        <button type="button" class="btn btn-primary" onclick="window.history.go(-1)">返回</button>
+        <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=loadFPModifyPD">返回</a>
     </div>
 <script type="text/javascript" src="/scripts/jquery.min.js"></script>
 <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>

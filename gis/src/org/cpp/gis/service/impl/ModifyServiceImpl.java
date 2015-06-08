@@ -179,4 +179,12 @@ public class ModifyServiceImpl {
     public String getPrepareNameByFPId(int id) {
         return modifyDao.readPrepareNameByFPId(id);
     }
+
+    /**
+     * 删除.
+     * @param id
+     */
+    public void deleteById(int id){
+        modifyDao.deleteById(id);
+    }
 }

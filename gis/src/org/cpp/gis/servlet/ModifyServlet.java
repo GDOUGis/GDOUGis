@@ -42,6 +42,25 @@ public class ModifyServlet extends HttpServlet {
             showModifiedFPDetail(req, resp);
         } else if((method != null) && (method.equals("exportData"))) {
             exportData(req, resp);
+        } else if((method != null) && (method.equals("delete"))){
+            delete(req,resp);
+        }
+    }
+
+    /**
+     * 删除.
+     * @param request
+     * @param response
+     */
+    private void delete(HttpServletRequest request, HttpServletResponse response) {
+        try{
+            Integer id = Integer.parseInt(request.getParameter("modifyId"));
+            modifyService.deleteById(id);
+            Integer feature_id = Integer.parseInt(request.getParameter("feature_id"));
+            request.getRequestDispatcher("/servlet/ModifyServlet?method=showModifiedFPDetail&feature_id+"+feature_id).forward(request,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
