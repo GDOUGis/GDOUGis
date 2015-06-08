@@ -71,9 +71,12 @@ public class ModifyServlet extends HttpServlet {
      * 备份数据.
      */
     private void backup(HttpServletResponse resp, HttpServletRequest req) {
+        System.out.println("==> backup");
+        OutputStream out = null;
+        FileInputStream inputStream = null;
         try {
             String user = "root";
-            String pw = "root";
+            String pw = "love100200";
             String dbName = "db_gdou_gis";
             String filePath = "D:\\backup";
             File file = new File(filePath);
@@ -81,20 +84,39 @@ public class ModifyServlet extends HttpServlet {
                 file.mkdir();
             }
             filePath = file.getPath();
-
             BackupDBUtil.backup(user, pw, dbName, filePath);
+            String fileName = URLEncoder.encode(dbName + ".sql", "utf-8");
 
-            resp.getWriter().write("1");    // 备份成功返回1
-        } catch (Exception e) {
-            try {
-                resp.getWriter().write("0");
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            resp.setContentType("multipart/form-data");
+            resp.setHeader("Content-disposition","attachment;filename="+fileName);
+
+            inputStream = new FileInputStream(filePath + "\\" + fileName);
+            out = resp.getOutputStream();
+
+            byte bytes[]=new byte[1024 * 1024];//设置缓冲区为1MB
+            int len=0;
+            //读取数据。返回值为读入缓冲区的字节总数,如果到达文件末尾，则返回-1
+            while((len=inputStream.read(bytes))!=-1)
+            {
+                //将指定 byte数组中从下标 0 开始的 len个字节写入此文件输出流,(即读了多少就写入多少)
+                out.write(bytes,0,len);
             }
+            out.flush();
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if(out != null) {
+                    out.close();
+                }
+                if(inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-
+        System.out.println("backup ==>");
     }
 
     /**

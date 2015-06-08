@@ -35,11 +35,11 @@ public class BackupDBUtil {
             // 组合控制台输出信息字符串.
             BufferedReader br = new BufferedReader(reader);
             while((inStr = br.readLine()) != null) {
-                System.out.println(inStr);
+//                System.out.println(inStr);
                 sb.append(inStr + "\r\n");
             }
             outStr = sb.toString();
-            System.out.println(outStr);
+//            System.out.println(outStr);
 
             // .sql目标文件
             FileOutputStream fout = new FileOutputStream(new File(savePath + "\\" + dbName + ".sql"));

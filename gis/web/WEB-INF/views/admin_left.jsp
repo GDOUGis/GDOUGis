@@ -59,17 +59,17 @@
                 <li><a href="${pageContext.request.contextPath }/servlet/ForwardServlet?resource=updatePwdUI" target="main">修改密码</a></li>
             </ul>
         </div>
-
-        <div class="div2">
-            <div class="backupDB"></div>
-            备份数据
-        </div>
-        <div class="div3">
-            <ul>
-                <li><a href="#" onclick="backup()">一键备份</a></li>
-            </ul>
-        </div>
-
+        <c:if test="${user.is_Su==1}">
+            <div class="div2">
+                <div class="backupDB"></div>
+                备份数据
+            </div>
+            <div class="div3">
+                <ul>
+                    <li><a href="${pageContext.request.contextPath }/servlet/ModifyServlet?method=backup">一键备份</a></li>
+                </ul>
+            </div>
+        </c:if>
         <div class="div2"><div class="zxcp"></div>操作说明</div>
         <div class="div3">
             <ul>
@@ -87,7 +87,7 @@
             method:"backup"
         };
         $.getJSON(url, params, function(data){
-            if(1 == data) {
+            if("1" == data) {
                 alert("备份成功！");
             } else{
                 alert("sorry, 服务器正忙, 未备份成功.");
