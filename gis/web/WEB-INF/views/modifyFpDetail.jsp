@@ -28,7 +28,9 @@
         <td>所在单位</td>
         <td>联系电话</td>
         <td>提交时间</td>
-        <td>操作</td>
+        <c:if test="${user.is_Su==1}">
+            <td>操作</td>
+        </c:if>
     </tr>
     <c:forEach items="${result.list}" var="modify">
         <tr>
@@ -39,7 +41,9 @@
             <td>${modify.college}</td>
             <td>${modify.phone}</td>
             <td>${modify.date}</td>
-            <td><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=delete&modifyId=${modify.id}&feature_id=${modify.feature_id}" onclick="confirm('确认要删除吗？')">删除</a></td>
+            <c:if test="${user.is_Su==1}">
+                <td><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=delete&modifyId=${modify.id}&feature_id=${modify.feature_id}" onclick="confirm('确认要删除吗？')">删除</a></td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>
