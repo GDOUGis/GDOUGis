@@ -7,6 +7,7 @@ import org.cpp.gis.entities.Modify;
 import org.cpp.gis.service.FeaturePointService;
 import org.cpp.gis.service.impl.FeaturePointServiceImpl;
 import org.cpp.gis.service.impl.ModifyServiceImpl;
+import org.cpp.gis.utils.BackupDBUtil;
 import org.cpp.gis.utils.ExcelUtil;
 import org.cpp.gis.utils.Result;
 
@@ -42,7 +43,40 @@ public class ModifyServlet extends HttpServlet {
             showModifiedFPDetail(req, resp);
         } else if((method != null) && (method.equals("exportData"))) {
             exportData(req, resp);
+        } else if((method != null) && (method.equals("backup"))) {
+            backup(resp, req);
         }
+    }
+
+    /**
+     * 备份数据.
+     */
+    private void backup(HttpServletResponse resp, HttpServletRequest req) {
+        try {
+            String user = "root";
+            String pw = "love100200";
+            String dbName = "db_gdou_gis";
+//        String savePath = "E:\\backup";
+            String filePath = "E:\\backup";
+            File file = new File(filePath);
+            if(!file.exists()) {
+                file.mkdir();
+            }
+            filePath = file.getPath();
+
+            BackupDBUtil.backup(user, pw, dbName, filePath);
+
+            resp.getWriter().write("1");    // 备份成功返回1
+        } catch (Exception e) {
+            try {
+                resp.getWriter().write("0");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
