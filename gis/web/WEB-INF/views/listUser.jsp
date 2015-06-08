@@ -12,16 +12,20 @@
     <tr>
         <td>编号</td>
         <td>用户名</td>
+        <td>用户类型</td>
         <td>操作</td>
     </tr>
-    <c:forEach items="${result.list}" var="user">
+    <c:forEach items="${result.list}" var="u">
         <tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
+            <td>${u.id}</td>
+            <td>${u.username}</td>
+            <td>${u.is_Su == 1 ? "管理员" : "普通用户"}</td>
             <td>
-                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${user.id}' onclick="confirm('是否将该用户删除')">删除</a>
-                &nbsp;
-                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=reset&id=${user.id}' onclick="confirm('是否将该用户密码重置为123456')">重置密码</a>
+                <c:if test="${u.username ne sessionScope.user.username}">
+                    <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${u.id}' onclick="confirm('是否将该用户删除')">删除</a>
+                    &nbsp;
+                </c:if>
+                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=reset&id=${u.id}' onclick="confirm('是否将该用户密码重置为123456')">重置密码</a>
             </td>
         </tr>
     </c:forEach>

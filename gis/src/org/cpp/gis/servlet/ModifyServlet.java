@@ -43,19 +43,39 @@ public class ModifyServlet extends HttpServlet {
             showModifiedFPDetail(req, resp);
         } else if((method != null) && (method.equals("exportData"))) {
             exportData(req, resp);
+        } else if((method != null) && (method.equals("backup"))) {
+            backup(resp, req);
+        } else if((method != null) && (method.equals("delete"))){
+            delete(req,resp);
         }
     }
 
+
+    /**
+     * 删除.
+     * @param request
+     * @param response
+     */
+    private void delete(HttpServletRequest request, HttpServletResponse response) {
+        try{
+            Integer id = Integer.parseInt(request.getParameter("modifyId"));
+            modifyService.deleteById(id);
+            Integer feature_id = Integer.parseInt(request.getParameter("feature_id"));
+            request.getRequestDispatcher("/servlet/ModifyServlet?method=showModifiedFPDetail&feature_id+"+feature_id).forward(request,response);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * 备份数据.
      */
     private void backup(HttpServletResponse resp, HttpServletRequest req) {
         try {
             String user = "root";
-            String pw = "love100200";
+            String pw = "root";
             String dbName = "db_gdou_gis";
-//        String savePath = "E:\\backup";
-            String filePath = "E:\\backup";
+            String filePath = "D:\\backup";
             File file = new File(filePath);
             if(!file.exists()) {
                 file.mkdir();
@@ -108,10 +128,10 @@ public class ModifyServlet extends HttpServlet {
             e.printStackTrace();
         } finally {
             try {
-               if(out!=null){
-                   buf.close();
-                   out.close();
-               }
+                if(out!=null){
+                    buf.close();
+                    out.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

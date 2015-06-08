@@ -20,7 +20,7 @@ public class BackupDBUtil {
             Runtime runtime = Runtime.getRuntime();
 
             // 调用mysql的cmd
-            Process child = runtime.exec("mysqldump -u" + user + " -p" + password + " --set-charset=utf8 " + dbName);
+            Process child = runtime.exec("mysqldump --no-defaults -u" + user + " -p" + password + " --set-charset=utf8 " + dbName);
 
             /*
              把进程执行中的控制台输出信息写入.sql文件， 即生成了备份文件.
@@ -35,9 +35,11 @@ public class BackupDBUtil {
             // 组合控制台输出信息字符串.
             BufferedReader br = new BufferedReader(reader);
             while((inStr = br.readLine()) != null) {
+                System.out.println(inStr);
                 sb.append(inStr + "\r\n");
             }
             outStr = sb.toString();
+            System.out.println(outStr);
 
             // .sql目标文件
             FileOutputStream fout = new FileOutputStream(new File(savePath + "\\" + dbName + ".sql"));
