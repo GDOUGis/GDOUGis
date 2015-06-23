@@ -100,7 +100,7 @@ document.onmouseup=function(e){
         isdrag = false;
         if(x==0 & y==0) {
 
-            //alert("点击边框");
+            onclickState = true;
             //鼠标xy
             var x = evn.clientX;
             var y = evn.clientY;

@@ -93,7 +93,7 @@
             </div>
 
             <h3>4. 重置地图</h3>
-            <h4>在地图操作窗口中，用鼠标左键单击重置按钮“”，即可重置地图（即重新初始化地图）。如下图9、图10所示：</h4>
+            <h4>在地图操作窗口中，用鼠标左键单击重置按钮“<span class="glyphicon glyphicon-refresh"></span>”，即可重置地图（即重新初始化地图）。如下图9、图10所示：</h4>
             <div style="text-align: center">
                 <img src="${pageContext.request.contextPath}/images/io_user/io_9.png">
                 <h6>图9 地图重置之前</h6>

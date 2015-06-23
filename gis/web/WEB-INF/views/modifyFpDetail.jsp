@@ -42,7 +42,7 @@
             <td>${modify.phone}</td>
             <td>${modify.date}</td>
             <c:if test="${user.is_Su==1}">
-                <td><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=delete&modifyId=${modify.id}&feature_id=${modify.feature_id}" onclick="confirm('确认要删除吗？')">删除</a></td>
+                <td><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=delete&modifyId=${modify.id}&feature_id=${modify.feature_id}" onclick="return confirm('确认要删除吗？')">删除</a></td>
             </c:if>
         </tr>
     </c:forEach>

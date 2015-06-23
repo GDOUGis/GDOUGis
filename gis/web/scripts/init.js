@@ -12,6 +12,7 @@ myslider = null;
 mysliderState = null;
 moveState = false;//鼠标是否移动
 ftrName = null;//用于弹出修改框
+onclickState = false;//用于判断是否点击，发请求是否弹出提示框.
 
 
 window.name="mapwindow";

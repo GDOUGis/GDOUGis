@@ -41,11 +41,14 @@
 <div class="left">
     <div class="div1">
         <div class="left_top"><img src="${pageContext.request.contextPath}/images/bbb_01.jpg"><img src="${pageContext.request.contextPath}/images/bbb_02.jpg" id="2"><img src="${pageContext.request.contextPath}/images/bbb_03.jpg"><img src="${pageContext.request.contextPath}/images/bbb_04.jpg"> </div>
-        <div class="div2"><div class="lmtj"> </div>系统统计</div>
+        <div class="div2"><div class="lmtj"> </div>数据管理</div>
         <div class="div3">
             <ul>
                 <li><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=loadFPModifyPD" TARGET="main">数据统计</a></li>
                 <li><a href="${pageContext.request.contextPath}/servlet/ModifyServlet?method=exportData" >导出数据</a></li>
+                <c:if test="${user.is_Su==1}">
+                    <li><a href="${pageContext.request.contextPath }/servlet/ModifyServlet?method=backup">备份数据</a></li>
+                </c:if>
             </ul>
         </div>
 
@@ -59,21 +62,15 @@
                 <li><a href="${pageContext.request.contextPath }/servlet/ForwardServlet?resource=updatePwdUI" target="main">修改密码</a></li>
             </ul>
         </div>
-        <c:if test="${user.is_Su==1}">
-            <div class="div2">
-                <div class="backupDB"></div>
-                备份数据
-            </div>
-            <div class="div3">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath }/servlet/ModifyServlet?method=backup">一键备份</a></li>
-                </ul>
-            </div>
-        </c:if>
         <div class="div2"><div class="zxcp"></div>操作说明</div>
         <div class="div3">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=oi_admin" TARGET="main">查看说明</a></li>
+                <c:if test="${user.is_Su==1}">
+                    <li><a href="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=oi_admin" TARGET="main">查看说明</a></li>
+                </c:if>
+                <c:if test="${user.is_Su==0}">
+                    <li><a href="${pageContext.request.contextPath}/servlet/ForwardServlet?resource=oi_manager" TARGET="main">查看说明</a></li>
+                </c:if>
             </ul>
         </div>
     </div>

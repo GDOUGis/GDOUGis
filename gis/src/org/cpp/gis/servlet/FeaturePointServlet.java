@@ -37,7 +37,6 @@ public class FeaturePointServlet extends HttpServlet {
      * @param resp
      */
     private void getFeaturePoint(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("==> getFeaturePoint");
         PrintWriter writer = null;
         try {
 //            String currentName = new String(req.getParameter("name").getBytes("iso-8859-1"), "UTF-8");

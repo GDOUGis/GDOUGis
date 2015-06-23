@@ -22,10 +22,10 @@
             <td>${u.is_Su == 1 ? "管理员" : "普通用户"}</td>
             <td>
                 <c:if test="${u.username ne sessionScope.user.username}">
-                    <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${u.id}' onclick="confirm('是否将该用户删除')">删除</a>
+                    <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=delete&id=${u.id}' onclick="return confirm('是否将该用户删除')">删除</a>
                     &nbsp;
                 </c:if>
-                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=reset&id=${u.id}' onclick="confirm('是否将该用户密码重置为123456')">重置密码</a>
+                <a href='${pageContext.request.contextPath}/servlet/UserServlet?method=reset&id=${u.id}' onclick="return confirm('是否将该用户密码重置为123456')">重置密码</a>
             </td>
         </tr>
     </c:forEach>

@@ -117,15 +117,44 @@ function smaller(){
  * 更新鹰眼地图.
  */
 function updataBoundMap(){
-    $("#mapboundframe").empty();
-    $("#mapboundframe").append(" <img id='boundmap'  class='boundmap' GALLERYIMG='false' onclick='mapsmallpaner()'"+
-    "style=' position: absolute;left: 1px;top: 1px;height: 180px;width: 240px;visibility: visible;float:left;'" +
-    "src="+mapboundserviceurl+"&random="+Math.random()+ ">");
-    //-----------------------------------------------------------//
+    //如果是点击事件发起的
+    if(onclickState){
+        /**
+         * 判断是否弹出修改框。
+         */
+        $.getJSON(mapserviceurl + "?rqutype=isHightLight", {Date: new Date()}, function (data) {
+            var result = data.result;
+            if (result == 1) {
+                $('#myModal').modal('show');//显示模态框.
+                $("#cTitle").text(data.ftrName);
+                name=data.ftrName;
+                var url = "servlet/FeaturePointServlet";
+                var params = {
+                    method: "getFeaturePoint",
+                    currentName: encodeURI(name)
+                };
+                $.getJSON(url, params, function (featurePoint) {
+                    $("#cPrepareName").text(featurePoint.prepareName);
+                    $("#cPrepareDesc").val(featurePoint.prepareDescription);
+                    $("#cdescription").text(featurePoint.description);
+                    $("#fpId").val(featurePoint.id);
+                });
+            } else {
+                return false;
+            }
+        });
+        //将标识标示为否
+        onclickState = false;
+    }else{
+        //更新鹰眼.
+        $("#boundmap").attr("src",mapboundserviceurl+"&random="+Math.random());
+        //加载特征点.
+        loadMapInfo();
+    }
+
     //解决漫游图片跳跃
     $("#imgdiv").attr("style","position: absolute;top: 0px;left: 0;width: 960px;height: 600px;");
-    //加载特征点.
-    loadMapInfo();
+
     //更新滚动条.
     if(mysliderState == "big"){
         var oldVal = myslider.slider("getValue");
@@ -140,32 +169,6 @@ function updataBoundMap(){
         selectedname = null;//去除选中名字，解决改变滚动条之后又回到3的问题
         mysliderState = null;
     }
-
-
-    /**
-     * 判断是否弹出修改框。
-     */
-    $.getJSON(mapserviceurl + "?rqutype=isHightLight", {Date: new Date()}, function (data) {
-        var result = data.result;
-        if (result == 1) {
-            $('#myModal').modal('show');//显示模态框.
-            $("#cTitle").text(data.ftrName);
-            name=data.ftrName;
-            var url = "servlet/FeaturePointServlet";
-            var params = {
-                method: "getFeaturePoint",
-                currentName: encodeURI(name)
-            };
-            $.getJSON(url, params, function (featurePoint) {
-                $("#cPrepareName").text(featurePoint.prepareName);
-                $("#cPrepareDesc").val(featurePoint.prepareDescription);
-                $("#cdescription").text(featurePoint.description);
-                $("#fpId").val(featurePoint.id);
-            });
-        } else {
-            return false;
-        }
-    })
 
 }
 

@@ -76,7 +76,7 @@ public class ModifyServlet extends HttpServlet {
         FileInputStream inputStream = null;
         try {
             String user = "root";
-            String pw = "love100200";
+            String pw = "root";
             String dbName = "db_gdou_gis";
             String filePath = "D:\\backup";
             File file = new File(filePath);
@@ -116,7 +116,6 @@ public class ModifyServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        System.out.println("backup ==>");
     }
 
     /**
@@ -125,7 +124,6 @@ public class ModifyServlet extends HttpServlet {
      * @param resp
      */
     private void exportData(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("==> exportData");
         OutputStream out = null;
         BufferedInputStream buf = null;
         try {
@@ -158,7 +156,6 @@ public class ModifyServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        System.out.println("exportData ==>");
     }
 
     /**
@@ -167,7 +164,6 @@ public class ModifyServlet extends HttpServlet {
      * @param resp
      */
     private void showModifiedFPDetail(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("==> showModifiedFPDetail ");
         try {
             int feature_id = Integer.parseInt(req.getParameter("feature_id"));
 
@@ -196,7 +192,6 @@ public class ModifyServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        System.out.println("showModifiedFPDetail ==>");
     }
 
     /**
@@ -205,7 +200,6 @@ public class ModifyServlet extends HttpServlet {
      * @param resp
      */
     private void loadFPModifyPD(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("==> loadFPModifyPD");
         try {
             String pageNum = req.getParameter("pageNum");
             String pageSize = req.getParameter("pageSize");
@@ -226,7 +220,6 @@ public class ModifyServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("==> loadFPModifyPD");
     }
 
     /**
@@ -235,7 +228,6 @@ public class ModifyServlet extends HttpServlet {
      * @param resp
      */
     private void getModifiedPDGroupByFN(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("==> getModifiedPDGroupByFN");
         PrintWriter out = null;
         try {
             String pageNum = req.getParameter("pageNum");
@@ -248,7 +240,6 @@ public class ModifyServlet extends HttpServlet {
             }
             JSONObject jsonObject = JSONObject.fromObject(map);
             String result = jsonObject.toString();
-            System.out.println(result);
             resp.setContentType("text/html;charset=utf-8");
             out = resp.getWriter();
             out.write(result);
@@ -258,7 +249,6 @@ public class ModifyServlet extends HttpServlet {
         } finally {
             out.close();
         }
-        System.out.println("getModifiedPDGroupByFN ==>");
     }
 
     /**
@@ -275,7 +265,6 @@ public class ModifyServlet extends HttpServlet {
             int pageNum = Integer.parseInt(req.getParameter("pageNum"));
             List<Modify> list = modifyService.getModifyPageData(pageNum, pageSize);
             JSONArray jsonObject = JSONArray.fromObject(list);
-            System.out.println(jsonObject.toString());
             out.write(jsonObject.toString());
             out.flush();
         } catch (NumberFormatException e) {

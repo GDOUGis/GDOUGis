@@ -34,6 +34,8 @@ public class ForwardServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/admin_bottom.jsp").forward(request,response);
             }else if("oi_admin".equals(resource)){
                 request.getRequestDispatcher("/WEB-INF/views/oi_admin.jsp").forward(request,response);
+            }else if("oi_manager".equals(resource)){
+                request.getRequestDispatcher("/WEB-INF/views/oi_manager.jsp").forward(request,response);
             }
 
         }catch (Exception e){

@@ -136,7 +136,6 @@ public class MapServlet extends HttpServlet {
             mymap = initmap(request);
             responseimg(mymap, request,response);
         } else if ((rqutype != null) && (rqutype.equals("chgmapview"))) {
-            System.out.println("================ajax=======================");
             mymap = initmap(request);
             chgmapview(mymap, request);
             responseimg(mymap,request, response);
@@ -174,8 +173,6 @@ public class MapServlet extends HttpServlet {
             layernames = URLDecoder.decode(layernames, "UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
 
-            //System.out.println("图层名称=" + layernames);
-            //System.out.println("查询名称=" + selectnames);
             mymap = initmap(request);
 
             try {
@@ -190,7 +187,6 @@ public class MapServlet extends HttpServlet {
             //解码
             //layernames= URLDecoder.decode(layernames,"UTF-8");
             selectnames = URLDecoder.decode(selectnames, "UTF-8");
-            //System.out.println(selectnames+"------------------------------------");
             mymap = initmap(request);
 
             try {
@@ -204,9 +200,7 @@ public class MapServlet extends HttpServlet {
             //获取参数.
             String layerNames = request.getParameter("layernames");
             layerNames = URLDecoder.decode(layerNames, "UTF-8");
-            //System.out.println(layerNames);
             String[] showLayers = layerNames.split(",");
-            //System.out.println(showLayers.length);
 
             mymap = initmap(request);
             chgmaplayer(mymap, showLayers);
@@ -244,7 +238,6 @@ public class MapServlet extends HttpServlet {
             String queryName = request.getParameter("queryName");
             queryName = URLDecoder.decode(queryName, "UTF-8");
 
-            //System.out.println("要高亮的是================"+queryName);
 
             mymap = initmap(request);
 
@@ -282,8 +275,7 @@ public class MapServlet extends HttpServlet {
                 myMap.loadMapDefinition(m_fileToLoad);
             }
         } catch (Exception e) {
-            System.out.println("Can't load geoset: " + m_fileToLoad + "\n");
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             throw e;
         }
         return myMap;
@@ -325,7 +317,6 @@ public class MapServlet extends HttpServlet {
      * @鹰眼地图初始化
      */
     private MapJ initboundmap(HttpServletRequest request) {
-        System.out.println("===============================bound========================================");
         MapJ boundmap = null;
         boundmap = (MapJ) request.getSession().getAttribute("boundmap");
         if (boundmap == null) {
@@ -404,8 +395,6 @@ public class MapServlet extends HttpServlet {
      */
     private void resetmap(MapJ mymap, HttpServletRequest request) {
         try {
-            //System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
-//			mymap.setZoom(resetzoom);
             mymap.setZoom(2140.0);
             // 设定地图范围为最初的范围
             resetpoint = new DoublePoint(Double.parseDouble(request.getSession().getAttribute("oldx").toString()), Double.parseDouble(request.getSession().getAttribute("oldy").toString()));
@@ -428,15 +417,17 @@ public class MapServlet extends HttpServlet {
         try {
             //显示名字层
             Layer nameLayer = mymap.getLayers().getLayer("名字");
-            if(2140.0/mymap.getZoom()>2){
-                nameLayer.setVisible(true);
-            }else{
-                nameLayer.setVisible(false);
+            if(nameLayer!=null){
+                if(2140.0/mymap.getZoom()>2){
+                    nameLayer.setVisible(true);
+                }else{
+                    nameLayer.setVisible(false);
+                }
             }
+
             sout = response.getOutputStream();
 
             if(request.getSession().getAttribute("layerName")!=null){
-                System.out.println("非空的===========================================");
                 String layerName = (String)request.getSession().getAttribute("layerName");
                 Layer toHightLightL = mymap.getLayers().getLayer(layerName);
 
@@ -445,7 +436,7 @@ public class MapServlet extends HttpServlet {
                 // 创建一个Selection对象并且把选择的图元加入
                 Selection sel = new Selection();
 
-                List<Feature> list = (List)request.getSession().getAttribute("ftrList");
+                List<Feature> list = (List<Feature>)request.getSession().getAttribute("ftrList");
 
                 //sel.add(selFtr);
                 for(Feature feature : list){
@@ -456,7 +447,6 @@ public class MapServlet extends HttpServlet {
 
                 // 设置SelectionTheme的显示渲染的样式
                 Rendition rend = RenditionImpl.getDefaultRendition();
-                //rend.setValue(Rendition.FILL, Color.red);
 
                 rend.setValue(Rendition.FILL, Color.red);
                 rend.setValue(Rendition.STROKE,Color.red);//划线
@@ -481,9 +471,10 @@ public class MapServlet extends HttpServlet {
             e.printStackTrace();
         }
         try {
-            if (sout != null)
+            if (sout != null){
                 sout.flush();
-            sout.close();
+                sout.close();
+            }
         } catch (Exception localException1) {
             localException1.printStackTrace();
         }
@@ -608,15 +599,6 @@ public class MapServlet extends HttpServlet {
             boundmap.setDistanceUnits(mymap.getDistanceUnits());
 
 
-           /* if (mymap.getZoom() / boundmap.getZoom() >= 0.8D) {
-                System.out.println("test boundmap-----------------------");
-                boundmap.setZoom(mymap.getZoom() * 1.25D);
-                boundmap.setCenter(mymap.getCenter());
-            }else {
-
-                System.out.println("resetzoom:" + resetzoom + ", resetpoint:" + resetpoint);
-            }*/
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -667,13 +649,11 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void addModifyName(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入addModifyName方法=====================>>");
         PrintWriter out = null;
         try {
             out = response.getWriter();
             /* 获取参数 */
             int fpId = Integer.parseInt(request.getParameter("fpId"));
-            System.out.println(fpId);
             String currentName = URLDecoder.decode(request.getParameter("currentName"), "UTF-8");
             String modifyName = URLDecoder.decode(request.getParameter("modifyName"), "UTF-8");
             String modifyDesc = URLDecoder.decode(request.getParameter("modifyDesc"), "UTF-8");
@@ -700,7 +680,6 @@ public class MapServlet extends HttpServlet {
                 out.close();
             }
         }
-        System.out.println("<<====================退出getAliasByName方法");
     }
 
     /**
@@ -710,7 +689,6 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void getAliasByName(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入getAliasByName方法=====================>>");
         String name = request.getParameter("name");
         String[] alias = null;
         try {
@@ -720,12 +698,10 @@ public class MapServlet extends HttpServlet {
             }
             response.setContentType("text/html;charset=utf-8");
             JSONArray jsonArray = JSONArray.fromObject(alias);
-            System.out.println(jsonArray.toString());
             response.getWriter().write(jsonArray.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("<<====================退出getAliasByName方法");
     }
 
 
@@ -736,12 +712,10 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void updateAlias(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入updateAlias方法=====================>>");
         String id = request.getParameter("id");
         String alias = request.getParameter("alias");
         response.setContentType("text/html;charset=utf-8;");
         try {
-            System.out.println("id:" + id + ", alias:" + alias);
             if (id != null && alias != null && "".equals(alias.trim())) {
                 fpService.addAlias(id, alias);
                 response.getWriter().write("1");
@@ -751,7 +725,6 @@ public class MapServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("<<====================退出updateAlias方法.");
     }
 
     /**
@@ -761,7 +734,6 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void getAliasById(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("进入getAliasById方法=====================>>");
         String id = request.getParameter("id");
         String[] alias = null;
         try {
@@ -771,12 +743,10 @@ public class MapServlet extends HttpServlet {
             }
             response.setContentType("text/html;charset=utf-8");
             JSONArray jsonArray = JSONArray.fromObject(alias);
-            System.out.println(jsonArray.toString());
             response.getWriter().write(jsonArray.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("<<====================退出getAliasById方法");
     }
 
 
@@ -786,21 +756,17 @@ public class MapServlet extends HttpServlet {
      * @param id
      */
     private void showFeatureDetail(String id, HttpServletResponse response) {
-        System.out.println("进入showFeatureDetail方法====================>>");
-//        System.out.println("------- id : " + id);
         try {
             if (!"".equals(id) && id != null) {
                 FeaturePoint fq = new FeaturePoint();
                 fq = fpService.getById(Integer.parseInt(id));
                 JSONObject jsonObject = JSONObject.fromObject(fq);
-                System.out.println(jsonObject.toString());
                 response.setContentType("text/html;charset=utf-8");
                 response.getWriter().write(jsonObject.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("<<====================退出showFeatureDetail方法.");
     }
 
 
@@ -822,7 +788,6 @@ public class MapServlet extends HttpServlet {
         Layer m_Layer = mymap.getLayers().getLayer(layernames);
 
         if (m_Layer == null) {
-            System.out.println("没有[" + layernames + "]这个图层");
             responseimg(mymap,request,  res);
             return;
         }
@@ -837,7 +802,6 @@ public class MapServlet extends HttpServlet {
         // fill vector with Column names
         for (int i = 0; i < tabInfo.getColumnCount(); i++) {
             columnNames.add(tabInfo.getColumnName(i));
-            System.out.println(tabInfo.getColumnName(i) + "  --  ");
         }
         // Perform a search to get the Features(records)from the layer
         RewindableFeatureSet rFtrSet;
@@ -962,7 +926,6 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
 
                 // Perform a search to get the Features(records)from the layer
@@ -980,7 +943,6 @@ public class MapServlet extends HttpServlet {
                 while (ftr != null) {
                     //利用contain模拟模糊搜索.
                     if (ftr.getAttribute(0).toString().contains(selectnames)) {
-                        System.out.println(ftr.getAttribute(0).toString() + "-------------->" + selectnames);
                         features.add(ftr);
                     }
                     ftr = rFtrSet.getNextFeature();
@@ -988,7 +950,6 @@ public class MapServlet extends HttpServlet {
                 rFtrSet.rewind();
             }
 
-            System.out.println(features.size() + "================================");
             //获取图元的名称
             List<String> list = new ArrayList<String>();
             JSONArray jsonArray = new JSONArray();
@@ -997,7 +958,6 @@ public class MapServlet extends HttpServlet {
                 set.add(f.getAttribute(0).toString());
             }
             for(String s : set){
-                System.out.println(s);
                 jsonArray.add(s);
             }
 
@@ -1089,7 +1049,6 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    //System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
 
                 // Perform a search to get the Features(records)from the layer
@@ -1106,12 +1065,10 @@ public class MapServlet extends HttpServlet {
 
                 while (ftr != null) {
                     if (ftr.getAttribute(0).toString().equals(queryName)) {
-                        selFtr = ftr;
+                        selFtr = ftr;//找到之后.
                         result.setFeature(selFtr);
                         result.setLayerName(m_Layer.getName());
-                        //System.out.println("================找到了咯======================");
                         // 定位点
-                        System.out.println(selFtr.getGeometry()+"======================================");
                         if (selFtr.getGeometry().getType() == Geometry.TYPE_POINT) {
                             double newZoomValue;
                             double currentZoom = mymap.getZoom();
@@ -1154,34 +1111,11 @@ public class MapServlet extends HttpServlet {
                 hightLight = false;
             }
 
-            // 高亮显示
+            // 找到相似的
             List<Feature> list = findSameNameFtr(mymap,selFtr);
 
-            /*// 创建一个 SelectionTheme
-            SelectionTheme selTheme = new SelectionTheme("LocateFeature");
-            // 创建一个Selection对象并且把选择的图元加入
-            Selection sel = new Selection();
-
-
-
-            //sel.add(selFtr);
-            for(Feature feature : list){
-                sel.add(feature);
-            }
-            // 把Selection对象加入到SelectionTheme
-            selTheme.setSelection(sel);
-
-            // 设置SelectionTheme的显示渲染的样式
-            Rendition rend = RenditionImpl.getDefaultRendition();
-            //rend.setValue(Rendition.FILL, Color.red);
-            rend.setValue(Rendition.FILL, Color.red);
-            selTheme.setRendition(rend);
-
-            // 添加SelectionTheme到指定layer的theme列表中
-            m_Layer.getThemeList().add(selTheme);
-            // m_Layer.getThemeList().insert(selTheme, 0);*/
-
             //将信息保存到session中
+            System.out.println(result.getLayerName()+"-------------->"+result.getFeature().getAttribute(0).toString()+",一共有："+list.size());
             request.getSession().setAttribute("ftrList",list);
             request.getSession().setAttribute("layerName",result.getLayerName());
             request.getSession().setAttribute("ftrName",result.getFeature().getAttribute(0).toString());
@@ -1200,10 +1134,8 @@ public class MapServlet extends HttpServlet {
      * 加载特征点
      */
     private void loadFeature_new(HttpServletResponse response, HttpServletRequest request, MapJ mapJ) throws Exception {
-        System.out.println("进入loadFeature方法.");
 
         response.setCharacterEncoding("UTF-8");
-//        response.setHeader("content-type","application/javascript");
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
 
@@ -1255,7 +1187,6 @@ public class MapServlet extends HttpServlet {
                 // 获得ColumnName
                 for (int j = 0; j < tabInfo.getColumnCount(); j++) {
                     columnNames.add(tabInfo.getColumnName(j));
-                    // System.out.println(tabInfo.getColumnName(j) + "  --  ");
                 }
                 // Perform a search to get the Features(records)from the layer
                 //获得当前图层的所有图元
@@ -1284,20 +1215,14 @@ public class MapServlet extends HttpServlet {
                     prepareName = ftr.getAttribute(2).toString();
                     prepareDescription = ftr.getAttribute(3).toString();
 
-//                    System.out.println(name +", -- desc:"+desc+", --  prepareName:"+prepareName);
                     if (!"".equals(name.trim()) || name != null) {
-                        //System.out.print("layer's name：" + m_Layer.getName()+"ftr name:"+name);
                         if (ftr != null && ftr.getGeometry() != null) {
                             doublePoint = ftr.getGeometry().getBounds().center();
-//                       mapJ.setCenter(doublePoint);
-//                        mapJ.setCenter(new DoublePoint(0.24, 0.36));
-                            //System.out.println("center point：（"+doublePoint+"）");
                             // 坐标转换
                             screenPoint = mapJ.transformNumericToScreen(doublePoint);
                             // 过滤超出960 * 620 的坐标点
                             if (screenPoint.x < 960 && screenPoint.x > 0
                                     && screenPoint.y > 0 && screenPoint.y < 620) {
-                                //System.out.println("screen point：（"+screenPoint +"）");
                                 // 将名称和坐标返回
                                 fp = new FeaturePoint();
                                 fp.setId(fp.getId() == null ? id : fp.getId());
@@ -1310,7 +1235,9 @@ public class MapServlet extends HttpServlet {
 
 
                                 //存到数据库，工程师执行，一次就够了
+                                //System.out.println("inserting data start...");
                                 //fpService.addFeaturePoint(fp);
+                                //System.out.println("inserting data over...");
 
                                 list.add(fp);
                                 id++;
@@ -1331,7 +1258,6 @@ public class MapServlet extends HttpServlet {
             map.put("featurePoints", jsonArray);
             map.put("newzoom", newzoom);
 
-            //System.out.println(jsonArray.toString());
             JSONObject mapObject = JSONObject.fromObject(map);
             out.write(mapObject.toString());
         } catch (Exception e) {
@@ -1341,7 +1267,6 @@ public class MapServlet extends HttpServlet {
             out.close();
         }
 
-        System.out.println("退出loadFeature方法.");
     }
 
     /**
@@ -1429,8 +1354,6 @@ public class MapServlet extends HttpServlet {
                     if (ftr != null && ftr.getGeometry() != null) {
                         DoubleRect ftrRect = ftr.getGeometry().getBounds();
                         if (ftrRect.contains(numericPoint)) {
-                            System.out.println("找到了啦->"+mapJ.transformNumericToScreen(ftr.getGeometry().getBounds())+"==" + ftr.getAttribute(0) + "x,y=" + x + "," + y);
-                            System.out.println("转化后"+ftr.getGeometry().getBounds()+numericPoint);
                             HighLightResult result = new HighLightResult();
                             result.setLayerName(m_Layer.getName());
                             result.setFeature(ftr);
@@ -1456,7 +1379,6 @@ public class MapServlet extends HttpServlet {
              */
             String ftrName = (String)request.getSession().getAttribute("ftrName");
             if(ftrName!=null){
-                System.out.println("66666666666666666进来了6666666666666666666");
                 if(result.getFeature().getAttribute(0).toString().equals(ftrName)){
                     request.getSession().setAttribute("clickSecond","true");
                 }else{
@@ -1581,7 +1503,6 @@ public class MapServlet extends HttpServlet {
         //找出与上边界最接近的点
         Double x = numericPoint.x - list.get(0).getFeature().getGeometry().getBounds().xmin;
         Double y = numericPoint.y - list.get(0).getFeature().getGeometry().getBounds().ymin;
-        System.out.println("xmin:"+list.get(0).getFeature().getGeometry().getBounds().xmin+"+++"+"xmax:"+list.get(0).getFeature().getGeometry().getBounds().xmax);
 
         HighLightResult topResult = list.get(0);
 
@@ -1623,8 +1544,6 @@ public class MapServlet extends HttpServlet {
             result = bottomResult;
         }*/
 
-
-        System.out.println("result" + result.getFeature().getAttribute(0) + "><><><><><><><><><><><><><><><><>");
         return result;
     }
 
@@ -1634,7 +1553,6 @@ public class MapServlet extends HttpServlet {
      * @param response
      */
     private void isHightLight(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("++++++++++++++++++isHightLight++++++++++++++++++++++");
         PrintWriter out = null;
         response.setCharacterEncoding("UTF-8");
         response.setHeader("content-type", "application/javascript");

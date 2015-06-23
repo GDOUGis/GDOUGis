@@ -28,7 +28,6 @@ public class InitServlet extends HttpServlet {
         //获取资源路径
         URL url = this.getClass().getResource("/../..");
         //获取地图跟目录
-        System.out.println(this);
         strParam = getInitParameter("mapPath");
         if (strParam != null) {
             //也可以直接在web.xml 配置绝对路径 那么下面这一句就可以不要了

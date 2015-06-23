@@ -129,12 +129,12 @@ body{
     font-family: '微软雅黑';
 }
 .body-r{
-    width: 390px;
+    width: 400px;
     height: 540px;
     background: url("../images/body-r.png");
     position: absolute;
     top: 70px;
-    left: 980px;
+    left: 985px;
 }
 
 

@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="广东海洋大学校园地图" />
+    <meta name="description" content="广东海洋大学校园地图,广东海洋大学电子地图,广东海洋大学地图" />
 
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/gdou.ico">
 
@@ -215,7 +217,7 @@
 
 <!--div缩略图边框，img为缩略图,初始化为隐藏的-->
 <div id="mapboundframe" style="position: absolute;top: 70px;left: 980px;height: 183px;width: 243px; display: block;border: 1px solid #000000;">
-    <img id="boundmap"  class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
+    <img id="boundmap" src="" class="boundmap" GALLERYIMG="false" onclick="mapsmallpaner()"
          style=" height: 180px;width: 240px;visibility: visible;float:left;">
 </div>
 
@@ -251,9 +253,9 @@
     </div>--%>
     <hr>
     <div class="search">
-        <input type="text" id="searchText" placeholder="请输入您要查找的目标名称"> <button id="searchBtn" onclick="searchF()">查找</button>
+        <input type="text" id="searchText" style="height: 34px;" placeholder="请输入您要查找的目标名称">
+        <button id="searchBtn" class="btn btn-default" onclick="searchF()">查找</button>
         <div class="result" style="height: 300px;overflow-y: auto">
-
         </div>
     </div>
 </div>
