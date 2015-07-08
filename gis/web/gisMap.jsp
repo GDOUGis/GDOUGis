@@ -296,7 +296,7 @@
 
 <div id="footer" style="text-align: center">
     Copyright &copy; 2015.广东海洋大学 All rights reserved<br>
-    （推荐使用分辨率1366*768以上的显示器）.
+    （建议使用Chrome或Firefox作为本系统专用浏览器，屏幕分辨率为1366*768及以上）.
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.min.js"></script>
